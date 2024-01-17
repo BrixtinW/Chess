@@ -22,8 +22,6 @@ public class ChessBoard {
         int row = position.getRow();
         int column = position.getColumn();
         boardArray[row][column] = piece;
-        System.out.println(piece);
-        System.out.println(boardArray[row][column]);
 
     }
 
