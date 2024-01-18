@@ -48,7 +48,13 @@ public class ChessMove {
     @Override
     public int hashCode() {
 //        return super.hashCode();
-        return (startPosition.getRow() + startPosition.getColumn()) * (endPosition.getRow() +endPosition.getColumn());
+        if (promotionPiece == null){
+            return (startPosition.getRow() + startPosition.getColumn()) * (endPosition.getRow() + endPosition.getColumn());
+
+        }
+        else {
+        return (startPosition.getRow() + startPosition.getColumn()) * (endPosition.getRow() + endPosition.getColumn()) + promotionPiece.hashCode() + 1;
+        }
     }
 
     @Override
@@ -63,7 +69,11 @@ public class ChessMove {
             return false;
         }
         if (endPosition.getRow() == ((ChessMove) obj).endPosition.getRow() && endPosition.getColumn() == ((ChessMove) obj).endPosition.getColumn()){
-            return true;
+            if (startPosition.getRow() == ((ChessMove) obj).startPosition.getRow() && startPosition.getColumn() == ((ChessMove) obj).startPosition.getColumn()) {
+                if (promotionPiece == ((ChessMove) obj).promotionPiece) {
+                    return true;
+                }
+            }
         }
 
 //        System.out.println(String.format("These should not be equal: {%d,%d} != {%d,%d}", endPosition.getRow(), endPosition.getColumn(), ((ChessMove) obj).endPosition.getRow(), ((ChessMove) obj).endPosition.getColumn()));
