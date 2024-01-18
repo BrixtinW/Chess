@@ -243,13 +243,85 @@ public class MovementCalculator {
 
     public static ArrayList<ChessMove> pawnMoves(ChessBoard board, ChessPosition start, ChessGame.TeamColor pieceColor) {
         ArrayList<ChessMove> potentialMoves = new ArrayList<>();
+        int row = start.getRow();
+        int colm = start.getColumn();
+        int advance = 0;
+        boolean superAdvance = false;
+        ChessPosition position;
 
+        ////////////////////////////////////
+        if (pieceColor == ChessGame.TeamColor.WHITE){
+//            White is at the bottom
+            if (row == 2) { superAdvance = true; }
+            advance = 1;
+        } else if (pieceColor == ChessGame.TeamColor.BLACK) {
+//            Black is at the top
+            if (row == 7){ superAdvance = true; }
+            advance = -1;
+        } else {
+            System.out.println("ERROR piece was neither BLACK nor WHITE");
+        }
+
+        ////////////////////////////////////
+
+        row += advance;
+        position = new ChessPosition(row, colm);
+        if (board.getPiece(position) == null) {
+            if (row == 1 || row == 8){
+//                   if the pawn is being promoted
+                potentialMoves.add(new ChessMove(start, position, ChessPiece.PieceType.QUEEN));
+                potentialMoves.add(new ChessMove(start, position, ChessPiece.PieceType.KNIGHT));
+                potentialMoves.add(new ChessMove(start, position, ChessPiece.PieceType.ROOK));
+                potentialMoves.add(new ChessMove(start, position, ChessPiece.PieceType.BISHOP));
+            } else { potentialMoves.add(new ChessMove(start, position, null)); }
+            if(superAdvance){
+                row += advance;
+                ChessPosition superPosition = new ChessPosition(row, colm);
+                if (board.getPiece(superPosition) == null) {
+                    potentialMoves.add(new ChessMove(start, superPosition, null));
+                }
+            }
+        }
+        ////////////////////////////////////
+        row = start.getRow();
+        row += advance;
+        colm += -1;
+        ChessPosition leftAttack = new ChessPosition(row, colm);
+        colm += 2;
+        ChessPosition rightAttack = new ChessPosition(row, colm);
+        if (!(board.getPiece(leftAttack) == null)) {
+            if (!(board.getPiece(leftAttack).getTeamColor()).equals(pieceColor)){
+                if (row == 1 || row == 8){
+                    potentialMoves.add(new ChessMove(start, leftAttack, ChessPiece.PieceType.QUEEN));
+                    potentialMoves.add(new ChessMove(start, leftAttack, ChessPiece.PieceType.KNIGHT));
+                    potentialMoves.add(new ChessMove(start, leftAttack, ChessPiece.PieceType.BISHOP));
+                    potentialMoves.add(new ChessMove(start, leftAttack, ChessPiece.PieceType.ROOK));
+                } else {potentialMoves.add(new ChessMove(start, leftAttack, null)); }
+            }
+        }
+        ////////////////////////////////////
+        if (!(board.getPiece(rightAttack) == null)) {
+            if (!(board.getPiece(rightAttack).getTeamColor()).equals(pieceColor)){
+                if (row == 1 || row == 8){
+                    potentialMoves.add(new ChessMove(start, rightAttack, ChessPiece.PieceType.QUEEN));
+                    potentialMoves.add(new ChessMove(start, rightAttack, ChessPiece.PieceType.KNIGHT));
+                    potentialMoves.add(new ChessMove(start, rightAttack, ChessPiece.PieceType.BISHOP));
+                    potentialMoves.add(new ChessMove(start, rightAttack, ChessPiece.PieceType.ROOK));
+                } else { potentialMoves.add(new ChessMove(start, rightAttack, null));}
+            }
+        }
+        ////////////////////////////////////
         return potentialMoves;
     }
 
 
+
     public static ArrayList<ChessMove> knightMoves(ChessBoard board, ChessPosition start, ChessGame.TeamColor pieceColor) {
+        int row = start.getRow();
+        int colm = start.getColumn();
         ArrayList<ChessMove> potentialMoves = new ArrayList<>();
+
+
 
         return potentialMoves;
     }
