@@ -1,10 +1,7 @@
 package chess;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 
 /**
@@ -88,12 +85,20 @@ public class ChessPiece {
 
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChessPiece that)) return false;
+        return pieceColor == that.pieceColor && pieceType == that.pieceType;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public int hashCode() {
+        return Objects.hash(pieceColor, pieceType);
+    }
+
+    @Override
+    public String toString() {
+        return "{" + pieceType +
+                '}';
     }
 }
