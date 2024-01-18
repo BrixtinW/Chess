@@ -44,6 +44,7 @@
     "JUnit.KingMoveTests.kingBlocked.executor": "Run",
     "JUnit.KingMoveTests.kingCaptureEnemy.executor": "Run",
     "JUnit.KingMoveTests.kingMoveUntilEdge.executor": "Run",
+    "JUnit.KnightMoveTests.executor": "Run",
     "JUnit.PawnMoveTests.executor": "Run",
     "JUnit.PawnMoveTests.pawnPromotionCapture.executor": "Run",
     "JUnit.QueenMoveTests.executor": "Run",
@@ -68,7 +69,7 @@
       <recent name="$PROJECT_DIR$/shared/src/test/java/passoffTests/chessTests" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.PawnMoveTests">
+  <component name="RunManager" selected="JUnit.KnightMoveTests">
     <configuration name="KingMoveTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="shared" />
       <extension name="coverage">
@@ -100,7 +101,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="KingMoveTests.kingCaptureEnemy" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="KnightMoveTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="shared" />
       <extension name="coverage">
         <pattern>
@@ -109,9 +110,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="passoffTests.chessTests.chessPieceTests" />
-      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.chessPieceTests.KingMoveTests" />
-      <option name="METHOD_NAME" value="kingCaptureEnemy" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.chessPieceTests.KnightMoveTests" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -149,11 +149,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.KnightMoveTests" />
         <item itemvalue="JUnit.PawnMoveTests" />
         <item itemvalue="JUnit.PawnMoveTests.pawnPromotionCapture" />
         <item itemvalue="JUnit.KingMoveTests" />
         <item itemvalue="JUnit.KingMoveTests.kingBlocked" />
-        <item itemvalue="JUnit.KingMoveTests.kingCaptureEnemy" />
       </list>
     </recent_temporary>
   </component>
@@ -187,16 +187,5 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix(tests) removed extra credit tests" />
     <option name="LAST_COMMIT_MESSAGE" value="fix(tests) removed extra credit tests" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/shared/src/main/java/chess/MovementCalculator.java</url>
-          <line>285</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

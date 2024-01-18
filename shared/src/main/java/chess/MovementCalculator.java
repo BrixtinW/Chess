@@ -320,14 +320,54 @@ public class MovementCalculator {
         int row = start.getRow();
         int colm = start.getColumn();
         ArrayList<ChessMove> potentialMoves = new ArrayList<>();
+        ArrayList<ChessPosition> potentialPositions = new ArrayList<>();
 
+        row += 2;
+        colm ++;
+        ChessPosition upRight = new ChessPosition(row, colm);
+        potentialPositions.add(upRight);
 
+        colm -= 2;
+        ChessPosition upLeft = new ChessPosition(row, colm);
+        potentialPositions.add(upLeft);
 
+        row -= 4;
+        ChessPosition downLeft = new ChessPosition(row, colm);
+        potentialPositions.add(downLeft);
+
+        colm += 2;
+        ChessPosition downRight = new ChessPosition(row, colm);
+        potentialPositions.add(downRight);
+
+        row++;
+        colm++;
+        ChessPosition rightDown = new ChessPosition(row, colm);
+        potentialPositions.add(rightDown);
+
+        row += 2;
+        ChessPosition rightUp = new ChessPosition(row, colm);
+        potentialPositions.add(rightUp);
+
+        colm -= 4;
+        ChessPosition leftUp = new ChessPosition(row, colm);
+        potentialPositions.add(leftUp);
+
+        row -= 2;
+        ChessPosition leftDown = new ChessPosition(row, colm);
+        potentialPositions.add(leftDown);
+
+        for (ChessPosition position: potentialPositions) {
+
+            if(position.getRow() >= 9 || position.getRow() <= 0 || position.getColumn() >= 9 || position.getColumn() <= 0){
+                continue;
+            }
+            if (board.getPiece(position) == null || !(board.getPiece(position).getTeamColor().equals(pieceColor))) {
+                potentialMoves.add(new ChessMove(start, position, null));
+            }
+
+        }
         return potentialMoves;
     }
-
-
-
 
 
 }
