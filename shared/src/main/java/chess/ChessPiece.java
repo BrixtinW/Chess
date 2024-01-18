@@ -68,17 +68,17 @@ public class ChessPiece {
 
         switch (pieceType){
             case PieceType.KING:
-                break;
+                return new HashSet<>(MovementCalculator.kingMoves(board, myPosition, pieceColor));
             case PieceType.QUEEN:
                 return new HashSet<>(MovementCalculator.queenMoves(board, myPosition, pieceColor));
             case PieceType.BISHOP:
-                return new HashSet<ChessMove>(MovementCalculator.bishopMoves(board, myPosition, pieceColor));
+                return new HashSet<>(MovementCalculator.bishopMoves(board, myPosition, pieceColor));
             case PieceType.KNIGHT:
-                break;
+                return new HashSet<>(MovementCalculator.knightMoves(board, myPosition, pieceColor));
             case PieceType.ROOK:
-                return new HashSet<ChessMove>(MovementCalculator.rookMoves(board, myPosition, pieceColor));
+                return new HashSet<>(MovementCalculator.rookMoves(board, myPosition, pieceColor));
             case PieceType.PAWN:
-                break;
+                return new HashSet<>(MovementCalculator.pawnMoves(board, myPosition, pieceColor));
             default:
                 System.out.println("Invalid Piece Type");
                 System.out.println(pieceType);
