@@ -190,10 +190,18 @@ public class MovementCalculator {
 
 
 
+    public static ArrayList<ChessMove> queenMoves(ChessBoard board, ChessPosition start, ChessGame.TeamColor pieceColor) {
+
+        ArrayList<ChessMove> potentialMoves = new ArrayList<>();
+
+        potentialMoves.addAll(bishopMoves(board, start, pieceColor));
+        potentialMoves.addAll(rookMoves(board, start, pieceColor));
+
+        return potentialMoves;
+    }
 
 
     //    public static ArrayList<ChessMove> kingMoves(ChessBoard board, ChessPosition start, ChessGame.TeamColor pieceColor) {}
-//    public static ArrayList<ChessMove> queenMoves(ChessBoard board, ChessPosition start, ChessGame.TeamColor pieceColor) {}
 //    public static ArrayList<ChessMove> pawnMoves(ChessBoard board, ChessPosition start, ChessGame.TeamColor pieceColor) {}
 //    public static ArrayList<ChessMove> knightMoves(ChessBoard board, ChessPosition start, ChessGame.TeamColor pieceColor) {}
 

@@ -70,7 +70,7 @@ public class ChessPiece {
             case PieceType.KING:
                 break;
             case PieceType.QUEEN:
-                break;
+                return new HashSet<>(MovementCalculator.queenMoves(board, myPosition, pieceColor));
             case PieceType.BISHOP:
                 return new HashSet<ChessMove>(MovementCalculator.bishopMoves(board, myPosition, pieceColor));
             case PieceType.KNIGHT:

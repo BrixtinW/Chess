@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2127a23-f6c5-4361-9314-19f7fd19bf87" name="Changes" comment="fix(tests) removed extra credit tests">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/java/chess/ChessPiece.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/chess/ChessPiece.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/java/chess/MovementCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/chess/MovementCalculator.java" afterDir="false" />
     </list>
@@ -41,6 +40,7 @@
     "JUnit.BishopMoveTests.bishopBlocked.executor": "Run",
     "JUnit.BishopMoveTests.bishopCaptureEnemy.executor": "Run",
     "JUnit.BishopMoveTests.bishopMoveUntilEdge.executor": "Run",
+    "JUnit.QueenMoveTests.queenMoveUntilEdge.executor": "Run",
     "JUnit.RookMoveTests.executor": "Run",
     "JUnit.RookMoveTests.rookMoveUntilEdge.executor": "Run",
     "JUnit.chess.MovementCalculator in shared.executor": "Debug",
@@ -61,7 +61,7 @@
       <recent name="$PROJECT_DIR$/shared/src/test/java/passoffTests/chessTests" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.RookMoveTests">
+  <component name="RunManager" selected="JUnit.QueenMoveTests">
     <configuration name="BishopMoveTests.bishopBlocked" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="shared" />
       <extension name="coverage">
@@ -78,7 +78,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BishopMoveTests.bishopCaptureEnemy" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="QueenMoveTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="shared" />
       <extension name="coverage">
         <pattern>
@@ -87,14 +87,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="passoffTests.chessTests.chessPieceTests" />
-      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.chessPieceTests.BishopMoveTests" />
-      <option name="METHOD_NAME" value="bishopCaptureEnemy" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.chessPieceTests.QueenMoveTests" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BishopMoveTests.bishopMoveUntilEdge" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="QueenMoveTests.queenMoveUntilEdge" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="shared" />
       <extension name="coverage">
         <pattern>
@@ -103,8 +102,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="passoffTests.chessTests.chessPieceTests" />
-      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.chessPieceTests.BishopMoveTests" />
-      <option name="METHOD_NAME" value="bishopMoveUntilEdge" />
+      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.chessPieceTests.QueenMoveTests" />
+      <option name="METHOD_NAME" value="queenMoveUntilEdge" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -143,11 +142,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.QueenMoveTests" />
+        <item itemvalue="JUnit.QueenMoveTests.queenMoveUntilEdge" />
         <item itemvalue="JUnit.RookMoveTests" />
         <item itemvalue="JUnit.RookMoveTests.rookMoveUntilEdge" />
         <item itemvalue="JUnit.BishopMoveTests.bishopBlocked" />
-        <item itemvalue="JUnit.BishopMoveTests.bishopCaptureEnemy" />
-        <item itemvalue="JUnit.BishopMoveTests.bishopMoveUntilEdge" />
       </list>
     </recent_temporary>
   </component>
