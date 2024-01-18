@@ -43,8 +43,41 @@ public class ChessMove {
 
         return this.promotionPiece;
     }
+
+
+    @Override
+    public int hashCode() {
+//        return super.hashCode();
+        return (startPosition.getRow() + startPosition.getColumn()) * (endPosition.getRow() +endPosition.getColumn());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null){
+            return false;
+        }
+        if (obj == this){
+            return true;
+        }
+        if (getClass() != obj.getClass()){
+            return false;
+        }
+        if (endPosition.getRow() == ((ChessMove) obj).endPosition.getRow() && endPosition.getColumn() == ((ChessMove) obj).endPosition.getColumn()){
+            return true;
+        }
+
+//        System.out.println(String.format("These should not be equal: {%d,%d} != {%d,%d}", endPosition.getRow(), endPosition.getColumn(), ((ChessMove) obj).endPosition.getRow(), ((ChessMove) obj).endPosition.getColumn()));
+        return false;
+
+
+
+
+//        return super.equals(obj);
+    }
+
+    public String toString() {
+        return String.format("{%d,%d}", endPosition.getRow(), endPosition.getColumn());
+    }
+
 }
 
-//    public String toString() {
-//    return .getEndPosition;
-//    }

@@ -1,7 +1,11 @@
 package chess;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
 
 /**
  * Represents a single chess piece
@@ -61,81 +65,35 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
 
-        ArrayList<ChessMove> potentialMoves = new ArrayList<>();
 
         switch (pieceType){
             case PieceType.KING:
-
+                break;
             case PieceType.QUEEN:
-
+                break;
             case PieceType.BISHOP:
-                potentialMoves = bishopMoves(board, myPosition);
+                return new HashSet<ChessMove>(MovementCalculator.bishopMoves(board, myPosition, pieceColor));
             case PieceType.KNIGHT:
-
+                break;
             case PieceType.ROOK:
-
+                break;
             case PieceType.PAWN:
-
+                break;
             default:
                 System.out.println("Invalid Piece Type");
+                System.out.println(pieceType);
         }
-//        you have the bishops potential moves. Now you need to check and see if there is anyone in the way.
-        for (ChessMove move: potentialMoves){
-            if ( board.getPiece(move.getEndPosition()) != null ) {
-                if ( (board.getPiece(move.getEndPosition()).pieceColor).equals(pieceColor) ) {
-//                    if the pieces are of the same type, remove the potential move from the array list
-                    potentialMoves.remove(move);
-                }
-
-
-
-//              if it is the other players piece, check to see if there are any opposing pieces in front of it!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
-            }
-        }
-
-
-        return new ArrayList<>();
+        return new HashSet<>();
     }
 
 
-    private ArrayList<ChessMove> bishopMoves(ChessBoard board, ChessPosition start) {
-        int row = start.getRow();
-        int colm = start.getColumn();
-        ArrayList<ChessMove> potentialMoves = new ArrayList<ChessMove>();
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
-        while (row < 8 && colm < 8) {
-            row++;
-            colm++;
-            potentialMoves.add(new ChessMove(start, new ChessPosition(row, colm), this.pieceType));
-        }
-
-        row = start.getRow();
-        colm = start.getColumn();
-        while (row > 1 && colm < 8) {potentialMoves.add(new ChessMove(start, new ChessPosition(row, colm), this.pieceType));
-            row--;
-            colm++;
-            potentialMoves.add(new ChessMove(start, new ChessPosition(row, colm), this.pieceType));
-        }
-
-        row = start.getRow();
-        colm = start.getColumn();
-        while (row > 1 && colm > 1) {
-            row--;
-            colm--;
-            potentialMoves.add(new ChessMove(start, new ChessPosition(row, colm), this.pieceType));
-        }
-
-        row = start.getRow();
-        colm = start.getColumn();
-        while (row < 8 && colm > 0) {
-            row++;
-            colm--;
-            potentialMoves.add(new ChessMove(start, new ChessPosition(row, colm), this.pieceType));
-        }
-
-        return potentialMoves;
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }
