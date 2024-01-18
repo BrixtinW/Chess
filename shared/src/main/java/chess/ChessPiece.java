@@ -76,7 +76,7 @@ public class ChessPiece {
             case PieceType.KNIGHT:
                 break;
             case PieceType.ROOK:
-                break;
+                return new HashSet<ChessMove>(MovementCalculator.rookMoves(board, myPosition, pieceColor));
             case PieceType.PAWN:
                 break;
             default:
