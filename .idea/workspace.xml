@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e2127a23-f6c5-4361-9314-19f7fd19bf87" name="Changes" comment="fix(tests) removed extra credit tests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/chess/ChessGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/chess/ChessGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/chess/MovementCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/chess/MovementCalculator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,66 +35,60 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JUnit.All in shared.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BishopMoveTests.bishopBlocked.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BishopMoveTests.bishopCaptureEnemy.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BishopMoveTests.bishopMoveUntilEdge.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BishopMoveTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ChessBoardTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ChessMoveTests.equalsTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ChessMoveTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ChessPositionTests.equalsTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ChessPositionTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ChessPositionTests.hashSetTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ChessPositionTests.hashTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.KingMoveTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.KingMoveTests.kingBlocked.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.KingMoveTests.kingCaptureEnemy.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.KingMoveTests.kingMoveUntilEdge.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.KnightMoveTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PawnMoveTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PawnMoveTests.pawnPromotionCapture.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.QueenMoveTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.QueenMoveTests.queenMoveUntilEdge.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RookMoveTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RookMoveTests.rookMoveUntilEdge.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.chess.MovementCalculator in shared.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/brixtinwalker/Desktop/BYU/CS_240/Chess&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.All in shared.executor": "Run",
+    "JUnit.BishopMoveTests.bishopBlocked.executor": "Run",
+    "JUnit.BishopMoveTests.bishopCaptureEnemy.executor": "Run",
+    "JUnit.BishopMoveTests.bishopMoveUntilEdge.executor": "Run",
+    "JUnit.BishopMoveTests.executor": "Run",
+    "JUnit.ChessBoardTests.executor": "Run",
+    "JUnit.ChessGameTests$ValidMoveTests.kingInDanger.executor": "Run",
+    "JUnit.ChessGameTests$ValidMoveTests.moveIntoCheck.executor": "Run",
+    "JUnit.ChessGameTests$ValidMoveTests.noPutSelfInDanger.executor": "Run",
+    "JUnit.ChessGameTests$ValidMoveTests.rookPinnedToKing.executor": "Run",
+    "JUnit.ChessGameTests.blackTeamPawnCheckmate.executor": "Run",
+    "JUnit.ChessGameTests.executor": "Run",
+    "JUnit.ChessGameTests.invalidMoves.executor": "Run",
+    "JUnit.ChessGameTests.stalemate.executor": "Run",
+    "JUnit.ChessGameTests.whiteTeamCheckmate.executor": "Run",
+    "JUnit.ChessMoveTests.equalsTest.executor": "Run",
+    "JUnit.ChessMoveTests.executor": "Run",
+    "JUnit.ChessPositionTests.equalsTest.executor": "Run",
+    "JUnit.ChessPositionTests.executor": "Run",
+    "JUnit.ChessPositionTests.hashSetTest.executor": "Run",
+    "JUnit.ChessPositionTests.hashTest.executor": "Run",
+    "JUnit.KingMoveTests.executor": "Run",
+    "JUnit.KingMoveTests.kingBlocked.executor": "Run",
+    "JUnit.KingMoveTests.kingCaptureEnemy.executor": "Run",
+    "JUnit.KingMoveTests.kingMoveUntilEdge.executor": "Run",
+    "JUnit.KnightMoveTests.executor": "Run",
+    "JUnit.PawnMoveTests.executor": "Run",
+    "JUnit.PawnMoveTests.pawnPromotionCapture.executor": "Run",
+    "JUnit.QueenMoveTests.executor": "Run",
+    "JUnit.QueenMoveTests.queenMoveUntilEdge.executor": "Run",
+    "JUnit.RookMoveTests.executor": "Run",
+    "JUnit.RookMoveTests.rookMoveUntilEdge.executor": "Run",
+    "JUnit.chess.MovementCalculator in shared.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/brixtinwalker/Desktop/BYU/CS_240/Chess",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/server/lib" />
       <recent name="$PROJECT_DIR$/shared/src/test/java/passoffTests/chessTests" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ChessPositionTests">
-    <configuration name="BishopMoveTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="shared" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="passoffTests.chessTests.chessPieceTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="passoffTests.chessTests.chessPieceTests" />
-      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.chessPieceTests.BishopMoveTests" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ChessPositionTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.ChessGameTests">
+    <configuration name="ChessGameTests$ValidMoveTests.kingInDanger" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="shared" />
       <extension name="coverage">
         <pattern>
@@ -100,30 +96,15 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="passoffTests.chessTests" />
-      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.ChessPositionTests" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ChessPositionTests.equalsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="shared" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="passoffTests.chessTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="passoffTests.chessTests" />
-      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.ChessPositionTests" />
-      <option name="METHOD_NAME" value="equalsTest" />
+      <option name="PACKAGE_NAME" value="passoffTests.chessTests.ChessGameTests" />
+      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.ChessGameTests$ValidMoveTests" />
+      <option name="METHOD_NAME" value="kingInDanger" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChessPositionTests.hashSetTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ChessGameTests$ValidMoveTests.moveIntoCheck" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="shared" />
       <extension name="coverage">
         <pattern>
@@ -131,15 +112,31 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="passoffTests.chessTests" />
-      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.ChessPositionTests" />
-      <option name="METHOD_NAME" value="hashSetTest" />
+      <option name="PACKAGE_NAME" value="passoffTests.chessTests.ChessGameTests" />
+      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.ChessGameTests$ValidMoveTests" />
+      <option name="METHOD_NAME" value="moveIntoCheck" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChessPositionTests.hashTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ChessGameTests$ValidMoveTests.rookPinnedToKing" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="shared" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="passoffTests.chessTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="passoffTests.chessTests.ChessGameTests" />
+      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.ChessGameTests$ValidMoveTests" />
+      <option name="METHOD_NAME" value="rookPinnedToKing" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChessGameTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="shared" />
       <extension name="coverage">
         <pattern>
@@ -148,8 +145,23 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="passoffTests.chessTests" />
-      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.ChessPositionTests" />
-      <option name="METHOD_NAME" value="hashTest" />
+      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.ChessGameTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChessGameTests.stalemate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="shared" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="passoffTests.chessTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="passoffTests.chessTests" />
+      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.ChessGameTests" />
+      <option name="METHOD_NAME" value="stalemate" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -157,11 +169,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ChessPositionTests" />
-        <item itemvalue="JUnit.ChessPositionTests.hashSetTest" />
-        <item itemvalue="JUnit.ChessPositionTests.hashTest" />
-        <item itemvalue="JUnit.ChessPositionTests.equalsTest" />
-        <item itemvalue="JUnit.BishopMoveTests" />
+        <item itemvalue="JUnit.ChessGameTests" />
+        <item itemvalue="JUnit.ChessGameTests$ValidMoveTests.moveIntoCheck" />
+        <item itemvalue="JUnit.ChessGameTests$ValidMoveTests.kingInDanger" />
+        <item itemvalue="JUnit.ChessGameTests$ValidMoveTests.rookPinnedToKing" />
+        <item itemvalue="JUnit.ChessGameTests.stalemate" />
       </list>
     </recent_temporary>
   </component>
@@ -195,5 +207,35 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix(tests) removed extra credit tests" />
     <option name="LAST_COMMIT_MESSAGE" value="fix(tests) removed extra credit tests" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/shared/src/main/java/chess/ChessGame.java</url>
+          <line>140</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/shared/src/main/java/chess/ChessGame.java</url>
+          <line>222</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/shared/src/main/java/chess/MovementCalculator.java</url>
+          <line>296</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/shared/src/main/java/chess/ChessGame.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
+          <option name="timeStamp" value="7" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

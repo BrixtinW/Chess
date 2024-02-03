@@ -294,13 +294,18 @@ public class MovementCalculator {
 
 
 
-
+        ChessPosition leftAttack = null;
+        ChessPosition rightAttack = null;
 
         row = myPosition.getRow() + advance;
         col -= 1;
-        ChessPosition leftAttack = new ChessPosition(row, col);
+        if (col > 0) {
+            leftAttack = new ChessPosition(row, col);
+        }
         col += 2;
-        ChessPosition rightAttack = new ChessPosition(row, col);
+        if (col < 9) {
+            rightAttack = new ChessPosition(row, col);
+        }
 
 
         if (board.getPiece(leftAttack) != null && board.getPiece(leftAttack).getTeamColor() != teamColor){
