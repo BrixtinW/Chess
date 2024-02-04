@@ -14,6 +14,8 @@ public class ChessPiece {
     private ChessGame.TeamColor pieceColor;
     private ChessPiece.PieceType pieceType;
 
+    public Boolean hasMovedOnlyOnce = null;
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         if (pieceColor == ChessGame.TeamColor.BLACK || pieceColor == ChessGame.TeamColor.WHITE) {
             this.pieceColor = pieceColor;

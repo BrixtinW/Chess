@@ -1,5 +1,6 @@
 package chess;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,6 +16,8 @@ public class ChessGame {
     private ChessBoard boardObject = new ChessBoard();
     private ChessPosition whiteKingPosition = null;
     private ChessPosition blackKingPosition = null;
+    private ArrayList<ChessPiece> movedPawns = new ArrayList<>();
+//    private boolean enPassant = false;
     public ChessGame() {
 
     }
@@ -43,6 +46,53 @@ public class ChessGame {
         BLACK
     }
 
+    private ChessMove specialMoves(ChessPiece piece, int row, int col) {
+
+        if(piece.getPieceType() == ChessPiece.PieceType.PAWN) {
+            if(piece.getTeamColor() == TeamColor.WHITE && row == 5) {
+
+                col++;
+                if(col < 9 && boardObject.boardArray[row][col] != null && boardObject.boardArray[row][col].getPieceType() == ChessPiece.PieceType.PAWN && boardObject.boardArray[row][col].getTeamColor() != piece.getTeamColor()){
+                    if (boardObject.boardArray[row][col].hasMovedOnlyOnce == null) {
+//                        enPassant = true;
+                        return new ChessMove(new ChessPosition(row, (col-1)), new ChessPosition((row+1), (col)), null);
+                    }
+                }
+                col-=2;
+                if(col > 0 && boardObject.boardArray[row][col] != null && boardObject.boardArray[row][col].getPieceType() == ChessPiece.PieceType.PAWN && boardObject.boardArray[row][col].getTeamColor() != piece.getTeamColor()){
+                    if (boardObject.boardArray[row][col].hasMovedOnlyOnce == null) {
+//                        enPassant = true;
+                        return new ChessMove(new ChessPosition(row, col+1), new ChessPosition(row+1, col), null);
+                    }
+                }
+
+            } else if (piece.getTeamColor() == TeamColor.BLACK && row == 4) {
+
+                col++;
+                if(col < 9 && boardObject.boardArray[row][col] != null && boardObject.boardArray[row][col].getPieceType() == ChessPiece.PieceType.PAWN && boardObject.boardArray[row][col].getTeamColor() != piece.getTeamColor()){
+                    if (boardObject.boardArray[row][col].hasMovedOnlyOnce == null) {
+//                        enPassant = true;
+                        return new ChessMove(new ChessPosition(row, col-1), new ChessPosition(row-1, col), null);
+                    }
+                }
+                col-=2;
+                if(col > 0 && boardObject.boardArray[row][col] != null && boardObject.boardArray[row][col].getPieceType() == ChessPiece.PieceType.PAWN && boardObject.boardArray[row][col].getTeamColor() != piece.getTeamColor()){
+                    if (boardObject.boardArray[row][col].hasMovedOnlyOnce == null) {
+//                        enPassant = true;
+                        return new ChessMove(new ChessPosition(row, col+1), new ChessPosition(row-1, col), null);
+                    }
+                }
+
+            }
+        }
+
+
+
+        return null;
+    }
+
+
+
     /**
      * Gets a valid moves for a piece at the given location
      *
@@ -61,8 +111,15 @@ public class ChessGame {
                     ChessPiece piece = boardObject.boardArray[row][col];
                     ChessPiece takenPiece;
                     Collection<ChessMove> potentialMoves = boardObject.boardArray[row][col].pieceMoves(boardObject, startPosition);
+                    ChessMove otherMove = specialMoves(piece, row, col);
+                    boolean enPassant = false;
+                    if (otherMove != null){
+                        potentialMoves.add(otherMove);
+                    }
                     ArrayList<ChessMove> finalMoves = new ArrayList<>();
                     boolean isKing = false;
+
+
 
             if (boardObject.boardArray[startPosition.getRow()][startPosition.getColumn()].getPieceType() == ChessPiece.PieceType.KING) { isKing = true;}
 
@@ -77,15 +134,27 @@ public class ChessGame {
                             }
                         }
 
-                        boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()] = null;
+
                         takenPiece = boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()];
+//                        boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = piece;
+                        if(boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()].getPieceType() == ChessPiece.PieceType.PAWN && move.getEndPosition().getColumn() != move.getStartPosition().getColumn() && boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] == null){
+                            takenPiece = boardObject.boardArray[move.getStartPosition().getRow()][move.getEndPosition().getColumn()];
+                            boardObject.boardArray[move.getStartPosition().getRow()][move.getEndPosition().getColumn()] = null;
+                            enPassant = true;
+                        }
+                        boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()] = null;
                         boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = piece;
 
                         if (!isInCheck(teamColor)) {
                             finalMoves.add(move);
                         }
 
+                        if(enPassant){
+                            boardObject.boardArray[move.getStartPosition().getRow()][move.getEndPosition().getColumn()] = takenPiece;
+                            boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = null;
+                        } else {
                         boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = takenPiece;
+                        }
                         boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()] = piece;
 
                         if (isKing) {
@@ -116,7 +185,18 @@ public class ChessGame {
         }
             if (potentialMoves != null && !potentialMoves.isEmpty() && potentialMoves.contains(move)){
 
-                if(move.getPromotionPiece() == null) {
+                if((boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()].getPieceType() == ChessPiece.PieceType.PAWN) && (move.getEndPosition().getColumn() != move.getStartPosition().getColumn()) && (boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] == null)){
+//                    delete the piece one space before
+//                    if(boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()].getTeamColor() == TeamColor.WHITE){
+                    boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()];
+                    boardObject.boardArray[move.getStartPosition().getRow()][move.getEndPosition().getColumn()] = null;
+                    boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()] = null;
+//                    }
+//                    else if (boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()].getTeamColor() == TeamColor.BLACK) {
+//                        boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()];
+//                        boardObject.boardArray[move.getStartPosition().getRow()][move.getEndPosition().getColumn()] = null;
+//                    }
+                } else if(move.getPromotionPiece() == null) {
                     boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()];
                     boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()] = null;
                 } else {
@@ -125,17 +205,43 @@ public class ChessGame {
                     boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()] = null;
                 }
 
+                updateTurn(boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()]);
+                if(boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()].getPieceType() == ChessPiece.PieceType.PAWN){
+                    movedPawns.add(boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()]);
+                }
+
+
             } else {
                 throw new InvalidMoveException();
             }
+    }
 
-            if (currentTurnColor == TeamColor.WHITE){
-                currentTurnColor = TeamColor.BLACK;
-            }
-            else if (currentTurnColor == TeamColor.BLACK) {
-                currentTurnColor = TeamColor.WHITE;
-            }
+    private void updateTurn(ChessPiece piece) {
 
+//        !!!!!!!!!!!!! This is inefficient because then all pawns that have already be checked will always be checked to see if they've moved more than once !!!!!!!!!!!!!!
+        if(piece.getPieceType() != ChessPiece.PieceType.PAWN){
+            if (piece.hasMovedOnlyOnce == null) {
+                piece.hasMovedOnlyOnce = true;
+            } else if (piece.hasMovedOnlyOnce) {
+                piece.hasMovedOnlyOnce = false;
+            }
+        }
+
+        for (ChessPiece pawn: movedPawns) {
+            if (pawn.hasMovedOnlyOnce == null) {
+                pawn.hasMovedOnlyOnce = true;
+            } else if (pawn.hasMovedOnlyOnce) {
+                pawn.hasMovedOnlyOnce = false;
+            }
+        }
+
+
+        if (currentTurnColor == TeamColor.WHITE){
+            currentTurnColor = TeamColor.BLACK;
+        }
+        else if (currentTurnColor == TeamColor.BLACK) {
+            currentTurnColor = TeamColor.WHITE;
+        }
     }
 
     /**
