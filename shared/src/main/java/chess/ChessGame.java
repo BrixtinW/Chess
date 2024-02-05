@@ -2,6 +2,7 @@ package chess;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -46,7 +47,17 @@ public class ChessGame {
         BLACK
     }
 
-    private ChessMove specialMoves(ChessPiece piece, int row, int col) {
+    private void setKingPosition(TeamColor teamColor, ChessPosition position){
+
+        if (teamColor == TeamColor.WHITE) {
+            whiteKingPosition = position;
+        } else  {
+            blackKingPosition = position;
+        }
+
+    }
+
+    private Collection<ChessMove> specialMoves(ChessPiece piece, int row, int col) {
 
         if(piece.getPieceType() == ChessPiece.PieceType.PAWN) {
             if(piece.getTeamColor() == TeamColor.WHITE && row == 5) {
@@ -54,15 +65,13 @@ public class ChessGame {
                 col++;
                 if(col < 9 && boardObject.boardArray[row][col] != null && boardObject.boardArray[row][col].getPieceType() == ChessPiece.PieceType.PAWN && boardObject.boardArray[row][col].getTeamColor() != piece.getTeamColor()){
                     if (boardObject.boardArray[row][col].hasMovedOnlyOnce == null) {
-//                        enPassant = true;
-                        return new ChessMove(new ChessPosition(row, (col-1)), new ChessPosition((row+1), (col)), null);
+                        return Arrays.asList(new ChessMove(new ChessPosition(row, (col - 1)), new ChessPosition((row + 1), col), null));
                     }
                 }
                 col-=2;
                 if(col > 0 && boardObject.boardArray[row][col] != null && boardObject.boardArray[row][col].getPieceType() == ChessPiece.PieceType.PAWN && boardObject.boardArray[row][col].getTeamColor() != piece.getTeamColor()){
                     if (boardObject.boardArray[row][col].hasMovedOnlyOnce == null) {
-//                        enPassant = true;
-                        return new ChessMove(new ChessPosition(row, col+1), new ChessPosition(row+1, col), null);
+                        return Arrays.asList(new ChessMove(new ChessPosition(row, col+1), new ChessPosition(row+1, col), null));
                     }
                 }
 
@@ -71,24 +80,79 @@ public class ChessGame {
                 col++;
                 if(col < 9 && boardObject.boardArray[row][col] != null && boardObject.boardArray[row][col].getPieceType() == ChessPiece.PieceType.PAWN && boardObject.boardArray[row][col].getTeamColor() != piece.getTeamColor()){
                     if (boardObject.boardArray[row][col].hasMovedOnlyOnce == null) {
-//                        enPassant = true;
-                        return new ChessMove(new ChessPosition(row, col-1), new ChessPosition(row-1, col), null);
+                        return Arrays.asList(new ChessMove(new ChessPosition(row, col-1), new ChessPosition(row-1, col), null));
                     }
                 }
                 col-=2;
                 if(col > 0 && boardObject.boardArray[row][col] != null && boardObject.boardArray[row][col].getPieceType() == ChessPiece.PieceType.PAWN && boardObject.boardArray[row][col].getTeamColor() != piece.getTeamColor()){
                     if (boardObject.boardArray[row][col].hasMovedOnlyOnce == null) {
-//                        enPassant = true;
-                        return new ChessMove(new ChessPosition(row, col+1), new ChessPosition(row-1, col), null);
+                        return Arrays.asList(new ChessMove(new ChessPosition(row, col+1), new ChessPosition(row-1, col), null));
                     }
                 }
 
+            }
+        } else if(piece.getPieceType() == ChessPiece.PieceType.KING && piece.hasMovedOnlyOnce == null){
+            if (!isInCheck(piece.getTeamColor())) {
+                if (col + 3 < 9 && boardObject.boardArray[row][col + 3] != null && boardObject.boardArray[row][col + 3].getPieceType() == ChessPiece.PieceType.ROOK && boardObject.boardArray[row][col + 3].hasMovedOnlyOnce == null) {
+                    ArrayList<ChessMove> result = new ArrayList<>();
+                    if (boardObject.boardArray[row][col + 1] == null && boardObject.boardArray[row][col + 2] == null) {
+                        boardObject.boardArray[row][col] = null;
+                        boardObject.boardArray[row][col + 1] = piece;
+                        setKingPosition(piece.getTeamColor(), new ChessPosition(row, (col+1)));
+                        if (!isInCheck(piece.getTeamColor())) {
+                            boardObject.boardArray[row][col + 1] = null;
+                            boardObject.boardArray[row][col + 2] = piece;
+                            setKingPosition(piece.getTeamColor(), new ChessPosition(row, (col+2)));
+                            if(!isInCheck(piece.getTeamColor())){
+                                setKingPosition(piece.getTeamColor(), new ChessPosition(row, col));
+                                boardObject.boardArray[row][col] = piece;
+                                boardObject.boardArray[row][col+2] = null;
+                                result.add(new ChessMove(new ChessPosition(row, col), new ChessPosition(row, col+2), null));
+                            } else {
+                                setKingPosition(piece.getTeamColor(), new ChessPosition(row, col));
+                                boardObject.boardArray[row][col] = piece;
+                                boardObject.boardArray[row][col+2] = null;
+                            }
+                        } else {
+                            boardObject.boardArray[row][col] = piece;
+                            boardObject.boardArray[row][col + 1] = null;
+                            setKingPosition(piece.getTeamColor(), new ChessPosition(row, col));
+                        }
+
+                    } if (col - 4 > 0 && boardObject.boardArray[row][col - 4] != null && boardObject.boardArray[row][col - 4 ].getPieceType() == ChessPiece.PieceType.ROOK && boardObject.boardArray[row][col - 4].hasMovedOnlyOnce == null){
+                        if (boardObject.boardArray[row][col - 1] == null && boardObject.boardArray[row][col - 2] == null && boardObject.boardArray[row][col - 3] == null) {
+                            boardObject.boardArray[row][col] = null;
+                            boardObject.boardArray[row][col - 1] = piece;
+                            setKingPosition(piece.getTeamColor(), new ChessPosition(row, (col-1)));
+                            if (!isInCheck(piece.getTeamColor())) {
+                                boardObject.boardArray[row][col - 1] = null;
+                                boardObject.boardArray[row][col - 2] = piece;
+                                setKingPosition(piece.getTeamColor(), new ChessPosition(row, (col-2)));
+                                if(!isInCheck(piece.getTeamColor())) {
+                                    setKingPosition(piece.getTeamColor(), new ChessPosition(row, col));
+                                    boardObject.boardArray[row][col] = piece;
+                                    boardObject.boardArray[row][col-2] = null;
+                                    result.add(new ChessMove(new ChessPosition(row, col), new ChessPosition(row, col-2), null));
+                                } else{
+                                    setKingPosition(piece.getTeamColor(), new ChessPosition(row, col));
+                                    boardObject.boardArray[row][col] = piece;
+                                    boardObject.boardArray[row][col-2] = null;
+                                }
+                            } else{
+                                boardObject.boardArray[row][col] = piece;
+                                boardObject.boardArray[row][col - 1] = null;
+                                setKingPosition(piece.getTeamColor(), new ChessPosition(row, col));
+                            }
+                        }
+                    }
+                    return result;
+                }
             }
         }
 
 
 
-        return null;
+        return new ArrayList<>();
     }
 
 
@@ -111,10 +175,10 @@ public class ChessGame {
                     ChessPiece piece = boardObject.boardArray[row][col];
                     ChessPiece takenPiece;
                     Collection<ChessMove> potentialMoves = boardObject.boardArray[row][col].pieceMoves(boardObject, startPosition);
-                    ChessMove otherMove = specialMoves(piece, row, col);
+                    Collection<ChessMove> otherMove = specialMoves(piece, row, col);
                     boolean enPassant = false;
-                    if (otherMove != null){
-                        potentialMoves.add(otherMove);
+                    if (!otherMove.isEmpty()){
+                        potentialMoves.addAll(otherMove);
                     }
                     ArrayList<ChessMove> finalMoves = new ArrayList<>();
                     boolean isKing = false;
@@ -158,6 +222,7 @@ public class ChessGame {
                         boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()] = piece;
 
                         if (isKing) {
+//                            getKingPosition(teamColor) = move.getStartPosition();
                             if (teamColor == TeamColor.WHITE) {
                                 whiteKingPosition = move.getStartPosition();
                             } else if (teamColor == TeamColor.BLACK) {
@@ -168,6 +233,14 @@ public class ChessGame {
                     return finalMoves;
         }
     }
+
+//    private ChessPosition getKingPosition(TeamColor teamColor){
+//        if (teamColor == TeamColor.WHITE) {
+//            return whiteKingPosition;
+//        } else {
+//            return blackKingPosition;
+//        }
+//    }
 
     /**
      * Makes a move in a chess game
@@ -186,16 +259,27 @@ public class ChessGame {
             if (potentialMoves != null && !potentialMoves.isEmpty() && potentialMoves.contains(move)){
 
                 if((boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()].getPieceType() == ChessPiece.PieceType.PAWN) && (move.getEndPosition().getColumn() != move.getStartPosition().getColumn()) && (boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] == null)){
-//                    delete the piece one space before
-//                    if(boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()].getTeamColor() == TeamColor.WHITE){
+
                     boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()];
                     boardObject.boardArray[move.getStartPosition().getRow()][move.getEndPosition().getColumn()] = null;
                     boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()] = null;
-//                    }
-//                    else if (boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()].getTeamColor() == TeamColor.BLACK) {
-//                        boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()];
-//                        boardObject.boardArray[move.getStartPosition().getRow()][move.getEndPosition().getColumn()] = null;
-//                    }
+
+                } else if ((boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()].getPieceType() == ChessPiece.PieceType.KING) && (Math.abs(move.getStartPosition().getColumn() - move.getEndPosition().getColumn()) > 1)) {
+
+                    boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()];
+                    boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()] = null;
+                    if (move.getEndPosition().getColumn() - move.getStartPosition().getColumn() > 0){
+
+                        boardObject.boardArray[move.getEndPosition().getRow()][move.getStartPosition().getColumn() + 1] = boardObject.boardArray[move.getEndPosition().getRow()][8];
+                        boardObject.boardArray[move.getEndPosition().getRow()][8] = null;
+
+                    } else if (move.getEndPosition().getColumn() - move.getStartPosition().getColumn() < 0) {
+
+                        boardObject.boardArray[move.getEndPosition().getRow()][move.getStartPosition().getColumn() - 1] = boardObject.boardArray[move.getEndPosition().getRow()][1];
+                        boardObject.boardArray[move.getEndPosition().getRow()][1] = null;
+
+                    }
+
                 } else if(move.getPromotionPiece() == null) {
                     boardObject.boardArray[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()];
                     boardObject.boardArray[move.getStartPosition().getRow()][move.getStartPosition().getColumn()] = null;
