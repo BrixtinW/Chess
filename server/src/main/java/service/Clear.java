@@ -11,5 +11,8 @@ public class Clear {
         authDao.clear();
         gameDao.clear();
         userDao.clear();
+
+//        return response if error
+//        else return null
     }
 }

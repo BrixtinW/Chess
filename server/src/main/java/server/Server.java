@@ -16,17 +16,16 @@ public class Server {
 
 //        Spark.webSocket("/connect", webSocketHandler);
 
-
-//        Spark.put("/game", JoinGameHandler::joinGame);
-//        Spark.post("/game", CreateGameHandler::createGame);
-//        Spark.get("/game", ListGamesHandler::listGames);
-//        Spark.delete("/session", LogoutHandler::logout);
-//        Spark.post("/session", LoginHandler::login);
-//        Spark.post("/user", RegisterHandler::register);
         Spark.delete("/db", ClearHandler::clearApplication);
+        Spark.post("/game", CreateGameHandler::createGame);
+        Spark.put("/game", JoinGameHandler::joinGame);
+        Spark.get("/game", ListGamesHandler::listGames);
+        Spark.post("/session", LoginHandler::login);
+        Spark.delete("/session", LogoutHandler::logout);
+        Spark.post("/user", RegisterHandler::register);
 
 //        YOU ARE NOT HANDLING YOUR EXCEPTIONS!!! GET YOUR ACT TOGETHER!!!
-//        Spark.exception(DataAccessException.class, this::exceptionHandler);
+        Spark.exception(DataAccessException.class, this::exceptionHandler);
 
         Spark.awaitInitialization();
         return Spark.port();
@@ -36,4 +35,10 @@ public class Server {
         Spark.stop();
         Spark.awaitStop();
     }
+
+    public void exceptionHandler(Exception ex, Request request, Response response) {
+        response.status(500);
+        response.body("Internal Server Error: " + ex.getMessage());
+    }
+
 }
