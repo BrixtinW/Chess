@@ -16,8 +16,8 @@ public class Server {
 
 //        Spark.webSocket("/connect", webSocketHandler);
 
-        Spark.delete("/db", ClearHandler::clearApplication);
-        Spark.post("/game", CreateGameHandler::createGame);
+        Spark.delete("/db", ClearHandler::clearApplication); // DONE!
+        Spark.post("/game", CreateGameHandler::createGame); // DONE!
         Spark.put("/game", JoinGameHandler::joinGame);
         Spark.get("/game", ListGamesHandler::listGames);
         Spark.post("/session", LoginHandler::login);

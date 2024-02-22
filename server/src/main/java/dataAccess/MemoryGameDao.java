@@ -13,8 +13,12 @@ public class MemoryGameDao implements GameDAO {
     }
 
     @Override
-    public void createGame() throws DataAccessException {
-
+    public void createGame(model.gameData game) throws DataAccessException {
+        try {
+            DB.gameDataMap.put(game.gameName(), game);
+        } catch (Exception e) {
+            throw new DataAccessException("Error: Data Access Exception");
+        }
     }
 
     @Override
@@ -29,6 +33,10 @@ public class MemoryGameDao implements GameDAO {
 
     @Override
     public void clear() throws DataAccessException {
-        DB.gameDataMap = new HashMap<>();
+        try {
+            DB.gameDataMap = new HashMap<>();
+        } catch (Exception e) {
+            throw new DataAccessException("Error: Data Access Exception");
+        }
     }
 }

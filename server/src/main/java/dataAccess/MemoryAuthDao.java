@@ -6,13 +6,22 @@ import java.util.HashMap;
 
 public class MemoryAuthDao implements AuthDAO {
     @Override
-    public void getAuth() throws DataAccessException {
-
+    public model.authData getAuth(String authToken) throws DataAccessException {
+        try {
+            return DB.authDataMap.get(authToken);
+        }
+        catch (Exception e) {
+            throw new DataAccessException("Error: Data Access Exception");
+        }
     }
 
     @Override
-    public void createAuth() throws DataAccessException {
-
+    public void createAuth(model.authData authObj) throws DataAccessException {
+        try {
+            DB.authDataMap.put(authObj.authToken(), authObj);
+        } catch (Exception e) {
+            throw new DataAccessException("Error: Data Access Exception");
+        }
     }
 
     @Override
@@ -22,6 +31,10 @@ public class MemoryAuthDao implements AuthDAO {
 
     @Override
     public void clear() throws DataAccessException {
-        DB.authDataMap = new HashMap<>();
+        try {
+            DB.authDataMap = new HashMap<>();
+        } catch (Exception e) {
+            throw new DataAccessException("Error: Data Access Exception");
+        }
     }
 }

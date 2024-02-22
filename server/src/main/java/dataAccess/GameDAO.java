@@ -8,7 +8,7 @@ public interface GameDAO {
 
     void getGame() throws DataAccessException;
 
-    void createGame() throws DataAccessException;
+    void createGame(model.gameData game) throws DataAccessException;
 
     Collection<ChessGame> listGames() throws DataAccessException;
 

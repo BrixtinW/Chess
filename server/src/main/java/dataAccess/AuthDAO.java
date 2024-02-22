@@ -2,9 +2,9 @@ package dataAccess;
 
 public interface AuthDAO {
 
-    void getAuth() throws DataAccessException;
+    model.authData getAuth(String authToken) throws DataAccessException;
 
-    void createAuth() throws DataAccessException;
+    void createAuth(model.authData authObj) throws DataAccessException;
 
     void deleteAuth() throws DataAccessException;
 

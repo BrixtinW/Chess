@@ -10,9 +10,9 @@ void insertUser(UserData u) throws DataAccessException{};
  */
 //    void insertUser(UserData u) throws DataAccessException{};
 
-    void getUser() throws DataAccessException;
+    model.userData getUser(String username) throws DataAccessException;
 
-    void createUser() throws DataAccessException;
+    void createUser(model.userData user) throws DataAccessException;
 
     void clear() throws  DataAccessException;
 
