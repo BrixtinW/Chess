@@ -6,6 +6,8 @@ import dataAccess.MemoryUserDao;
 import dataAccess.UnauthorizedRequest;
 import model.authData;
 
+import java.util.UUID;
+
 public class ServiceProgenitor {
 
     static model.authData getAuth(String authToken) throws DataAccessException, UnauthorizedRequest {
@@ -23,5 +25,14 @@ public class ServiceProgenitor {
     static model.userData getUser(String username) throws DataAccessException {
         MemoryUserDao userDao = new MemoryUserDao();
         return userDao.getUser(username);
+    }
+
+
+    static model.authData createAuth(String username) throws DataAccessException{
+        MemoryAuthDao authDao = new MemoryAuthDao();
+        authData authObj = new authData(UUID.randomUUID().toString(), username);
+        authDao.createAuth(authObj);
+
+        return authObj;
     }
 }

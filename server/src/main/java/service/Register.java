@@ -30,12 +30,4 @@ public class Register extends ServiceProgenitor {
         userDao.createUser(user);
     }
 
-    private static model.authData createAuth(String username) throws DataAccessException{
-        MemoryAuthDao authDao = new MemoryAuthDao();
-        authData authObj = new authData(UUID.randomUUID().toString(), username);
-        authDao.createAuth(authObj);
-
-        return authObj;
-    }
-
 }
