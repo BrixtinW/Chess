@@ -19,10 +19,10 @@ public class Server {
         Spark.delete("/db", ClearHandler::clearApplication); // DONE!
         Spark.post("/game", CreateGameHandler::createGame); // DONE!
         Spark.put("/game", JoinGameHandler::joinGame);
-        Spark.get("/game", ListGamesHandler::listGames);
+        Spark.get("/game", ListGamesHandler::listGames); // DONE!
         Spark.post("/session", LoginHandler::login);
         Spark.delete("/session", LogoutHandler::logout);
-        Spark.post("/user", RegisterHandler::register);
+        Spark.post("/user", RegisterHandler::register); // DONE!
 
 //        YOU ARE NOT HANDLING YOUR EXCEPTIONS!!! GET YOUR ACT TOGETHER!!!
         Spark.exception(DataAccessException.class, this::exceptionHandler);

@@ -10,7 +10,7 @@ public interface GameDAO {
 
     void createGame(model.gameData game) throws DataAccessException;
 
-    Collection<ChessGame> listGames() throws DataAccessException;
+    Collection<model.gameData> listGames() throws DataAccessException;
 
     void updateGame() throws DataAccessException;
 

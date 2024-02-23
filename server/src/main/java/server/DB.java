@@ -10,7 +10,7 @@ import model.*;
 
         public static Map<String, model.userData> userDataMap = new HashMap<>();
         public static Map<String, model.authData> authDataMap = new HashMap<>();
-        public static Map<String, model.gameData> gameDataMap = new HashMap<>();
+        public static Map<Integer, model.gameData> gameDataMap = new HashMap<>();
 
         static {
             userDataMap.put("Billy", new model.userData("Billy", "Bob", "Joe"));
