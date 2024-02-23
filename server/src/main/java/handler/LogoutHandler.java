@@ -15,8 +15,7 @@ public class LogoutHandler {
 
 
         try {
-            Collection<gameData> games = ListGames.listGames(authToken);
-//            model.authData authObj = Register.register(user.username(), user.password(), user.email());
+            service.Logout.logout(authToken);
             response.status(200);
             responseBody = "{\"message\": \"User Logout Successful\"}";
         } catch (CustomException e) {
