@@ -6,13 +6,13 @@ import java.util.Collection;
 
 public interface GameDAO {
 
-    void getGame() throws DataAccessException;
+    model.gameData getGame(int gameID) throws DataAccessException;
 
     void createGame(model.gameData game) throws DataAccessException;
 
     Collection<model.gameData> listGames() throws DataAccessException;
 
-    void updateGame() throws DataAccessException;
+    void updateGame(model.gameData gameData) throws DataAccessException;
 
     void clear() throws  DataAccessException;
 

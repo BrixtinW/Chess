@@ -22,6 +22,11 @@ public class ListGamesHandler {
         try {
             Collection<gameData> games = ListGames.listGames(authToken);
             response.status(200);
+
+
+
+
+
             responseBody = "{\"games\": \"" + games + "\"}";
         } catch (CustomException e) {
             response.status(e.statusCode);

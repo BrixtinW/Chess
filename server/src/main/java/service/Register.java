@@ -10,7 +10,7 @@ public class Register extends ServiceProgenitor {
 
     public static authData register(String username, String password, String email) throws DataAccessException, MemoryAlreadyAllocated, InvalidRequest {
 
-        if(username.isEmpty() || password.isEmpty() || email.isEmpty()){
+        if(username == null || password == null || email == null || username.isEmpty() || password.isEmpty() || email.isEmpty()){
             throw new InvalidRequest("Error: bad request");
         }
 
