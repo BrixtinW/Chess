@@ -1,18 +1,19 @@
 package service;
 
-import dataAccess.DataAccessException;
-import dataAccess.MemoryAuthDao;
-import dataAccess.MemoryUserDao;
-import dataAccess.UnauthorizedRequest;
-import model.authData;
+import dataAccess.Exceptions.DataAccessException;
+import dataAccess.MemoryDataAccess.MemoryAuthDao;
+import dataAccess.MemoryDataAccess.MemoryUserDao;
+import dataAccess.Exceptions.UnauthorizedRequest;
+import model.AuthData;
+import model.UserData;
 
 import java.util.UUID;
 
 public class ServiceProgenitor {
 
-    static model.authData getAuth(String authToken) throws DataAccessException, UnauthorizedRequest {
+    static AuthData getAuth(String authToken) throws DataAccessException, UnauthorizedRequest {
         MemoryAuthDao authDao = new MemoryAuthDao();
-        authData authObj = authDao.getAuth(authToken);
+        AuthData authObj = authDao.getAuth(authToken);
 
         if (authObj != null){
             return authObj;
@@ -22,15 +23,15 @@ public class ServiceProgenitor {
 
     }
 
-    static model.userData getUser(String username) throws DataAccessException {
+    static UserData getUser(String username) throws DataAccessException {
         MemoryUserDao userDao = new MemoryUserDao();
         return userDao.getUser(username);
     }
 
 
-    static model.authData createAuth(String username) throws DataAccessException{
+    static AuthData createAuth(String username) throws DataAccessException{
         MemoryAuthDao authDao = new MemoryAuthDao();
-        authData authObj = new authData(UUID.randomUUID().toString(), username);
+        AuthData authObj = new AuthData(UUID.randomUUID().toString(), username);
         authDao.createAuth(authObj);
 
         return authObj;

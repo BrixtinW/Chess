@@ -1,4 +1,7 @@
-package dataAccess;
+package dataAccess.interfaces;
+
+import dataAccess.Exceptions.DataAccessException;
+import model.UserData;
 
 public interface UserDAO {
 
@@ -10,9 +13,9 @@ void insertUser(UserData u) throws DataAccessException{};
  */
 //    void insertUser(UserData u) throws DataAccessException{};
 
-    model.userData getUser(String username) throws DataAccessException;
+    UserData getUser(String username) throws DataAccessException;
 
-    void createUser(model.userData user) throws DataAccessException;
+    void createUser(UserData user) throws DataAccessException;
 
     void clear() throws  DataAccessException;
 

@@ -1,6 +1,9 @@
 package service;
 
-import dataAccess.*;
+import dataAccess.Exceptions.DataAccessException;
+import dataAccess.MemoryDataAccess.MemoryAuthDao;
+import dataAccess.MemoryDataAccess.MemoryGameDao;
+import dataAccess.MemoryDataAccess.MemoryUserDao;
 
 public class Clear {
     public static void clear() throws DataAccessException {

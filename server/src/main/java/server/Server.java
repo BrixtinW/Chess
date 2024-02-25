@@ -1,11 +1,7 @@
 package server;
 
-import dataAccess.DataAccessException;
 import handler.*;
-import model.*;
 import spark.*;
-
-import java.util.Map;
 
 public class Server {
 

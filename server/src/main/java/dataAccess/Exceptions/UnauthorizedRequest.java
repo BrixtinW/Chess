@@ -1,4 +1,4 @@
-package dataAccess;
+package dataAccess.Exceptions;
 
 public class UnauthorizedRequest extends CustomException {
     public UnauthorizedRequest(String message) {

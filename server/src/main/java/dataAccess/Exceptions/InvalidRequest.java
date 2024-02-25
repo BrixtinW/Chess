@@ -1,4 +1,4 @@
-package dataAccess;
+package dataAccess.Exceptions;
 
 public class InvalidRequest extends CustomException {
     public InvalidRequest(String message) {

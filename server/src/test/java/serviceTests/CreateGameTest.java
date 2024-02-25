@@ -1,10 +1,10 @@
 package serviceTests;
 
-import dataAccess.CustomException;
-import dataAccess.DataAccessException;
-import dataAccess.InvalidRequest;
-import dataAccess.UnauthorizedRequest;
-import model.authData;
+import dataAccess.Exceptions.CustomException;
+import dataAccess.Exceptions.DataAccessException;
+import dataAccess.Exceptions.InvalidRequest;
+import dataAccess.Exceptions.UnauthorizedRequest;
+import model.AuthData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
@@ -30,7 +30,7 @@ class CreateGameTest {
 
         try {
             assertTrue(DB.gameDataMap.isEmpty());
-            DB.authDataMap.put("TOKEN", new authData("TOKEN", "Username"));
+            DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
 
             service.CreateGame.createGame("TOKEN", "FUNGAME");
 
@@ -43,7 +43,7 @@ class CreateGameTest {
 
     @Test
     public void invalidCreateGameCases() throws TestException {
-        DB.authDataMap.put("TOKEN", new authData("TOKEN", "Username"));
+        DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
 
 
         try{

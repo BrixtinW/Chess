@@ -1,9 +1,10 @@
 package service;
 
-import dataAccess.DataAccessException;
-import dataAccess.MemoryAuthDao;
-import dataAccess.MemoryUserDao;
-import dataAccess.UnauthorizedRequest;
+import dataAccess.Exceptions.DataAccessException;
+import dataAccess.MemoryDataAccess.MemoryUserDao;
+import dataAccess.Exceptions.UnauthorizedRequest;
+import model.AuthData;
+import model.UserData;
 
 import java.util.Objects;
 
@@ -11,10 +12,10 @@ import static service.ServiceProgenitor.createAuth;
 
 public class Login {
 
-    public static model.authData login(String username, String password) throws DataAccessException, UnauthorizedRequest {
+    public static AuthData login(String username, String password) throws DataAccessException, UnauthorizedRequest {
         MemoryUserDao userDao = new MemoryUserDao();
 
-        model.userData userdata = userDao.getUser(username);
+        UserData userdata = userDao.getUser(username);
         if (userdata == null || !Objects.equals(userdata.password(), password)){
             throw new UnauthorizedRequest("Error: unauthorized");
         }

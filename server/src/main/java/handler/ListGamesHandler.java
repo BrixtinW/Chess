@@ -1,18 +1,12 @@
 package handler;
 
-import chess.ChessGame;
-import com.google.gson.Gson;
-import dataAccess.CustomException;
-import model.gameData;
+import dataAccess.Exceptions.CustomException;
+import model.GameData;
 import service.ListGames;
-import service.Register;
 import spark.Request;
 import spark.Response;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class ListGamesHandler {
     public static Object listGames(Request request, Response response) {
@@ -21,13 +15,13 @@ public class ListGamesHandler {
 
 
         try {
-            Collection<gameData> games = ListGames.listGames(authToken);
+            Collection<GameData> games = ListGames.listGames(authToken);
             response.status(200);
 
             responseBody = new StringBuilder("{ \"games\": [");
             boolean firstObject = true;
 
-            for (model.gameData game : games) {
+            for (GameData game : games) {
                 if (!firstObject) {
                     responseBody.append(",");
                 } else {

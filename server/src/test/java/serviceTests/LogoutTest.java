@@ -1,7 +1,7 @@
 package serviceTests;
 
-import dataAccess.CustomException;
-import model.authData;
+import dataAccess.Exceptions.CustomException;
+import model.AuthData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
@@ -23,7 +23,7 @@ class LogoutTest {
     @Test
     public void validLogoutCases() throws TestException {
 
-        DB.authDataMap.put("TOKEN", new authData("TOKEN", "Username"));
+        DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
 
         try{
             service.Logout.logout("TOKEN");
@@ -38,7 +38,7 @@ class LogoutTest {
     @Test
     public void invalidLogoutCases() throws TestException {
 
-        DB.authDataMap.put("TOKEN", new authData("TOKEN", "Username"));
+        DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
 
         try{
             service.Logout.logout("invalid token");

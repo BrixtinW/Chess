@@ -1,8 +1,10 @@
 package serviceTests;
 
 import chess.ChessGame;
-import dataAccess.CustomException;
-import org.junit.jupiter.api.Assertions;
+import dataAccess.Exceptions.CustomException;
+import model.AuthData;
+import model.GameData;
+import model.UserData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
@@ -38,9 +40,9 @@ class ClearTest {
             assertTrue(DB.authDataMap.isEmpty());
 
 
-            DB.userDataMap.put("BILLY", new model.userData("Billy", "Bob", "Joe"));
-            DB.authDataMap.put("BILLY", new model.authData("a;lsdkjf;alksdjf;lajsdf", "Billy"));
-            DB.gameDataMap.put(1000, new model.gameData(1000, "WHITE", "BLACK", "FUNGAME", new ChessGame()));
+            DB.userDataMap.put("BILLY", new UserData("Billy", "Bob", "Joe"));
+            DB.authDataMap.put("BILLY", new AuthData("a;lsdkjf;alksdjf;lajsdf", "Billy"));
+            DB.gameDataMap.put(1000, new GameData(1000, "WHITE", "BLACK", "FUNGAME", new ChessGame()));
 
             assertFalse(DB.gameDataMap.isEmpty());
             assertFalse(DB.userDataMap.isEmpty());

@@ -1,12 +1,15 @@
-package dataAccess;
+package dataAccess.MemoryDataAccess;
 
+import dataAccess.Exceptions.DataAccessException;
+import dataAccess.interfaces.AuthDAO;
+import model.AuthData;
 import server.DB;
 
 import java.util.HashMap;
 
 public class MemoryAuthDao implements AuthDAO {
     @Override
-    public model.authData getAuth(String authToken) throws DataAccessException {
+    public AuthData getAuth(String authToken) throws DataAccessException {
         try {
             return DB.authDataMap.get(authToken);
         }
@@ -16,7 +19,7 @@ public class MemoryAuthDao implements AuthDAO {
     }
 
     @Override
-    public void createAuth(model.authData authObj) throws DataAccessException {
+    public void createAuth(AuthData authObj) throws DataAccessException {
         try {
             DB.authDataMap.put(authObj.authToken(), authObj);
         } catch (Exception e) {

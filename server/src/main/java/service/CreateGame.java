@@ -1,17 +1,15 @@
 package service;
 
 import chess.ChessGame;
-import dataAccess.DataAccessException;
-import dataAccess.InvalidRequest;
-import dataAccess.MemoryGameDao;
-import dataAccess.UnauthorizedRequest;
-import model.gameData;
-
-import java.util.Iterator;
+import dataAccess.Exceptions.DataAccessException;
+import dataAccess.Exceptions.InvalidRequest;
+import dataAccess.MemoryDataAccess.MemoryGameDao;
+import dataAccess.Exceptions.UnauthorizedRequest;
+import model.GameData;
 
 public class CreateGame extends ServiceProgenitor {
 
-    public static gameData createGame(String authToken, String gameName) throws DataAccessException, UnauthorizedRequest, InvalidRequest {
+    public static GameData createGame(String authToken, String gameName) throws DataAccessException, UnauthorizedRequest, InvalidRequest {
         if (gameName == null) {
             throw new InvalidRequest("Error: bad request");
         }
@@ -19,7 +17,7 @@ public class CreateGame extends ServiceProgenitor {
         getAuth(authToken);
 
             MemoryGameDao gameDao = new MemoryGameDao();
-            gameData game = new gameData(generateGameID.next(), null, null, gameName, new ChessGame());
+            GameData game = new GameData(generateGameID.next(), null, null, gameName, new ChessGame());
             gameDao.createGame(game);
             return game;
     }

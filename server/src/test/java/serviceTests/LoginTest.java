@@ -1,6 +1,7 @@
 package serviceTests;
 
-import dataAccess.CustomException;
+import dataAccess.Exceptions.CustomException;
+import model.UserData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
@@ -22,7 +23,7 @@ class LoginTest {
     @Test
     public void validLoginCases() throws TestException {
 
-        DB.userDataMap.put("username", new model.userData("username", "password", "email"));
+        DB.userDataMap.put("username", new UserData("username", "password", "email"));
 
         try{
             service.Login.login("username", "password");
@@ -34,7 +35,7 @@ class LoginTest {
 
     @Test
     public void invalidLoginCases() throws TestException {
-        DB.userDataMap.put("username", new model.userData("username", "password", "email"));
+        DB.userDataMap.put("username", new UserData("username", "password", "email"));
 
         try{
             service.Login.login("username", "invalid password");

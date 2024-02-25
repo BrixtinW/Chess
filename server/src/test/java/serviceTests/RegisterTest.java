@@ -1,6 +1,6 @@
 package serviceTests;
 
-import dataAccess.CustomException;
+import dataAccess.Exceptions.CustomException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;

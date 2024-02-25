@@ -1,9 +1,10 @@
 package handler;
 
 import com.google.gson.Gson;
-import dataAccess.CustomException;
+import dataAccess.Exceptions.CustomException;
+import model.AuthData;
+import model.UserData;
 import service.Login;
-import service.Register;
 import spark.Request;
 import spark.Response;
 
@@ -13,12 +14,12 @@ public class LoginHandler {
 //        generate new auth objects that just sit in memory. you need a way to get rid of all the
 //        old auth objects associated with the old username so there can only be one auth at a time.
         var serializer = new Gson();
-        var user = serializer.fromJson(request.body(), model.userData.class);
+        var user = serializer.fromJson(request.body(), UserData.class);
         String responseBody = "";
 
 
         try {
-            model.authData authObj = Login.login(user.username(), user.password());
+            AuthData authObj = Login.login(user.username(), user.password());
             response.status(200);
             responseBody = "{\"username\": \"" + authObj.username() + "\", \"authToken\": \"" + authObj.authToken() + "\"}";
         } catch (CustomException e) {

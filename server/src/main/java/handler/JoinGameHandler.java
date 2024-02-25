@@ -1,11 +1,9 @@
 package handler;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dataAccess.CustomException;
+import dataAccess.Exceptions.CustomException;
 import service.JoinGame;
-import service.Login;
 import spark.Request;
 import spark.Response;
 

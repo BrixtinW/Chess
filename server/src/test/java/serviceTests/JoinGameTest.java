@@ -1,8 +1,9 @@
 package serviceTests;
 
 import chess.ChessGame;
-import dataAccess.CustomException;
-import model.authData;
+import dataAccess.Exceptions.CustomException;
+import model.AuthData;
+import model.GameData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
@@ -24,8 +25,8 @@ class JoinGameTest {
     @Test
     public void validJoinGameCases() throws TestException {
         DB.gameDataMap = new HashMap<>();
-        DB.authDataMap.put("TOKEN", new authData("TOKEN", "Username"));
-        DB.gameDataMap.put(1000, new model.gameData(1000, "WHITE", null, "FUNGAME", new ChessGame()));
+        DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
+        DB.gameDataMap.put(1000, new GameData(1000, "WHITE", null, "FUNGAME", new ChessGame()));
 
 
         try {
@@ -38,8 +39,8 @@ class JoinGameTest {
 
     @Test
     public void invalidJoinGameCases() throws TestException {
-        DB.authDataMap.put("TOKEN", new authData("TOKEN", "Username"));
-        DB.gameDataMap.put(1000, new model.gameData(1000, "WHITE", null, "FUNGAME", new ChessGame()));
+        DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
+        DB.gameDataMap.put(1000, new GameData(1000, "WHITE", null, "FUNGAME", new ChessGame()));
 
 
         try{

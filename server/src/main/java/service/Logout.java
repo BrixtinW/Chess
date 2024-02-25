@@ -1,10 +1,8 @@
 package service;
 
-import dataAccess.DataAccessException;
-import dataAccess.MemoryAuthDao;
-import dataAccess.UnauthorizedRequest;
-
-import javax.xml.crypto.Data;
+import dataAccess.Exceptions.DataAccessException;
+import dataAccess.MemoryDataAccess.MemoryAuthDao;
+import dataAccess.Exceptions.UnauthorizedRequest;
 
 public class Logout extends ServiceProgenitor {
 

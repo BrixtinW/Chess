@@ -1,4 +1,4 @@
-package dataAccess;
+package dataAccess.Exceptions;
 
 public class MemoryAlreadyAllocated extends CustomException {
     public MemoryAlreadyAllocated(String message) {

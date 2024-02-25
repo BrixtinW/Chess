@@ -1,12 +1,8 @@
 package handler;
 
-import dataAccess.CustomException;
-import model.gameData;
-import service.ListGames;
+import dataAccess.Exceptions.CustomException;
 import spark.Request;
 import spark.Response;
-
-import java.util.Collection;
 
 public class LogoutHandler {
     public static Object logout(Request request, Response response) {
