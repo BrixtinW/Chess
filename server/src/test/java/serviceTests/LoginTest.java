@@ -1,13 +1,23 @@
 package serviceTests;
 
 import dataAccess.CustomException;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
 import server.DB;
 
+import java.util.HashMap;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoginTest {
+
+    @BeforeAll
+    static void beforeAll() {
+        DB.authDataMap = new HashMap<>();
+        DB.gameDataMap = new HashMap<>();
+        DB.userDataMap = new HashMap<>();
+    }
 
     @Test
     public void validLoginCases() throws TestException {

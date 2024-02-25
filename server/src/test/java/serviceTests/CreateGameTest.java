@@ -5,16 +5,28 @@ import dataAccess.DataAccessException;
 import dataAccess.InvalidRequest;
 import dataAccess.UnauthorizedRequest;
 import model.authData;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
 import server.DB;
+
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CreateGameTest {
 
+    @BeforeAll
+    static void beforeAll() {
+        DB.authDataMap = new HashMap<>();
+        DB.gameDataMap = new HashMap<>();
+        DB.userDataMap = new HashMap<>();
+    }
+
     @Test
     public void validCreateGameCases() throws TestException, InvalidRequest, DataAccessException, UnauthorizedRequest {
+
+        DB.gameDataMap = new HashMap<>();
 
         try {
             assertTrue(DB.gameDataMap.isEmpty());

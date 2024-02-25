@@ -3,14 +3,24 @@ package serviceTests;
 import chess.ChessGame;
 import dataAccess.CustomException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
 import server.DB;
 import service.Clear;
 
+import java.util.HashMap;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClearTest {
+
+    @BeforeAll
+    static void beforeAll() {
+        DB.authDataMap = new HashMap<>();
+        DB.gameDataMap = new HashMap<>();
+        DB.userDataMap = new HashMap<>();
+    }
 
     @Test
     public void validClearCases() throws TestException {
