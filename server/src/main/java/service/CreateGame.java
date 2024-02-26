@@ -17,12 +17,12 @@ public class CreateGame extends ServiceProgenitor {
         getAuth(authToken);
 
             MemoryGameDao gameDao = new MemoryGameDao();
-            GameData game = new GameData(generateGameID.next(), null, null, gameName, new ChessGame());
+            GameData game = new GameData(GenerateGameID.next(), null, null, gameName, new ChessGame());
             gameDao.createGame(game);
             return game;
     }
 
-    public static class generateGameID {
+    public static class GenerateGameID {
         private static int current = 1000;
         private static final int end = 9999;
 
