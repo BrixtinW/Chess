@@ -5,6 +5,7 @@ import dataAccess.Exceptions.CustomException;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
@@ -19,6 +20,13 @@ class ClearTest {
 
     @BeforeAll
     static void beforeAll() {
+        DB.authDataMap = new HashMap<>();
+        DB.gameDataMap = new HashMap<>();
+        DB.userDataMap = new HashMap<>();
+    }
+
+    @AfterAll
+    static void afterAll() {
         DB.authDataMap = new HashMap<>();
         DB.gameDataMap = new HashMap<>();
         DB.userDataMap = new HashMap<>();
