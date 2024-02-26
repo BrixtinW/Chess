@@ -25,11 +25,11 @@ public class MovementCalculator {
             return potentialMoves;
         }
 
-    private static void checkStraightMoves(int rowIncrement, int colIncrement, ChessPosition myPosition, ChessBoard board, ArrayList<ChessMove> potentialMoves, ChessGame.TeamColor teamColor, IntPredicate row_check, IntPredicate col_Check) {
+    private static void checkStraightMoves(int rowIncrement, int colIncrement, ChessPosition myPosition, ChessBoard board, ArrayList<ChessMove> potentialMoves, ChessGame.TeamColor teamColor, IntPredicate rowCheck, IntPredicate colCheck) {
         int row = myPosition.getRow();
         int col = myPosition.getColumn();
 
-        while (row_check.test(row) && col_Check.test(col)) {
+        while (rowCheck.test(row) && colCheck.test(col)) {
             row += rowIncrement;
             col += colIncrement;
             ChessPosition position = new ChessPosition(row, col);

@@ -234,14 +234,6 @@ public class ChessGame {
         }
     }
 
-//    private ChessPosition getKingPosition(TeamColor teamColor){
-//        if (teamColor == TeamColor.WHITE) {
-//            return whiteKingPosition;
-//        } else {
-//            return blackKingPosition;
-//        }
-//    }
-
     /**
      * Makes a move in a chess game
      *
