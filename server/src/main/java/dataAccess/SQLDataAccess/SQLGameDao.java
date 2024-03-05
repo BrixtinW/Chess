@@ -17,7 +17,7 @@ public class SQLGameDao extends SQLProgenitor implements GameDAO {
     private static final String[] createStatements = {
 //            THIS IS NOT YET IMPLEMENTED CORRECTLY. IT IS STILL IMPLEMENTED FOR PET SHOP
             """
-            CREATE TABLE IF NOT EXISTS  pet (
+            CREATE TABLE IF NOT EXISTS  gameDB (
               `id` int NOT NULL AUTO_INCREMENT,
               `whiteUsername` varchar(256) NOT NULL,
               `blackUsername` varchar(256) NOT NULL,
@@ -46,7 +46,7 @@ public class SQLGameDao extends SQLProgenitor implements GameDAO {
 
     @Override
     public void clear() throws  DataAccessException {
-        var statement = "TRUNCATE pet";
+        var statement = "TRUNCATE gameDB";
         super.executeUpdate(statement);
     }
 

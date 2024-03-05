@@ -16,7 +16,7 @@ public class SQLUserDao extends SQLProgenitor implements UserDAO {
     private static final String[] createStatements = {
 //            THIS IS NOT YET IMPLEMENTED CORRECTLY. IT IS STILL IMPLEMENTED FOR PET SHOP
             """
-            CREATE TABLE IF NOT EXISTS user (
+            CREATE TABLE IF NOT EXISTS userDB (
               `username` varchar(256) NOT NULL,
               `password` varchar(256) NOT NULL,
               `email` varchar(256) NOT NULL,
@@ -37,7 +37,7 @@ public class SQLUserDao extends SQLProgenitor implements UserDAO {
 
     @Override
     public void clear() throws  DataAccessException {
-        var statement = "TRUNCATE pet";
+        var statement = "TRUNCATE userDB";
         super.executeUpdate(statement);
     }
 
