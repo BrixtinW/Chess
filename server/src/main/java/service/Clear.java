@@ -4,12 +4,15 @@ import dataAccess.Exceptions.DataAccessException;
 import dataAccess.MemoryDataAccess.MemoryAuthDao;
 import dataAccess.MemoryDataAccess.MemoryGameDao;
 import dataAccess.MemoryDataAccess.MemoryUserDao;
+import dataAccess.SQLDataAccess.SQLAuthDao;
+import dataAccess.SQLDataAccess.SQLGameDao;
+import dataAccess.SQLDataAccess.SQLUserDao;
 
 public class Clear {
     public static void clear() throws DataAccessException {
-        MemoryAuthDao authDao = new MemoryAuthDao();
-        MemoryGameDao gameDao = new MemoryGameDao();
-        MemoryUserDao userDao = new MemoryUserDao();
+        SQLAuthDao authDao = new SQLAuthDao();
+        SQLGameDao gameDao = new SQLGameDao();
+        SQLUserDao userDao = new SQLUserDao();
 
         authDao.clear();
         gameDao.clear();

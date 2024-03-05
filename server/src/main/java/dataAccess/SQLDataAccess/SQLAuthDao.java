@@ -16,7 +16,7 @@ public class SQLAuthDao extends SQLProgenitor implements AuthDAO {
     private static final String[] createStatements = {
 //            THIS IS NOT YET IMPLEMENTED CORRECTLY. IT IS STILL IMPLEMENTED FOR PET SHOP
             """
-            CREATE TABLE IF NOT EXISTS  pet (
+            CREATE TABLE IF NOT EXISTS  authDB (
               `authToken` varchar(256) NOT NULL,
               `username` varchar(256) NOT NULL,
               PRIMARY KEY (`authToken`)
@@ -39,7 +39,7 @@ public class SQLAuthDao extends SQLProgenitor implements AuthDAO {
 
     @Override
     public void clear() throws  DataAccessException {
-        var statement = "TRUNCATE pet";
+        var statement = "TRUNCATE authDB";
         super.executeUpdate(statement);
     }
 
