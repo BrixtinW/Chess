@@ -5,7 +5,10 @@ import dataAccess.DatabaseManager;
 import dataAccess.Exceptions.DataAccessException;
 import dataAccess.interfaces.GameDAO;
 import model.GameData;
+import com.google.gson.Gson;
+import model.UserData;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class SQLGameDao extends SQLProgenitor implements GameDAO {
@@ -28,16 +31,60 @@ public class SQLGameDao extends SQLProgenitor implements GameDAO {
     }
 
     @Override
-    public GameData getGame(int gameID) throws DataAccessException {return null;}
+    public GameData getGame(int gameID) throws DataAccessException {
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "SELECT gameID, whiteUsername, blackUsername, gameName, game FROM gameDB WHERE gameID=?";
+            try (var ps = conn.prepareStatement(statement)) {
+                ps.setInt(1, gameID);
+                try (var rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        var serializer = new Gson();
+                        var game = serializer.fromJson(rs.getString("game"), ChessGame.class);
+                        return new GameData(rs.getInt("gameID"), rs.getString("whiteUsername"), rs.getString("blackUsername"), rs.getString("gameName"), game);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("ERROR: Unable to read data");
+        }
+        return null;
+    }
 
     @Override
-    public void createGame(GameData game) throws DataAccessException {}
+    public void createGame(GameData game) throws DataAccessException {
+        var statement = "INSERT INTO gameDB (whiteUsername, blackUsername, gameName, game) VALUES (?, ?, ?, ?)";
+        Gson gson = new Gson();
+        String gameJSON = gson.toJson(game);
+        executeUpdate(statement, game.whiteUsername(), game.blackUsername(), game.gameName(), gameJSON);
+    }
 
     @Override
-    public Collection<GameData> listGames() throws DataAccessException {return null;}
+    public Collection<GameData> listGames() throws DataAccessException {
+        ArrayList<GameData> gamesList = new ArrayList<>();
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "SELECT gameID, whiteUsername, blackUsername, gameName, game FROM gameDB";
+            try (var ps = conn.prepareStatement(statement)) {
+                try (var rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        var serializer = new Gson();
+                        var game = serializer.fromJson(rs.getString("game"), ChessGame.class);
+                        gamesList.add( new GameData(rs.getInt("gameID"), rs.getString("whiteUsername"), rs.getString("blackUsername"), rs.getString("gameName"), game));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("ERROR: Unable to read data");
+        }
+        return null;
+    }
 
     @Override
-    public void updateGame(GameData gameData) throws DataAccessException {}
+    public void updateGame(GameData gameData) throws DataAccessException {
+        var statement = "UPDATE gameDB SET whiteUsername = ?, blackUsername = ?, gameName = ?, game = ?, WHERE gameID=?";
+        Gson gson = new Gson();
+        String gameJSON = gson.toJson(gameData.game());
+        executeUpdate(statement, gameData.whiteUsername(), gameData.blackUsername(), gameData.gameName(), gameJSON, gameData.gameID());
+    }
 
     @Override
     public void clear() throws  DataAccessException {
