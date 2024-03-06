@@ -44,7 +44,10 @@ public class SQLUserDao extends SQLProgenitor implements UserDAO {
     }
 
     @Override
-    public void createUser(UserData user) throws DataAccessException {}
+    public void createUser(UserData user) throws DataAccessException {
+        var statement = "INSERT INTO userDB (username, password, email) VALUES (?, ?, ?)";
+        executeUpdate(statement, user.username(), user.password(), user.email());
+    }
 
     @Override
     public void clear() throws  DataAccessException {
