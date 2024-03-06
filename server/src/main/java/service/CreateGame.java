@@ -5,6 +5,7 @@ import dataAccess.Exceptions.DataAccessException;
 import dataAccess.Exceptions.InvalidRequest;
 import dataAccess.MemoryDataAccess.MemoryGameDao;
 import dataAccess.Exceptions.UnauthorizedRequest;
+import dataAccess.SQLDataAccess.SQLGameDao;
 import model.GameData;
 
 public class CreateGame extends ServiceProgenitor {
@@ -16,7 +17,7 @@ public class CreateGame extends ServiceProgenitor {
 //        This returns an auth token that I just want to make sure doesn't throw an exception. I don't actually use it at all
         getAuth(authToken);
 
-            MemoryGameDao gameDao = new MemoryGameDao();
+            SQLGameDao gameDao = new SQLGameDao();
             GameData game = new GameData(GenerateGameID.next(), null, null, gameName, new ChessGame());
             gameDao.createGame(game);
             return game;

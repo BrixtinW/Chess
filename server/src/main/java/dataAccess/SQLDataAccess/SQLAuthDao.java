@@ -6,17 +6,11 @@ import dataAccess.Exceptions.DataAccessException;
 import dataAccess.interfaces.AuthDAO;
 import model.AuthData;
 
-import java.sql.SQLException;
-
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static java.sql.Types.NULL;
-
 public class SQLAuthDao extends SQLProgenitor implements AuthDAO {
 
     private static final String[] createStatements = {
-//            THIS IS NOT YET IMPLEMENTED CORRECTLY. IT IS STILL IMPLEMENTED FOR PET SHOP
             """
-            CREATE TABLE IF NOT EXISTS  authDB (
+            CREATE TABLE IF NOT EXISTS authDB (
               `authToken` varchar(256) NOT NULL,
               `username` varchar(256) NOT NULL,
               PRIMARY KEY (`authToken`)

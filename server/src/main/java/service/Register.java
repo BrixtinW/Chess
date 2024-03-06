@@ -4,6 +4,7 @@ import dataAccess.Exceptions.DataAccessException;
 import dataAccess.Exceptions.InvalidRequest;
 import dataAccess.Exceptions.MemoryAlreadyAllocated;
 import dataAccess.MemoryDataAccess.MemoryUserDao;
+import dataAccess.SQLDataAccess.SQLUserDao;
 import model.AuthData;
 import model.UserData;
 
@@ -26,7 +27,7 @@ public class Register extends ServiceProgenitor {
     }
 
     private static void createUser(String username, String password, String email) throws DataAccessException{
-        MemoryUserDao userDao = new MemoryUserDao();
+        SQLUserDao userDao = new SQLUserDao();
         UserData user = new UserData(username, password, email);
         userDao.createUser(user);
     }

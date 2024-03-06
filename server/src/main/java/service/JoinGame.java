@@ -5,6 +5,8 @@ import dataAccess.Exceptions.InvalidRequest;
 import dataAccess.Exceptions.MemoryAlreadyAllocated;
 import dataAccess.Exceptions.UnauthorizedRequest;
 import dataAccess.MemoryDataAccess.MemoryGameDao;
+import dataAccess.SQLDataAccess.SQLGameDao;
+import dataAccess.SQLDataAccess.SQLUserDao;
 import model.AuthData;
 import model.GameData;
 
@@ -22,12 +24,12 @@ public class JoinGame extends ServiceProgenitor {
     }
 
     private static GameData accessGame(int gameID) throws DataAccessException {
-        MemoryGameDao gameDao = new MemoryGameDao();
+        SQLGameDao gameDao = new SQLGameDao();
         return gameDao.getGame(gameID);
     }
 
     private static void updateGame(GameData gameData, AuthData authData, String playerColor) throws DataAccessException, MemoryAlreadyAllocated {
-        MemoryGameDao gameDao = new MemoryGameDao();
+        SQLGameDao gameDao = new SQLGameDao();
         GameData newGame;
 
         if (Objects.equals(playerColor, "WHITE") && Objects.equals(gameData.whiteUsername(), null)) {

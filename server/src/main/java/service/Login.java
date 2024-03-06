@@ -3,6 +3,7 @@ package service;
 import dataAccess.Exceptions.DataAccessException;
 import dataAccess.MemoryDataAccess.MemoryUserDao;
 import dataAccess.Exceptions.UnauthorizedRequest;
+import dataAccess.SQLDataAccess.SQLUserDao;
 import model.AuthData;
 import model.UserData;
 
@@ -13,7 +14,7 @@ import static service.ServiceProgenitor.createAuth;
 public class Login {
 
     public static AuthData login(String username, String password) throws DataAccessException, UnauthorizedRequest {
-        MemoryUserDao userDao = new MemoryUserDao();
+        SQLUserDao userDao = new SQLUserDao();
 
         UserData userdata = userDao.getUser(username);
         if (userdata == null || !Objects.equals(userdata.password(), password)){
