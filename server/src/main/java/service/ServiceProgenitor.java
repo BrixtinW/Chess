@@ -4,6 +4,8 @@ import dataAccess.Exceptions.DataAccessException;
 import dataAccess.MemoryDataAccess.MemoryAuthDao;
 import dataAccess.MemoryDataAccess.MemoryUserDao;
 import dataAccess.Exceptions.UnauthorizedRequest;
+import dataAccess.SQLDataAccess.SQLAuthDao;
+import dataAccess.SQLDataAccess.SQLUserDao;
 import model.AuthData;
 import model.UserData;
 
@@ -12,7 +14,7 @@ import java.util.UUID;
 public class ServiceProgenitor {
 
     static AuthData getAuth(String authToken) throws DataAccessException, UnauthorizedRequest {
-        MemoryAuthDao authDao = new MemoryAuthDao();
+        SQLAuthDao authDao = new SQLAuthDao();
         AuthData authObj = authDao.getAuth(authToken);
 
         if (authObj != null){
@@ -24,13 +26,13 @@ public class ServiceProgenitor {
     }
 
     static UserData getUser(String username) throws DataAccessException {
-        MemoryUserDao userDao = new MemoryUserDao();
+        SQLUserDao userDao = new SQLUserDao();
         return userDao.getUser(username);
     }
 
 
     static AuthData createAuth(String username) throws DataAccessException{
-        MemoryAuthDao authDao = new MemoryAuthDao();
+        SQLAuthDao authDao = new SQLAuthDao();
         AuthData authObj = new AuthData(UUID.randomUUID().toString(), username);
         authDao.createAuth(authObj);
 

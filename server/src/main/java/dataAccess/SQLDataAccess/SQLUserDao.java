@@ -6,15 +6,10 @@ import dataAccess.interfaces.UserDAO;
 import model.UserData;
 import dataAccess.DatabaseManager;
 
-import java.sql.SQLException;
-
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static java.sql.Types.NULL;
 
 public class SQLUserDao extends SQLProgenitor implements UserDAO {
 
     private static final String[] createStatements = {
-//            THIS IS NOT YET IMPLEMENTED CORRECTLY. IT IS STILL IMPLEMENTED FOR PET SHOP
             """
             CREATE TABLE IF NOT EXISTS userDB (
               `username` varchar(256) NOT NULL,
