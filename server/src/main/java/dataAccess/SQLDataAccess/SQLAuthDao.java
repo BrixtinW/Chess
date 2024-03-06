@@ -23,13 +23,34 @@ public class SQLAuthDao extends SQLProgenitor implements AuthDAO {
     }
 
     @Override
-    public AuthData getAuth(String authToken) throws DataAccessException {return null;}
+    public AuthData getAuth(String authToken) throws DataAccessException {
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "SELECT authToken, username FROM authDB WHERE authToken=?";
+            try (var ps = conn.prepareStatement(statement)) {
+                ps.setString(1, authToken);
+                try (var rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        return new AuthData(rs.getString("authToken"), rs.getString("username"));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("ERROR: Unable to read data");
+        }
+        return null;
+    }
 
     @Override
-    public void createAuth(AuthData authObj) throws DataAccessException {}
+    public void createAuth(AuthData authObj) throws DataAccessException {
+        var statement = "INSERT INTO authDB (authToken, username) VALUES (?, ?)";
+        executeUpdate(statement, authObj.authToken(), authObj.username());
+    }
 
     @Override
-    public void deleteAuth(String authToken) throws DataAccessException {}
+    public void deleteAuth(String authToken) throws DataAccessException {
+        var statement = "DELETE FROM authDB WHERE authToken=?";
+        executeUpdate(statement, authToken);
+    }
 
     @Override
     public void clear() throws  DataAccessException {
