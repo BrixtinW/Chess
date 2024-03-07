@@ -7,6 +7,7 @@ import dataAccess.MemoryDataAccess.MemoryUserDao;
 import dataAccess.SQLDataAccess.SQLUserDao;
 import model.AuthData;
 import model.UserData;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class Register extends ServiceProgenitor {
 
@@ -28,7 +29,7 @@ public class Register extends ServiceProgenitor {
 
     private static void createUser(String username, String password, String email) throws DataAccessException{
         SQLUserDao userDao = new SQLUserDao();
-        UserData user = new UserData(username, password, email);
+        UserData user = new UserData(username, passwordHash(password), email);
         userDao.createUser(user);
     }
 

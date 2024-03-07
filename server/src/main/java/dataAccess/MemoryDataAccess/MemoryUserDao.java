@@ -1,6 +1,7 @@
 package dataAccess.MemoryDataAccess;
 
 import dataAccess.Exceptions.DataAccessException;
+import dataAccess.Exceptions.UnauthorizedRequest;
 import dataAccess.interfaces.UserDAO;
 import model.UserData;
 import server.DB;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 
 public class MemoryUserDao implements UserDAO {
     @Override
-    public UserData getUser(String username) throws DataAccessException {
+    public UserData getUser(String username) throws DataAccessException, UnauthorizedRequest {
         try {
             return DB.userDataMap.get(username);
         } catch (Exception e) {

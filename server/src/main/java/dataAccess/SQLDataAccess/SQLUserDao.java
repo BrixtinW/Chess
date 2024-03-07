@@ -6,6 +6,7 @@ import dataAccess.interfaces.UserDAO;
 import model.AuthData;
 import model.UserData;
 import dataAccess.DatabaseManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 public class SQLUserDao extends SQLProgenitor implements UserDAO {
@@ -54,6 +55,7 @@ public class SQLUserDao extends SQLProgenitor implements UserDAO {
         var statement = "TRUNCATE userDB";
         super.executeUpdate(statement);
     }
+
 
 
 }
