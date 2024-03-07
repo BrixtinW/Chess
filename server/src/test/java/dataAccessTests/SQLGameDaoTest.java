@@ -1,12 +1,8 @@
-package DataAccessTest;
+package dataAccessTests;
 
 import dataAccess.Exceptions.CustomException;
-import dataAccess.SQLDataAccess.SQLAuthDao;
 import dataAccess.SQLDataAccess.SQLGameDao;
-import dataAccess.SQLDataAccess.SQLUserDao;
-import model.AuthData;
 import model.GameData;
-import model.UserData;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
 import service.Clear;
