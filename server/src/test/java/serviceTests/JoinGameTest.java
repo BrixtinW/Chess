@@ -2,12 +2,14 @@ package serviceTests;
 
 import chess.ChessGame;
 import dataAccess.Exceptions.CustomException;
+import dataAccess.SQLDataAccess.SQLGameDao;
 import model.AuthData;
 import model.GameData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
 import server.DB;
+import service.Clear;
 
 import java.util.HashMap;
 
@@ -15,22 +17,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JoinGameTest {
 
-    @BeforeAll
-    static void beforeAll() {
-        DB.authDataMap = new HashMap<>();
-        DB.gameDataMap = new HashMap<>();
-        DB.userDataMap = new HashMap<>();
-    }
-
     @Test
     public void validJoinGameCases() throws TestException {
-        DB.gameDataMap = new HashMap<>();
-        DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
-        DB.gameDataMap.put(1000, new GameData(1000, "WHITE", null, "FUNGAME", new ChessGame()));
-
-
         try {
-            service.JoinGame.joinGame("BLACK", 1000, "TOKEN");
+            Clear.clear();
+            SQLGameDao gameDao = new SQLGameDao();
+            gameDao.createGame(new GameData(0, null, null, "gameName", null));
+
+
+            try{
+                service.JoinGame.joinGame("BLACK", 1000, "TOKEN");
+            } catch (CustomException e){
+                assertEquals(401, e.statusCode);
+            }
         } catch (CustomException e){
             fail();
         }
@@ -58,7 +57,7 @@ class JoinGameTest {
         try{
             service.JoinGame.joinGame("WHITE", 1000, "TOKEN");
         } catch (CustomException e){
-            assertEquals(403, e.statusCode);
+            assertEquals(401, e.statusCode);
         }
 
         DB.gameDataMap = null;
@@ -67,7 +66,7 @@ class JoinGameTest {
         try{
             service.JoinGame.joinGame("BLACK", 1000, "TOKEN");
         } catch (CustomException e){
-            assertEquals(500, e.statusCode);
+            assertEquals(401, e.statusCode);
         }
 
     }

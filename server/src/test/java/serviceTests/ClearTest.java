@@ -1,85 +1,67 @@
 package serviceTests;
 
-import chess.ChessGame;
 import dataAccess.Exceptions.CustomException;
+import dataAccess.SQLDataAccess.SQLAuthDao;
+import dataAccess.SQLDataAccess.SQLGameDao;
+import dataAccess.SQLDataAccess.SQLUserDao;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
-import server.DB;
 import service.Clear;
+import service.Register;
 
-import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClearTest {
 
-    @BeforeAll
-    static void beforeAll() {
-        DB.authDataMap = new HashMap<>();
-        DB.gameDataMap = new HashMap<>();
-        DB.userDataMap = new HashMap<>();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        DB.authDataMap = new HashMap<>();
-        DB.gameDataMap = new HashMap<>();
-        DB.userDataMap = new HashMap<>();
-    }
-
     @Test
-    public void validClearCases() throws TestException {
+    public void clearTest() throws TestException {
         try {
 
-            assertTrue(DB.gameDataMap.isEmpty());
-            assertTrue(DB.userDataMap.isEmpty());
-            assertTrue(DB.authDataMap.isEmpty());
-
-            Clear.clear();
             Clear.clear();
 
-            assertTrue(DB.gameDataMap.isEmpty());
-            assertTrue(DB.userDataMap.isEmpty());
-            assertTrue(DB.authDataMap.isEmpty());
+            SQLAuthDao authDao = new SQLAuthDao();
+            SQLUserDao userDao = new SQLUserDao();
+            SQLGameDao gameDao = new SQLGameDao();
 
-
-            DB.userDataMap.put("BILLY", new UserData("Billy", "Bob", "Joe"));
-            DB.authDataMap.put("BILLY", new AuthData("a;lsdkjf;alksdjf;lajsdf", "Billy"));
-            DB.gameDataMap.put(1000, new GameData(1000, "WHITE", "BLACK", "FUNGAME", new ChessGame()));
-
-            assertFalse(DB.gameDataMap.isEmpty());
-            assertFalse(DB.userDataMap.isEmpty());
-            assertFalse(DB.authDataMap.isEmpty());
+            authDao.createAuth(new AuthData("authToken", "username"));
+            userDao.createUser(new UserData("username", "password", "email"));
+            int gameID = gameDao.createGame(new GameData(0, "WHITE", "BLACK", "GAMENAME", null));
 
             Clear.clear();
 
-            assertTrue(DB.gameDataMap.isEmpty());
-            assertTrue(DB.userDataMap.isEmpty());
-            assertTrue(DB.authDataMap.isEmpty());
+            try {
+                authDao.getAuth("authToken");
+            } catch (CustomException e) {
+                assertEquals(500, e.statusCode);
+            }
+
+            try {
+                userDao.getUser("username");
+            } catch (CustomException e) {
+                assertEquals(500, e.statusCode);
+            }
+
+            try {
+                gameDao.getGame(gameID);
+            } catch (CustomException e) {
+                assertEquals(500, e.statusCode);
+            }
 
         } catch (CustomException e) {
-            System.out.println("ERROR!!! CLEAR DIDN'T WORK CORRECTLY");
             fail();
         }
+
     }
 
-    @Test
-    public void invalidClearCases() throws TestException {
 
-        DB.authDataMap = null;
-        DB.userDataMap = null;
-        DB.gameDataMap = null;
 
-        try {
-            Clear.clear();
-        } catch (CustomException e) {
-            assertEquals(500, e.statusCode);
-        }
-    }
 
 }

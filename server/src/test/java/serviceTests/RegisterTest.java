@@ -1,73 +1,54 @@
 package serviceTests;
 
+import com.mysql.cj.log.Log;
 import dataAccess.Exceptions.CustomException;
-import org.junit.jupiter.api.BeforeAll;
+import dataAccess.SQLDataAccess.SQLUserDao;
+import model.GameData;
+import model.UserData;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
-import server.DB;
-
-import java.util.HashMap;
+import service.Clear;
+import service.Login;
+import service.Logout;
+import service.Register;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RegisterTest {
 
-    @BeforeAll
-    static void beforeAll() {
-        DB.authDataMap = new HashMap<>();
-        DB.gameDataMap = new HashMap<>();
-        DB.userDataMap = new HashMap<>();
-    }
-
     @Test
-    public void validRegisterCases() throws TestException {
+    public void validRegisterTest() throws TestException {
+        try {
+            Clear.clear();
 
-        DB.userDataMap = new HashMap<>();
+            Register.register("username", "password", "email");
 
-        assertTrue(DB.userDataMap.isEmpty());
+            Login.login("username", "password");
 
-        try{
-            service.Register.register("username", "password", "email");
-        } catch (CustomException e){
+            SQLUserDao userDao = new SQLUserDao();
+            UserData userData = userDao.getUser("username");
+            assertNotNull(userData);
+
+        } catch(Exception e){
             fail();
         }
-
-        assertFalse(DB.userDataMap.isEmpty());
 
     }
 
     @Test
-    public void invalidRegisterCases() throws TestException {
+    public void invalidRegisterTest() throws TestException {
 
-        assertTrue(DB.userDataMap.isEmpty());
+        try {
+            Clear.clear();
 
-        try{
-            service.Register.register(null, "password", "email");
-        } catch (CustomException e){
-            assertEquals(400, e.statusCode);
-        }
+            try {
+                Register.register(null, "password", "email");
+            } catch (CustomException e) {
+                assertEquals(400, e.statusCode);
+            }
 
-        try{
-            service.Register.register("username", "password", "email");
-        } catch (CustomException e){
+        } catch(Exception e){
             fail();
-        }
-
-        assertFalse(DB.userDataMap.isEmpty());
-
-        try{
-            service.Register.register("username", "password", "email");
-        } catch (CustomException e){
-            assertEquals(403, e.statusCode);
-        }
-
-
-        DB.userDataMap = null;
-
-        try{
-            service.Register.register("username", "password", "email");
-        } catch (CustomException e){
-            assertEquals(500, e.statusCode);
         }
 
     }

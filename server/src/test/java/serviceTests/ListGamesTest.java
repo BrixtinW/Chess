@@ -1,68 +1,58 @@
 package serviceTests;
 
-import chess.ChessGame;
 import dataAccess.Exceptions.CustomException;
+import dataAccess.SQLDataAccess.SQLAuthDao;
+import dataAccess.SQLDataAccess.SQLGameDao;
+import dataAccess.SQLDataAccess.SQLUserDao;
 import model.AuthData;
 import model.GameData;
-import org.junit.jupiter.api.BeforeAll;
+import model.UserData;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
-import server.DB;
+import service.Clear;
 
-import java.util.HashMap;
+import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ListGamesTest {
 
-    @BeforeAll
-    static void beforeAll() {
-        DB.authDataMap = new HashMap<>();
-        DB.gameDataMap = new HashMap<>();
-        DB.userDataMap = new HashMap<>();
-    }
-
     @Test
-    public void validListGamesCases() throws TestException {
-        DB.gameDataMap.put(1000, new GameData(1000, "WHITE", "BLACK", "FUN", new ChessGame()));
-        DB.gameDataMap.put(1001, new GameData(1001, "WHITE", "BLACK", "Game", new ChessGame()));
-        DB.gameDataMap.put(1002, new GameData(1002, "WHITE", "BLACK", "To", new ChessGame()));
-        DB.gameDataMap.put(1003, new GameData(1003, "WHITE", "BLACK", "Play", new ChessGame()));
+    public void validListGamesTest() throws TestException {
+        try {
+            SQLGameDao gameDao = new SQLGameDao();
 
-        DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
+            gameDao.createGame(new GameData(0, "WHITE", "BLACK", "GAMENAME1", null));
+            gameDao.createGame(new GameData(0, "WHITE", "BLACK", "GAMENAME2", null));
+            gameDao.createGame(new GameData(0, "WHITE", "BLACK", "GAMENAME3", null));
 
-        try{
-            service.ListGames.listGames("TOKEN");
-        } catch (CustomException e){
+
+            Collection<GameData> gamesList = gameDao.listGames();
+
+            assertFalse(gamesList.isEmpty());
+
+
+        } catch (CustomException e) {
             fail();
         }
+
     }
 
     @Test
-    public void invalidListGamesCases() throws TestException {
-        DB.gameDataMap.put(1000, new GameData(1000, "WHITE", "BLACK", "FUN", new ChessGame()));
-        DB.gameDataMap.put(1001, new GameData(1001, "WHITE", "BLACK", "Game", new ChessGame()));
-        DB.gameDataMap.put(1002, new GameData(1002, "WHITE", "BLACK", "To", new ChessGame()));
-        DB.gameDataMap.put(1003, new GameData(1003, "WHITE", "BLACK", "Play", new ChessGame()));
+    public void invalidListGamesTest() throws TestException {
 
-        DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
+        try {
+            Clear.clear();
 
-        try{
-            service.ListGames.listGames("invalid Token");
-        } catch (CustomException e){
-            assertEquals(401, e.statusCode);
+            SQLGameDao gameDao = new SQLGameDao();
+
+            Collection<GameData> gamesList = gameDao.listGames();
+
+            assertTrue(gamesList.isEmpty());
+
+        } catch (CustomException e) {
+            fail();
         }
-
-        DB.gameDataMap = null;
-
-
-        try{
-            service.ListGames.listGames("TOKEN");
-        } catch (CustomException e){
-            assertEquals(500, e.statusCode);
-        }
-
-
     }
 
 }

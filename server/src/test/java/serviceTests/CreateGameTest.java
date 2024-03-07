@@ -1,69 +1,54 @@
 package serviceTests;
 
 import dataAccess.Exceptions.CustomException;
-import dataAccess.Exceptions.DataAccessException;
-import dataAccess.Exceptions.InvalidRequest;
-import dataAccess.Exceptions.UnauthorizedRequest;
+import dataAccess.SQLDataAccess.SQLAuthDao;
+import dataAccess.SQLDataAccess.SQLGameDao;
+import dataAccess.SQLDataAccess.SQLUserDao;
 import model.AuthData;
-import org.junit.jupiter.api.BeforeAll;
+import model.GameData;
+import model.UserData;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
 import server.DB;
-
-import java.util.HashMap;
+import service.Clear;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CreateGameTest {
 
-    @BeforeAll
-    static void beforeAll() {
-        DB.authDataMap = new HashMap<>();
-        DB.gameDataMap = new HashMap<>();
-        DB.userDataMap = new HashMap<>();
-    }
-
     @Test
-    public void validCreateGameCases() throws TestException, InvalidRequest, DataAccessException, UnauthorizedRequest {
-
-        DB.gameDataMap = new HashMap<>();
-
+    public void validCreateGameTest() throws TestException {
         try {
-            assertTrue(DB.gameDataMap.isEmpty());
-            DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
 
-            service.CreateGame.createGame("TOKEN", "FUNGAME");
+            SQLGameDao gameDao = new SQLGameDao();
 
-            assertFalse(DB.gameDataMap.isEmpty());
-        } catch (CustomException e){
+            int gameID = gameDao.createGame(new GameData(0, "WHITE", "BLACK", "GAMENAME", null));
+
+            GameData gameData = gameDao.getGame(gameID);
+
+            assertNotEquals(gameData, null);
+
+
+        } catch (CustomException e) {
             fail();
         }
 
     }
 
     @Test
-    public void invalidCreateGameCases() throws TestException {
-        DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
-
-
-        try{
-            service.CreateGame.createGame("TOKEN", null);
-        } catch (CustomException e){
-            assertEquals(400, e.statusCode);
-        }
-
+    public void invalidCreateGameTest() throws TestException {
         try {
-            service.CreateGame.createGame("INVALIDTOKEN", "GAMEFUN");
+            SQLGameDao gameDao = new SQLGameDao();
+
+            try {
+                gameDao.createGame(new GameData(0, "WHITE", "BLACK", null, null));
+            } catch (CustomException e) {
+                assertEquals(500, e.statusCode);
+            }
+
+
         } catch (CustomException e){
-            assertEquals(401, e.statusCode);
-        }
-
-
-        DB.gameDataMap = null;
-        try{
-            service.CreateGame.createGame("TOKEN", "FUNGAME");
-        } catch (CustomException e) {
-            assertEquals(500, e.statusCode);
+            fail();
         }
 
     }

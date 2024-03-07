@@ -1,55 +1,74 @@
 package serviceTests;
 
 import dataAccess.Exceptions.CustomException;
+import dataAccess.SQLDataAccess.SQLAuthDao;
+import dataAccess.SQLDataAccess.SQLGameDao;
+import dataAccess.SQLDataAccess.SQLUserDao;
+import model.AuthData;
+import model.GameData;
 import model.UserData;
-import org.junit.jupiter.api.BeforeAll;
+import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
-import server.DB;
-
-import java.util.HashMap;
+import service.Clear;
+import service.Login;
+import service.Register;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoginTest {
 
-    @BeforeAll
-    static void beforeAll() {
-        DB.authDataMap = new HashMap<>();
-        DB.gameDataMap = new HashMap<>();
-        DB.userDataMap = new HashMap<>();
-    }
-
     @Test
-    public void validLoginCases() throws TestException {
+    public void validLoginTest() throws TestException {
+        try {
+            Clear.clear();
 
-        DB.userDataMap.put("username", new UserData("username", "password", "email"));
+            SQLUserDao userDao = new SQLUserDao();
 
-        try{
-            service.Login.login("username", "password");
-        } catch (CustomException e){
+            Register.register("username", "password", "email");
+
+            Login.login("username", "password");
+
+            UserData userData = userDao.getUser("username");
+
+            assertNotNull(userData);
+
+        } catch (CustomException e) {
             fail();
         }
 
     }
 
     @Test
-    public void invalidLoginCases() throws TestException {
-        DB.userDataMap.put("username", new UserData("username", "password", "email"));
+    public void invalidLoginTest() throws TestException {
 
-        try{
-            service.Login.login("username", "invalid password");
-        } catch (CustomException e){
-            assertEquals(401, e.statusCode);
+        try {
+
+
+            Clear.clear();
+
+            try {
+                Login.login("username", "password");
+            } catch (CustomException e) {
+                assertEquals(401, e.statusCode);
+            }
+
+            try {
+                Register.register(null, "password", "email");
+            } catch (CustomException e) {
+                assertEquals(400, e.statusCode);
+            }
+
+            try {
+                Login.login("username", "password");
+            } catch (CustomException e) {
+                assertEquals(401, e.statusCode);
+            }
+
+        } catch (CustomException e) {
+            fail();
         }
 
-        DB.userDataMap = null;
-
-        try{
-            service.Login.login("username", "password");
-        } catch (CustomException e){
-            assertEquals(500, e.statusCode);
-        }
     }
 
 }
