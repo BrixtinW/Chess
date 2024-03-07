@@ -20,7 +20,7 @@ public class Login {
 
         UserData userdata = userDao.getUser(username);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if (!encoder.matches(password, userdata.password())){
+        if (userdata == null || !encoder.matches(password, userdata.password())){
             throw new UnauthorizedRequest("Error: unauthorized");
         }
 

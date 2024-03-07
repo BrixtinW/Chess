@@ -1,59 +1,59 @@
 package serviceTests;
 
 import dataAccess.Exceptions.CustomException;
+import dataAccess.SQLDataAccess.SQLAuthDao;
+import dataAccess.SQLDataAccess.SQLGameDao;
 import model.AuthData;
-import org.junit.jupiter.api.BeforeAll;
+import model.GameData;
 import org.junit.jupiter.api.Test;
 import passoffTests.testClasses.TestException;
-import server.DB;
-
-import java.util.HashMap;
+import service.Clear;
+import service.JoinGame;
+import service.Logout;
+import service.Register;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LogoutTest {
 
-    @BeforeAll
-    static void beforeAll() {
-        DB.authDataMap = new HashMap<>();
-        DB.gameDataMap = new HashMap<>();
-        DB.userDataMap = new HashMap<>();
-    }
-
     @Test
-    public void validLogoutCases() throws TestException {
+    public void validLogoutTest() throws TestException {
 
-        DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
+        try {
+            Clear.clear();
 
-        try{
-            service.Logout.logout("TOKEN");
-        } catch (CustomException e){
+            SQLAuthDao authDao = new SQLAuthDao();
+
+            authDao.createAuth(new AuthData("authToken", "username"));
+
+            Logout.logout("authToken");
+            try {
+                authDao.getAuth("authToken");
+            } catch (CustomException e) {
+                assertEquals(500, e.statusCode);
+            }
+
+        } catch(Exception e){
             fail();
         }
 
-        assertTrue(DB.authDataMap.isEmpty());
-
     }
 
     @Test
-    public void invalidLogoutCases() throws TestException {
+    public void invalidLogoutTest() throws TestException {
 
-        DB.authDataMap.put("TOKEN", new AuthData("TOKEN", "Username"));
+        try {
+            Clear.clear();
 
-        try{
-            service.Logout.logout("invalid token");
-        } catch (CustomException e){
-            assertEquals(401, e.statusCode);
+            try {
+                Logout.logout("authToken");
+            } catch (CustomException e) {
+                assertEquals(401, e.statusCode);
+            }
+
+        } catch(Exception e){
+            fail();
         }
-
-        DB.authDataMap = null;
-
-        try{
-            service.Logout.logout("TOKEN");
-        } catch (CustomException e){
-            assertEquals(500, e.statusCode);
-        }
-
 
     }
 
