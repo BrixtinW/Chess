@@ -16,9 +16,9 @@ public class CreateGameHandler {
 
 
         try {
-            GameData createdGame = CreateGame.createGame(authToken, game.gameName());
+            int gameID = CreateGame.createGame(authToken, game.gameName());
             response.status(200);
-            responseBody = "{\"gameID\": \"" + createdGame.gameID() + "\"}";
+            responseBody = "{\"gameID\": \"" + gameID + "\"}";
         } catch (CustomException e) {
             response.status(e.statusCode);
             responseBody = "{\"message\": \"" + e.getMessage() + "\"}";
