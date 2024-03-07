@@ -15,7 +15,7 @@ public class DatabaseManager {
      */
     static {
         try {
-            try (var propStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("db.properties")) {
+            try (var propStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("src/main/.gitignore/db.properties")) {
                 if (propStream == null) throw new Exception("Unable to load db.properties");
                 Properties props = new Properties();
                 props.load(propStream);
