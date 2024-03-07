@@ -80,7 +80,7 @@ public class SQLGameDao extends SQLProgenitor implements GameDAO {
 
     @Override
     public void updateGame(GameData gameData) throws DataAccessException {
-        var statement = "UPDATE gameDB SET whiteUsername = ?, blackUsername = ?, game = ?, WHERE gameID = ?";
+        var statement = "UPDATE gameDB SET whiteUsername = ?, blackUsername = ?, game = ? WHERE gameID = ?";
         Gson gson = new Gson();
         String gameJSON = gson.toJson(gameData.game());
         executeUpdate(statement, gameData.whiteUsername(), gameData.blackUsername(), gameJSON, gameData.gameID());

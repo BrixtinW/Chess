@@ -6,10 +6,12 @@ import dataAccess.Exceptions.UnauthorizedRequest;
 import dataAccess.SQLDataAccess.SQLUserDao;
 import model.AuthData;
 import model.UserData;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
 
 import static service.ServiceProgenitor.createAuth;
+import static service.ServiceProgenitor.passwordHash;
 
 public class Login {
 
@@ -17,7 +19,8 @@ public class Login {
         SQLUserDao userDao = new SQLUserDao();
 
         UserData userdata = userDao.getUser(username);
-        if (userdata == null || !Objects.equals(userdata.password(), password)){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (!encoder.matches(password, userdata.password())){
             throw new UnauthorizedRequest("Error: unauthorized");
         }
 

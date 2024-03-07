@@ -8,6 +8,7 @@ import dataAccess.SQLDataAccess.SQLAuthDao;
 import dataAccess.SQLDataAccess.SQLUserDao;
 import model.AuthData;
 import model.UserData;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.UUID;
 
@@ -37,5 +38,10 @@ public class ServiceProgenitor {
         authDao.createAuth(authObj);
 
         return authObj;
+    }
+
+    static String passwordHash(String password){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(password);
     }
 }
