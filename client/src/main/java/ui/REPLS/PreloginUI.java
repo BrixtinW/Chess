@@ -21,6 +21,7 @@ public class PreloginUI extends REPL {
                             if (responseArray.length == 2){
                                 PostloginUI repl = new PostloginUI();
                                 repl.authToken = responseArray[1];
+                                System.out.print(repl.authToken);
                                 repl.start();
                             }
                     } else {
@@ -32,6 +33,7 @@ public class PreloginUI extends REPL {
                         if (responseArray.length == 2) {
                             PostloginUI repl = new PostloginUI();
                             repl.authToken = responseArray[1];
+                            System.out.print(repl.authToken);
                             repl.start();
                         }
                     } else {

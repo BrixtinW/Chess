@@ -54,11 +54,23 @@ public class ServerFacade {
 
         JsonObject jsonObject = connect("DELETE", "/session", null, authToken);
 
-        System.out.println(jsonObject.toString())
+        System.out.println(jsonObject.toString());
 
         return;
 
         }
+
+    public static void listGames(String authToken) {
+
+        System.out.println(authToken);
+
+        JsonObject jsonObject = connect("GET", "/game", null, authToken);
+
+        System.out.println(jsonObject.toString());
+
+        return;
+
+    }
 
 
     private static JsonObject connect(String endpointType, String api, String jsonPayload, String authToken) {
@@ -74,11 +86,11 @@ public class ServerFacade {
 
             // Set request method to POST
             connection.setRequestMethod(endpointType);
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
-//            if (authToken != null) {
-                connection.setRequestProperty("Authorization", authToken);
+//            if (endpointType != "GET") {
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setDoOutput(true);
 //            }
+                connection.setRequestProperty("Authorization", authToken);
 
 
             // Write JSON payload to the connection's output stream

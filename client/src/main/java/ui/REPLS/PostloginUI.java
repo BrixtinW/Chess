@@ -25,7 +25,7 @@ public class PostloginUI extends REPL {
 //                    NOT FINISHED
                 break;
             case "list":
-//                    NOT FINISHED
+                ServerFacade.listGames(authToken);
                 break;
             case "join":
 //                    NOT FINISHED
