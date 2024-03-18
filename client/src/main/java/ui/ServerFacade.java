@@ -111,19 +111,20 @@ public class ServerFacade {
 
     }
 
-    public static String[] joinGame(String[] parsedInput){
+    public static void joinGame(String[] parsedInput, String authToken){
+
         System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2]);
 
         // Create JSON payload for the request
-        String jsonPayload = String.format("{\"playerColor\": \"%s\", \"gameID\": \"%s\"}", parsedInput[1], parsedInput[2]);
+        String jsonPayload = String.format("{\"gameID\": \"%s\", \"playerColor\": \"%s\"}", parsedInput[1], parsedInput[2]);
 
-        JsonObject jsonObject = connect("PUT", "/game", jsonPayload, null);
+        JsonObject jsonObject = connect("PUT", "/game", jsonPayload, authToken);
 
-        if (jsonObject == null) { return new String[0]; }
+//        if (jsonObject == null) { return new String[0]; }
 
-        String name = jsonObject.get("username").getAsString();
-        String authToken = jsonObject.get("authToken").getAsString();
-        return new String[] { name, authToken };
+        String message = jsonObject.get("message").getAsString();
+        System.out.println(message);
+        return;
 
     }
 
