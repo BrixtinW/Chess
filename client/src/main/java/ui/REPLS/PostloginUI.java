@@ -29,10 +29,9 @@ public class PostloginUI extends REPL {
                 ServerFacade.listGames(authToken);
                 break;
             case "join":
-//                    NOT FINISHED
-                break;
-            case "observe":
-//                    NOT FINISHED
+                ServerFacade.joinGame(parsedInput, authToken);
+                GameplayUI repl = new GameplayUI();
+                repl.start();
                 break;
             default:
                 System.out.println("Ya trash cuz.\ntype help for God's sake");
