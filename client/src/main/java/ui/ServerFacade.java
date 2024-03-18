@@ -9,6 +9,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 
 
 public class ServerFacade {
@@ -60,15 +62,68 @@ public class ServerFacade {
 
         }
 
-    public static void listGames(String authToken) {
+    public static String createGame(String[] parsedInput, String authToken) {
+        System.out.println(parsedInput[0] + " " + parsedInput[1]);
 
-        System.out.println(authToken);
+        // Create JSON payload for the request
+        String jsonPayload = String.format("{\"gameName\": \"%s\"}", parsedInput[1]);
+
+        JsonObject jsonObject = connect("POST", "/game", jsonPayload, authToken);
+
+//        if (jsonObject == null) { return new String[0]; }
+
+        String id = jsonObject.get("gameID").getAsString();
+
+        return id;
+
+    }
+
+    public static void listGames(String authToken) {
 
         JsonObject jsonObject = connect("GET", "/game", null, authToken);
 
-        System.out.println(jsonObject.toString());
+        JsonArray jsonArray = jsonObject.getAsJsonArray("games");
+
+        // Iterate over the elements in the array
+        for (JsonElement element : jsonArray) {
+            if (element.isJsonObject()) {
+                JsonObject gameObject = element.getAsJsonObject();
+                int gameId = gameObject.get("gameID").getAsInt();
+                String gameName = gameObject.get("gameName").getAsString();
+                String whitePlayer = !gameObject.get("whiteUsername").isJsonNull()
+                        ? gameObject.get("whiteUsername").getAsString()
+                        : "________";
+
+                String blackPlayer = !gameObject.get("blackUsername").isJsonNull()
+                        ? gameObject.get("blackUsername").getAsString()
+                        : "________";
+
+
+                System.out.println("\tGame ID: " + gameId);
+                System.out.println("\tGame Name: " + gameName);
+                System.out.println("\tWhite Player: " + whitePlayer);
+                System.out.println("\tBlack Player: " + blackPlayer);
+                System.out.println();
+            }
+        }
 
         return;
+
+    }
+
+    public static String[] joinGame(String[] parsedInput){
+        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2]);
+
+        // Create JSON payload for the request
+        String jsonPayload = String.format("{\"playerColor\": \"%s\", \"gameID\": \"%s\"}", parsedInput[1], parsedInput[2]);
+
+        JsonObject jsonObject = connect("PUT", "/game", jsonPayload, null);
+
+        if (jsonObject == null) { return new String[0]; }
+
+        String name = jsonObject.get("username").getAsString();
+        String authToken = jsonObject.get("authToken").getAsString();
+        return new String[] { name, authToken };
 
     }
 
@@ -94,8 +149,8 @@ public class ServerFacade {
 
 
             // Write JSON payload to the connection's output stream
-            try (OutputStream outputStream = connection.getOutputStream()) {
-                if (jsonPayload != null) {
+            if (jsonPayload != null) {
+                try (OutputStream outputStream = connection.getOutputStream()) {
                     byte[] input = jsonPayload.getBytes(StandardCharsets.UTF_8);
                     outputStream.write(input, 0, input.length);
                 }

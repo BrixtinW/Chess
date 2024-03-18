@@ -16,13 +16,14 @@ public class PostloginUI extends REPL {
 
         switch (parsedInput[0]) {
             case "help":
-                System.out.println( SET_TEXT_COLOR_RED + "\thelp" + SET_TEXT_COLOR_LIGHT_GREY + " - well it seems to be working for you so far. Read and learn." + SET_TEXT_COLOR_RED + "\n\tquit" + SET_TEXT_COLOR_LIGHT_GREY + " - Exit the program." + SET_TEXT_COLOR_RED + "\n\tlogin <USERNAME> <PASSWORD>" + SET_TEXT_COLOR_LIGHT_GREY + " - abandon hope all ye who enter here..." + SET_TEXT_COLOR_RED + "\n\tregister <USERNAME> <PASSWORD> <EMAIL>" + SET_TEXT_COLOR_LIGHT_GREY + " - Joooiiin ussssssss :]");
+                System.out.println( SET_TEXT_COLOR_RED + "\thelp" + SET_TEXT_COLOR_LIGHT_GREY + " - Well it seems to be working for you so far. Read and learn." + SET_TEXT_COLOR_RED + "\n\tlogout" + SET_TEXT_COLOR_LIGHT_GREY + " - Logout user." + SET_TEXT_COLOR_RED + "\n\tcreate <Name>" + SET_TEXT_COLOR_LIGHT_GREY + " - Create a game and give it a name" + SET_TEXT_COLOR_RED + "\n\tlist" + SET_TEXT_COLOR_LIGHT_GREY + " - List all available games" +  SET_TEXT_COLOR_RED +"\n\tjoin <ID> <WHITE|BLACK|[empty]>" + SET_TEXT_COLOR_LIGHT_GREY + " - Join an existing game.");
                 break;
             case "logout":
                 ServerFacade.logout(authToken);
                 return true;
             case "create":
-//                    NOT FINISHED
+                String gameID = ServerFacade.createGame(parsedInput, authToken);
+                System.out.println("Created Game #" + gameID);
                 break;
             case "list":
                 ServerFacade.listGames(authToken);
