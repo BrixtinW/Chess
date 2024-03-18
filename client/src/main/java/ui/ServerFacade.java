@@ -56,6 +56,8 @@ public class ServerFacade {
 
         JsonObject jsonObject = connect("DELETE", "/session", null, authToken);
 
+        if (jsonObject == null) { return; }
+
         System.out.println(jsonObject.toString());
 
         return;
@@ -70,7 +72,7 @@ public class ServerFacade {
 
         JsonObject jsonObject = connect("POST", "/game", jsonPayload, authToken);
 
-//        if (jsonObject == null) { return new String[0]; }
+        if (jsonObject == null) { return null; }
 
         String id = jsonObject.get("gameID").getAsString();
 
