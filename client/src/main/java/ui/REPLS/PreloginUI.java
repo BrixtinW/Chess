@@ -11,7 +11,7 @@ public class PreloginUI extends REPL {
 
             switch (parsedInput[0]) {
                 case "help":
-                    System.out.println( SET_TEXT_COLOR_RED + "\thelp" + SET_TEXT_COLOR_LIGHT_GREY + " - well it seems to be working for you so far. Read and learn." + SET_TEXT_COLOR_RED + "\n\tquit" + SET_TEXT_COLOR_LIGHT_GREY + " - Exit the program." + SET_TEXT_COLOR_RED + "\n\tlogin <USERNAME> <PASSWORD>" + SET_TEXT_COLOR_LIGHT_GREY + " - abandon hope all ye who enter here..." + SET_TEXT_COLOR_RED + "\n\tregister <USERNAME> <PASSWORD> <EMAIL>" + SET_TEXT_COLOR_LIGHT_GREY + " - Joooiiin ussssssss :]");
+                    System.out.println( SET_TEXT_COLOR_RED + "\thelp" + SET_TEXT_COLOR_LIGHT_GREY + " - List all valid commands" + SET_TEXT_COLOR_RED + "\n\tquit" + SET_TEXT_COLOR_LIGHT_GREY + " - Exit the program" + SET_TEXT_COLOR_RED + "\n\tlogin <USERNAME> <PASSWORD>" + SET_TEXT_COLOR_LIGHT_GREY + " - Login to an existing account" + SET_TEXT_COLOR_RED + "\n\tregister <USERNAME> <PASSWORD> <EMAIL>" + SET_TEXT_COLOR_LIGHT_GREY + " - Register to create an account");
                     break;
                 case "quit":
                     return true;
@@ -23,9 +23,11 @@ public class PreloginUI extends REPL {
                                 repl.authToken = responseArray[1];
                                 System.out.println("Logged In Successfully!");
                                 repl.start();
+                                break;
                             }
                     } else {
-                        System.out.print("type 'login' and then your username and password after it. Your format was wrong >:[");
+                        System.out.print("Invalid Format\nType 'login' and then your username and password after it.");
+                        break;
                     }
                 case "register":
                     if(parsedInput.length == 4) {
@@ -35,12 +37,14 @@ public class PreloginUI extends REPL {
                             repl.authToken = responseArray[1];
                             System.out.println("Registered Successfully!");
                             repl.start();
+                            break;
                         }
                     } else {
-                        System.out.print("type 'register' and then your username, password  and email after it. Your format was wrong >:[");
+                        System.out.print("Invalid Format\nType 'register' and then your username, password  and email after it");
+                        break;
                     }
                 default:
-                    System.out.println("Ya trash cuz.\ntype help for God's sake");
+                    System.out.println("Invalid Command\nType help to see all valid commands");
             }
             return false;
         }

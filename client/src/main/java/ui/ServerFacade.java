@@ -54,7 +54,7 @@ public class ServerFacade {
 
         if (jsonObject == null) { return; }
 
-        System.out.println(jsonObject.toString());
+        System.out.println("User Logged Out Successfully!");
 
         return;
 
@@ -62,6 +62,7 @@ public class ServerFacade {
 
     public static String createGame(String[] parsedInput, String authToken) {
 //        System.out.println(parsedInput[0] + " " + parsedInput[1]);
+
 
         String jsonPayload = String.format("{\"gameName\": \"%s\"}", parsedInput[1]);
 
@@ -107,7 +108,7 @@ public class ServerFacade {
 
     }
 
-    public static void joinGame(String[] parsedInput, String authToken){
+    public static String joinGame(String[] parsedInput, String authToken){
 
 //        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2]);
 
@@ -116,11 +117,14 @@ public class ServerFacade {
         if (parsedInput.length == 2) {
             jsonPayload = String.format("{\"gameID\": \"%s\", \"playerColor\": null}", parsedInput[1]);
         } else if (parsedInput.length == 3){
-            jsonPayload = String.format("{\"gameID\": \"%s\", \"playerColor\": \"%s\"}", parsedInput[1], parsedInput[2]);
+            jsonPayload = String.format("{\"gameID\": \"%s\", \"playerColor\": \"%s\"}", parsedInput[1], parsedInput[2].toUpperCase());
         }
 
         JsonObject jsonObject = connect("PUT", "/game", jsonPayload, authToken);
-        return;
+
+        if (jsonObject == null){ return null; }
+
+        return jsonObject.get("message").getAsString();
 
     }
 
