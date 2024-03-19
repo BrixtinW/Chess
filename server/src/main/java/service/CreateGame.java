@@ -19,6 +19,7 @@ public class CreateGame extends ServiceProgenitor {
 
             SQLGameDao gameDao = new SQLGameDao();
             GameData game = new GameData(0, null, null, gameName, new ChessGame());
+            game.game().getBoard().resetBoard();
             return gameDao.createGame(game);
     }
 
