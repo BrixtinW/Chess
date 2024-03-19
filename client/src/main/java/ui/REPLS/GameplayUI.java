@@ -1,11 +1,19 @@
 package ui.REPLS;
 
-import ui.ServerFacade;
+import ui.EscapeSequences.*;
 
-import static ui.EscapeSequences.SET_TEXT_COLOR_LIGHT_GREY;
-import static ui.EscapeSequences.SET_TEXT_COLOR_RED;
+import static ui.EscapeSequences.*;
 
 public class GameplayUI extends REPL{
+
+    public GameplayUI(){
+//        String whiteBoard = "White Board:/n" +
+//                SET_TEXT_COLOR_DARK_GREY + "/t    H  G  F  E  D  C  B  A    /n" + RESET_TEXT_COLOR +
+//                SET_TEXT_COLOR_DARK_GREY + "/t    H  G  F  E  D  C  B  A    /n" + RESET_TEXT_COLOR;
+//
+//
+//        System.out.println(whiteBoard);
+    }
 
     @Override
     protected Boolean evaluate(String[] parsedInput) {
@@ -13,14 +21,14 @@ public class GameplayUI extends REPL{
         switch (parsedInput[0]) {
             case "help":
                 break;
-            case "logout":
+            case "quit":
                 return true;
-            case "create":
-                break;
-            case "list":
-                break;
-            case "join":
-                break;
+//            case "create":
+//                break;
+//            case "list":
+//                break;
+//            case "join":
+//                break;
             default:
                 System.out.println("Ya trash cuz.\ntype help for God's sake");
         }
