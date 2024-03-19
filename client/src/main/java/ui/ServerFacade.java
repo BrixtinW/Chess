@@ -18,7 +18,7 @@ public class ServerFacade {
     private static final String SERVER_URL = "http://localhost:8080";
 
     public static String[] login(String[] parsedInput) {
-        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2]);
+//        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2]);
 
         // Create JSON payload for the request
         String jsonPayload = String.format("{\"username\": \"%s\", \"password\": \"%s\"}", parsedInput[1], parsedInput[2]);
@@ -35,7 +35,7 @@ public class ServerFacade {
 
 
     public static String[] register(String[] parsedInput){
-        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2] + " " +  parsedInput[3]);
+//        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2] + " " +  parsedInput[3]);
 
         // Create JSON payload for the request
         String jsonPayload = String.format("{\"username\": \"%s\", \"password\": \"%s\", \"email\": \"%s\"}", parsedInput[1], parsedInput[2],  parsedInput[3]);
@@ -52,8 +52,6 @@ public class ServerFacade {
 
     public static void logout(String authToken) {
 
-        System.out.println(authToken);
-
         JsonObject jsonObject = connect("DELETE", "/session", null, authToken);
 
         if (jsonObject == null) { return; }
@@ -65,7 +63,7 @@ public class ServerFacade {
         }
 
     public static String createGame(String[] parsedInput, String authToken) {
-        System.out.println(parsedInput[0] + " " + parsedInput[1]);
+//        System.out.println(parsedInput[0] + " " + parsedInput[1]);
 
         // Create JSON payload for the request
         String jsonPayload = String.format("{\"gameName\": \"%s\"}", parsedInput[1]);
@@ -115,17 +113,22 @@ public class ServerFacade {
 
     public static void joinGame(String[] parsedInput, String authToken){
 
-        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2]);
+//        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2]);
 
+        String jsonPayload = null;
         // Create JSON payload for the request
-        String jsonPayload = String.format("{\"gameID\": \"%s\", \"playerColor\": \"%s\"}", parsedInput[1], parsedInput[2]);
+        if (parsedInput.length == 2) {
+            jsonPayload = String.format("{\"gameID\": \"%s\", \"playerColor\": null}", parsedInput[1]);
+        } else if (parsedInput.length == 3){
+            jsonPayload = String.format("{\"gameID\": \"%s\", \"playerColor\": \"%s\"}", parsedInput[1], parsedInput[2]);
+        }
 
         JsonObject jsonObject = connect("PUT", "/game", jsonPayload, authToken);
 
 //        if (jsonObject == null) { return new String[0]; }
 
-        String message = jsonObject.get("message").getAsString();
-        System.out.println(message);
+//        String message = jsonObject.get("message").getAsString();
+//        System.out.println(message);
         return;
 
     }
