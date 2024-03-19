@@ -20,7 +20,6 @@ public class ServerFacade {
     public static String[] login(String[] parsedInput) {
 //        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2]);
 
-        // Create JSON payload for the request
         String jsonPayload = String.format("{\"username\": \"%s\", \"password\": \"%s\"}", parsedInput[1], parsedInput[2]);
 
         JsonObject jsonObject = connect("POST", "/session", jsonPayload, null);
@@ -37,7 +36,6 @@ public class ServerFacade {
     public static String[] register(String[] parsedInput){
 //        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2] + " " +  parsedInput[3]);
 
-        // Create JSON payload for the request
         String jsonPayload = String.format("{\"username\": \"%s\", \"password\": \"%s\", \"email\": \"%s\"}", parsedInput[1], parsedInput[2],  parsedInput[3]);
 
             JsonObject jsonObject = connect("POST", "/user", jsonPayload, null);
@@ -65,7 +63,6 @@ public class ServerFacade {
     public static String createGame(String[] parsedInput, String authToken) {
 //        System.out.println(parsedInput[0] + " " + parsedInput[1]);
 
-        // Create JSON payload for the request
         String jsonPayload = String.format("{\"gameName\": \"%s\"}", parsedInput[1]);
 
         JsonObject jsonObject = connect("POST", "/game", jsonPayload, authToken);
@@ -84,7 +81,6 @@ public class ServerFacade {
 
         JsonArray jsonArray = jsonObject.getAsJsonArray("games");
 
-        // Iterate over the elements in the array
         for (JsonElement element : jsonArray) {
             if (element.isJsonObject()) {
                 JsonObject gameObject = element.getAsJsonObject();
@@ -116,7 +112,7 @@ public class ServerFacade {
 //        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2]);
 
         String jsonPayload = null;
-        // Create JSON payload for the request
+
         if (parsedInput.length == 2) {
             jsonPayload = String.format("{\"gameID\": \"%s\", \"playerColor\": null}", parsedInput[1]);
         } else if (parsedInput.length == 3){
@@ -124,11 +120,6 @@ public class ServerFacade {
         }
 
         JsonObject jsonObject = connect("PUT", "/game", jsonPayload, authToken);
-
-//        if (jsonObject == null) { return new String[0]; }
-
-//        String message = jsonObject.get("message").getAsString();
-//        System.out.println(message);
         return;
 
     }
@@ -142,19 +133,14 @@ public class ServerFacade {
 
             URL url = new URL(SERVER_URL + api);
 
-            // Open a connection to the server
             connection = (HttpURLConnection) url.openConnection();
 
-            // Set request method to POST
             connection.setRequestMethod(endpointType);
-//            if (endpointType != "GET") {
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setDoOutput(true);
-//            }
-                connection.setRequestProperty("Authorization", authToken);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Authorization", authToken);
 
 
-            // Write JSON payload to the connection's output stream
             if (jsonPayload != null) {
                 try (OutputStream outputStream = connection.getOutputStream()) {
                     byte[] input = jsonPayload.getBytes(StandardCharsets.UTF_8);
@@ -162,10 +148,8 @@ public class ServerFacade {
                 }
             }
 
-            // Get the response code from the server
             int responseCode = connection.getResponseCode();
 
-            // Read the response from the server
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 StringBuilder response = new StringBuilder();
                 String line;
@@ -177,7 +161,6 @@ public class ServerFacade {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
-            // Close the connection in the finally block to ensure it's always closed
             if (connection != null) {
                 connection.disconnect();
             }
@@ -185,14 +168,7 @@ public class ServerFacade {
 
         return null;
     }
-//
-//    }
-//
-//    public static void createGame(String[] parsedInput){
-//
-//    }
-//
-//    public static String listGames(String[] parsedInput) throws IOException {
+
 
 }
 
