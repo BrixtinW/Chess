@@ -208,7 +208,7 @@ public class ServerFacadeTests {
 
         String[] input = {"join", gameID, "WHITE"};
         try {
-        ServerFacade.joinGame(input, "invalidAuthToken");
+            ServerFacade.joinGame(input, "invalidAuthToken");
         } catch (Exception e){
             Assertions.assertTrue(true);
         }
