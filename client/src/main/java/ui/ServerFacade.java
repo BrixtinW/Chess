@@ -15,7 +15,7 @@ import com.google.gson.JsonElement;
 
 public class ServerFacade {
 
-    private static final String SERVER_URL = "http://localhost:8080";
+    public static String SERVER_URL = "http://localhost:";
 
     public static String[] login(String[] parsedInput) {
 //        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2]);
