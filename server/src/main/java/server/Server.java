@@ -10,7 +10,7 @@ public class Server {
 
         Spark.staticFiles.location("web");
 
-//        Spark.webSocket("/connect", webSocketHandler);
+//        Spark.webSocket("/connect", webSocket.webSocketHandler);
 
         Spark.delete("/db", ClearHandler::clearApplication); // DONE!
         Spark.post("/game", CreateGameHandler::createGame); // DONE!
