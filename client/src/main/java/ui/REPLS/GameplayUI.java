@@ -1,10 +1,15 @@
 package ui.REPLS;
 
+import chess.ChessGame;
 import ui.EscapeSequences.*;
+import ui.WebSocket.GameHandler;
+import ui.WebSocket.WebSocketFacade;
 
 import static ui.EscapeSequences.*;
 
-public class GameplayUI extends REPL{
+public class GameplayUI extends REPL implements GameHandler {
+
+    WebSocketFacade wsf = new WebSocketFacade(this);
 
     public GameplayUI(){
         String whiteBoard = SET_TEXT_BOLD + SET_TEXT_COLOR_WHITE + SET_BG_COLOR_BLACK + "  White Board:\n\t" + SET_TEXT_COLOR_BLACK +
@@ -46,16 +51,29 @@ public class GameplayUI extends REPL{
                 break;
             case "quit":
                 return true;
-//            case "create":
-//                break;
-//            case "list":
-//                break;
-//            case "join":
-//                break;
+            case "r":
+                break;
+            case "leave":
+                break;
+            case "mm":
+                break;
+            case "resign":
+                break;
+            case "h":
+                break;
             default:
                 System.out.println("Ya trash cuz.\ntype help for God's sake");
         }
         return false;
     }
 
+    @Override
+    public String updateGame(ChessGame game) {
+        return null;
+    }
+
+    @Override
+    public void printMessage(String message) {
+        System.out.println(message);
+    }
 }
