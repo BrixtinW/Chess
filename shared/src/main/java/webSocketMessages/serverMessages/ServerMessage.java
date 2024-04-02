@@ -39,4 +39,11 @@ public class ServerMessage {
     public int hashCode() {
         return Objects.hash(getServerMessageType());
     }
+
+    public ServerMessageType getMessageType(){
+        return this.serverMessageType;
+    }
+
 }
+
+

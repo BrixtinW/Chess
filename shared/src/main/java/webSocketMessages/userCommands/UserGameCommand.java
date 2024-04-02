@@ -37,6 +37,10 @@ public class UserGameCommand {
         return this.commandType;
     }
 
+    public Integer getGameID() {
+        return this.gameID;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)

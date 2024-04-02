@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.glassfish.tyrus.core.wsadl.model.Endpoint;
+import webSocketMessages.serverMessages.ServerMessage;
+import webSocketMessages.userCommands.*;
 
 import javax.websocket.*;
 import java.util.Map;
@@ -27,31 +29,31 @@ public class WebSocketHandler extends Endpoint {
 
     @OnMessage
     public void onMessage(String message) {
-        System.out.println("Message received from server: " + message);
-        Gson gson = new Gson();
-        JsonObject msg = gson.fromJson(message, JsonObject.class);
+        System.out.println("Message received from client: " + message);
+        UserGameCommand msg = new Gson().fromJson(message, UserGameCommand.class);
+        System.out.println(msg.getCommandType());
 
+        if (msg.getCommandType() == UserGameCommand.CommandType.MAKE_MOVE){
+            MakeMove commandObj = (MakeMove) msg;
+            GameService.makeMove(commandObj.getAuthString(), commandObj.getGameID(), commandObj.getMove());
 
+        } else if (msg.getCommandType() == UserGameCommand.CommandType.JOIN_OBSERVER) {
+            JoinObserver commandObj = (JoinObserver) msg;
+            GameService.joinObserver(commandObj.getAuthString(), commandObj.getGameID());
 
-//        ALL OF THE BELOW IS JUST A PLACE HOLDER UNTIL YOU FIND OUT HOW TO DO ENUM MESSAGE SHENANIGANS!
-        // Get a JsonElement for a specific key
-        String type = msg.get("type").getAsString();
+        } else if (msg.getCommandType() == UserGameCommand.CommandType.JOIN_PLAYER) {
+            JoinPlayer commandObj = (JoinPlayer) msg;
+            GameService.joinPlayer(commandObj.getAuthString(), commandObj.getGameID(), commandObj.getPlayerColor());
 
-        // Check the type of the JsonElement
-        if (type != null) {
-            if (Objects.equals(type, "a")) {
-                System.out.println("Type of 'name' is primitive");
-            } else if (Objects.equals(type, "b")) {
-                System.out.println("Type of 'name' is object");
-            } else if (Objects.equals(type, "c")) {
-                System.out.println("Type of 'name' is array");
-            } else if (Objects.equals(type, "d")) {
-                System.out.println("Type of 'name' is null");
-            }
-        } else {
-            System.out.println("'name' not found in JSON object");
+        } else if (msg.getCommandType() == UserGameCommand.CommandType.LEAVE) {
+            Leave commandObj = (Leave) msg;
+            GameService.leaveGame(commandObj.getAuthString(), commandObj.getGameID());
+
+        } else if (msg.getCommandType() == UserGameCommand.CommandType.RESIGN) {
+            Resign commandObj = (Resign) msg;
+            GameService.resignGame(commandObj.getAuthString(), commandObj.getGameID());
+
         }
-
 
     }
 

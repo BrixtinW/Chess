@@ -10,7 +10,7 @@ public class Main {
 
         Server server = new Server();
         var port = server.run(0);
-        ServerFacade.SERVER_URL = ServerFacade.SERVER_URL + port;
+        ServerFacade.SERVER_URL = ServerFacade.DEFAULT_URL + port;
 
         PreloginUI repl = new PreloginUI();
         repl.start();

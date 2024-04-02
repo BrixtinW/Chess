@@ -1,15 +1,18 @@
 package webSocket;
 
+import chess.ChessGame;
+import chess.ChessMove;
+
 public class GameService {
 
-    public void joinPlayer(){}
+    public static void joinPlayer(String authToken, Integer gameID, ChessGame.TeamColor teamColor){}
 
-    public void joinObserver(){}
+    public static void joinObserver(String authToken, Integer gameID){}
 
-    public void makeMove(){}
+    public static void makeMove(String authToken, Integer gameID, ChessMove move){}
 
-    public void leaveGame(){}
+    public static void leaveGame(String authToken, Integer gameID){}
 
-    public void resignGame(){}
+    public static void resignGame(String authToken, Integer gameID){}
 
 }
