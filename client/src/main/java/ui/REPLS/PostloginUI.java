@@ -42,7 +42,12 @@ public class PostloginUI extends REPL {
                     System.out.println("Unable to join game\n Make sure the player color is available by typing 'list'");
                     break;
                 }
-                GameplayUI repl = new GameplayUI();
+                GameplayUI repl;
+                if (parsedInput.length == 3){
+                    repl = new GameplayUI(parsedInput[2]);
+                } else {
+                    repl = new GameplayUI(null);
+                }
                 repl.start();
                 System.out.println("Quit Game Successfully!");
                 break;
