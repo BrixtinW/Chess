@@ -12,6 +12,7 @@ import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.MakeMove;
 
 import javax.websocket.*;
+import javax.websocket.server.ServerEndpoint;
 import java.net.URI;
 
 public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<String> {
@@ -21,23 +22,24 @@ public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<St
 
     public WebSocketFacade(GameHandler gameHandler) {
         this.gameHandler = gameHandler;
+    }
 
-
+    public void connect() {
         try {
-            // Connect to WebSocket server
-            URI uri = new URI("ws://" + ServerFacade.DEFAULT_URL + "/websocket"); // Adjust URL accordingly
-            this.session = ContainerProvider.getWebSocketContainer().connectToServer(this, uri);
-
-            // Keep the client running until interrupted
-            Thread.sleep(Long.MAX_VALUE);
+            URI uri = new URI("ws://" + ServerFacade.DEFAULT_URL + "/websocket");
+            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+            this.session = container.connectToServer(this, uri);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @OnOpen
-    public void onOpen(Session session) {
-        System.out.println("Connected to WebSocket server");
+    public void disconnect() {
+        try {
+            this.session.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @OnMessage
@@ -62,6 +64,11 @@ public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<St
 
     }
 
+    @OnOpen
+    public void onOpen(Session session) {
+        System.out.println("Connected to WebSocket server");
+    }
+
     @OnClose
     public void onClose() {
         System.out.println("Connection closed");
@@ -71,6 +78,15 @@ public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<St
     public void onError(Session session, Throwable throwable) {
         System.err.println("Error on WebSocket: " + throwable.getMessage());
     }
+
+    public void sendMessage(String message) {
+        try {
+            this.session.getBasicRemote().sendText(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }

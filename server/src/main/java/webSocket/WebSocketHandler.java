@@ -14,11 +14,11 @@ import java.util.Objects;
 public class WebSocketHandler extends Endpoint {
 
     private WebSocketSessions webSocketSessions;
-    private Gson gson;
+//    private Gson gson;
 
     public WebSocketHandler(WebSocketSessions webSocketSessions) {
         this.webSocketSessions = new WebSocketSessions();
-        this.gson = new Gson();
+//        this.gson = new Gson();
     }
 
     @OnOpen
@@ -35,23 +35,23 @@ public class WebSocketHandler extends Endpoint {
 
         if (msg.getCommandType() == UserGameCommand.CommandType.MAKE_MOVE){
             MakeMove commandObj = (MakeMove) msg;
-            GameService.makeMove(commandObj.getAuthString(), commandObj.getGameID(), commandObj.getMove());
+            GameService.makeMove(commandObj.getAuthString(), commandObj.getGameID(), commandObj.getMove(), webSocketSessions);
 
         } else if (msg.getCommandType() == UserGameCommand.CommandType.JOIN_OBSERVER) {
             JoinObserver commandObj = (JoinObserver) msg;
-            GameService.joinObserver(commandObj.getAuthString(), commandObj.getGameID());
+            GameService.joinObserver(commandObj.getAuthString(), commandObj.getGameID(), webSocketSessions);
 
         } else if (msg.getCommandType() == UserGameCommand.CommandType.JOIN_PLAYER) {
             JoinPlayer commandObj = (JoinPlayer) msg;
-            GameService.joinPlayer(commandObj.getAuthString(), commandObj.getGameID(), commandObj.getPlayerColor());
+            GameService.joinPlayer(commandObj.getAuthString(), commandObj.getGameID(), commandObj.getPlayerColor(), webSocketSessions);
 
         } else if (msg.getCommandType() == UserGameCommand.CommandType.LEAVE) {
             Leave commandObj = (Leave) msg;
-            GameService.leaveGame(commandObj.getAuthString(), commandObj.getGameID());
+            GameService.leaveGame(commandObj.getAuthString(), commandObj.getGameID(), webSocketSessions);
 
         } else if (msg.getCommandType() == UserGameCommand.CommandType.RESIGN) {
             Resign commandObj = (Resign) msg;
-            GameService.resignGame(commandObj.getAuthString(), commandObj.getGameID());
+            GameService.resignGame(commandObj.getAuthString(), commandObj.getGameID(), webSocketSessions);
 
         }
 
@@ -68,32 +68,32 @@ public class WebSocketHandler extends Endpoint {
         System.err.println("Error on WebSocket: " + throwable.getMessage());
     }
 
-    private void sendMessage(Integer gameID, String authToken, String message) {
-        Session session = webSocketSessions.getSessionsForGame(gameID).get(authToken);
-        if (session != null) {
-            String jsonMessage = gson.toJson(message);
-            try {
-                session.getBasicRemote().sendText(jsonMessage);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("Session not found for gameID: " + gameID + " and authToken: " + authToken);
-        }
-    }
-
-    private void broadcastMessage(Integer gameID, String exceptThisAuthToken, String message) {
-        for (Map.Entry<String, Session> entry : webSocketSessions.getSessionsForGame(gameID).entrySet()) {
-            if (!entry.getKey().equals(exceptThisAuthToken)) {
-                String jsonMessage = gson.toJson(message);
-                try {
-                    entry.getValue().getBasicRemote().sendText(jsonMessage);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+//    private void sendMessage(Integer gameID, String authToken, String message) {
+//        Session session = webSocketSessions.getSessionsForGame(gameID).get(authToken);
+//        if (session != null) {
+//            String jsonMessage = gson.toJson(message);
+//            try {
+//                session.getBasicRemote().sendText(jsonMessage);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            System.out.println("Session not found for gameID: " + gameID + " and authToken: " + authToken);
+//        }
+//    }
+//
+//    private void broadcastMessage(Integer gameID, String exceptThisAuthToken, String message) {
+//        for (Map.Entry<String, Session> entry : webSocketSessions.getSessionsForGame(gameID).entrySet()) {
+//            if (!entry.getKey().equals(exceptThisAuthToken)) {
+//                String jsonMessage = gson.toJson(message);
+//                try {
+//                    entry.getValue().getBasicRemote().sendText(jsonMessage);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
 
 }

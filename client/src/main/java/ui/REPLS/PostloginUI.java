@@ -44,9 +44,9 @@ public class PostloginUI extends REPL {
                 }
                 GameplayUI repl;
                 if (parsedInput.length == 3){
-                    repl = new GameplayUI(parsedInput[2]);
+                    repl = new GameplayUI(authToken, parsedInput[1], parsedInput[2]);
                 } else {
-                    repl = new GameplayUI(null);
+                    repl = new GameplayUI(authToken, parsedInput[1], null);
                 }
                 repl.start();
                 System.out.println("Quit Game Successfully!");
