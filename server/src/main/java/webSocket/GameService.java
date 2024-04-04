@@ -4,8 +4,12 @@ import chess.ChessGame;
 import chess.ChessMove;
 import com.google.gson.Gson;
 import dataAccess.Exceptions.DataAccessException;
+import dataAccess.MemoryDataAccess.MemoryAuthDao;
 import dataAccess.MemoryDataAccess.MemoryGameDao;
 import dataAccess.MemoryDataAccess.MemoryUserDao;
+import dataAccess.SQLDataAccess.SQLAuthDao;
+import dataAccess.SQLDataAccess.SQLGameDao;
+import model.AuthData;
 import model.GameData;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
@@ -20,24 +24,16 @@ public class GameService {
 
     public static void joinPlayer(String authToken, Integer gameID, ChessGame.TeamColor teamColor, WebSocketSessions webSocketSessions){
         try {
-            MemoryGameDao gameDao = new MemoryGameDao();
+            SQLGameDao gameDao = new SQLGameDao();
+            SQLAuthDao authDao = new SQLAuthDao();
             GameData gameData = gameDao.getGame(gameID);
+            AuthData authData = authDao.getAuth(authToken);
 
             LoadGame loadGame = new LoadGame(gameData.game());
             String loadGameString = gson.toJson(loadGame);
             sendMessage(webSocketSessions, gameID, authToken, loadGameString);
 
-            String name = "";
-            String color = "";
-            if (teamColor == ChessGame.TeamColor.BLACK){
-                name = gameData.blackUsername();
-                color = "black";
-            } else if (teamColor == ChessGame.TeamColor.WHITE) {
-                name = gameData.whiteUsername();
-                color = "white";
-            }
-
-            Notification notification = new Notification(name + "joined game as" + color);
+            Notification notification = new Notification(authData.username() + "joined game as" + teamColor.name());
             String notificationString = gson.toJson(notification);
             broadcastMessage(webSocketSessions, gameID, authToken, notificationString);
 
@@ -48,7 +44,27 @@ public class GameService {
         }
     }
 
-    public static void joinObserver(String authToken, Integer gameID, WebSocketSessions webSocketSessions){}
+    public static void joinObserver(String authToken, Integer gameID, WebSocketSessions webSocketSessions){
+        try {
+            SQLGameDao gameDao = new SQLGameDao();
+            SQLAuthDao authDao = new SQLAuthDao();
+            GameData gameData = gameDao.getGame(gameID);
+            AuthData authData = authDao.getAuth(authToken);
+
+            LoadGame loadGame = new LoadGame(gameData.game());
+            String loadGameString = gson.toJson(loadGame);
+            sendMessage(webSocketSessions, gameID, authToken, loadGameString);
+
+            Notification notification = new Notification(authData.username() + "joined game as an observer");
+            String notificationString = gson.toJson(notification);
+            broadcastMessage(webSocketSessions, gameID, authToken, notificationString);
+
+        } catch (DataAccessException e) {
+            Error error = new Error("Error: Invalid Game ID or Game Does Not Exist");
+            String errorString = gson.toJson(error);
+            sendMessage(webSocketSessions, gameID, authToken, errorString);
+        }
+    }
 
     public static void makeMove(String authToken, Integer gameID, ChessMove move, WebSocketSessions webSocketSessions){}
 

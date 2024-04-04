@@ -2,6 +2,7 @@ package ui.REPLS;
 
 import chess.ChessGame;
 import chess.ChessMove;
+import chess.ChessPiece;
 import com.google.gson.Gson;
 import ui.EscapeSequences.*;
 import ui.WebSocket.GameHandler;
@@ -13,7 +14,6 @@ import static ui.EscapeSequences.*;
 public class GameplayUI extends REPL implements GameHandler {
 
     WebSocketFacade wsf = new WebSocketFacade(this);
-    ChessGame game;
     String authToken;
     Integer gameID;
     ChessGame.TeamColor playerColor;
@@ -70,35 +70,12 @@ public class GameplayUI extends REPL implements GameHandler {
         }
 
 
-//        String[][] colors = {
-//                {SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY},
-//                {SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE},
-//                {SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY},
-//                {SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE},
-//                {SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY},
-//                {SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE},
-//                {SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY},
-//                {SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE}
-//        };
-//
-//        String[][] pieces = {
-//                {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-//                {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-//                {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-//                {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-//                {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-//                {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-//                {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-//                {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}
-//        };
-
-
 
         if (!this.playerColor.equals(ChessGame.TeamColor.BLACK)) {
 
             this.board = (boardColors, boardPieces) -> {
 
-                String string = SET_TEXT_BOLD + SET_TEXT_COLOR_WHITE + SET_BG_COLOR_BLACK + "  White Board:\n\t" + SET_TEXT_COLOR_BLACK +
+                String string = SET_TEXT_BOLD  + SET_BG_COLOR_BLACK + "\n\t" + SET_TEXT_COLOR_BLACK +
                         SET_BG_COLOR_LIGHT_GREY + "    H  G  F  E  D  C  B  A    " + RESET_BG_COLOR + "\n\t" +
                         SET_BG_COLOR_LIGHT_GREY + " 1 " + boardColors[0][0] + boardPieces[0][0] + boardColors[0][1] + boardPieces[0][1] + boardColors[0][2] + boardPieces[0][2] + boardColors[0][3] + boardPieces[0][3] + boardColors[0][4] + boardPieces[0][4] + boardColors[0][5] + boardPieces[0][5] + boardColors[0][6] + boardPieces[0][6] + boardColors[0][7] + boardPieces[0][7] + SET_BG_COLOR_LIGHT_GREY + " 1 " + RESET_BG_COLOR + "\n\t" +
                         SET_BG_COLOR_LIGHT_GREY + " 2 " + boardColors[1][0] + boardPieces[1][0] + boardColors[1][1] + boardPieces[1][1] + boardColors[1][2] + boardPieces[1][2] + boardColors[1][3] + boardPieces[1][3] + boardColors[1][4] + boardPieces[1][4] + boardColors[1][5] + boardPieces[1][5] + boardColors[1][6] + boardPieces[1][6] + boardColors[1][7] + boardPieces[1][7] + SET_BG_COLOR_LIGHT_GREY + " 2 " + RESET_BG_COLOR + "\n\t" +
@@ -116,7 +93,7 @@ public class GameplayUI extends REPL implements GameHandler {
         } else {
             this.board = (boardColors, boardPieces) -> {
 
-                String string = SET_TEXT_BOLD + SET_TEXT_COLOR_WHITE + SET_BG_COLOR_BLACK + "  White Board:\n\t" + SET_TEXT_COLOR_BLACK +
+                String string = SET_TEXT_BOLD + SET_BG_COLOR_BLACK + "\n\t" + SET_TEXT_COLOR_BLACK +
                         SET_BG_COLOR_LIGHT_GREY + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR + "\n\t" +
                         SET_BG_COLOR_LIGHT_GREY + " 8 " + boardColors[0][0] + boardPieces[0][0] + boardColors[0][1] + boardPieces[0][1] + boardColors[0][2] + boardPieces[0][2] + boardColors[0][3] + boardPieces[0][3] + boardColors[0][4] + boardPieces[0][4] + boardColors[0][5] + boardPieces[0][5] + boardColors[0][6] + boardPieces[0][6] + boardColors[0][7] + boardPieces[0][7] + SET_BG_COLOR_LIGHT_GREY + " 8 " + RESET_BG_COLOR + "\n\t" +
                         SET_BG_COLOR_LIGHT_GREY + " 7 " + boardColors[1][0] + boardPieces[1][0] + boardColors[1][1] + boardPieces[1][1] + boardColors[1][2] + boardPieces[1][2] + boardColors[1][3] + boardPieces[1][3] + boardColors[1][4] + boardPieces[1][4] + boardColors[1][5] + boardPieces[1][5] + boardColors[1][6] + boardPieces[1][6] + boardColors[1][7] + boardPieces[1][7] + SET_BG_COLOR_LIGHT_GREY + " 7 " + RESET_BG_COLOR + "\n\t" +
@@ -146,9 +123,6 @@ public class GameplayUI extends REPL implements GameHandler {
 //                SET_BG_COLOR_LIGHT_GREY + " 1 " + SET_BG_COLOR_LIGHT_GREY + BLACK_ROOK + SET_BG_COLOR_WHITE + BLACK_KNIGHT + SET_BG_COLOR_LIGHT_GREY + BLACK_BISHOP + SET_BG_COLOR_WHITE + BLACK_QUEEN + SET_BG_COLOR_LIGHT_GREY + BLACK_KING + SET_BG_COLOR_WHITE + BLACK_BISHOP + SET_BG_COLOR_LIGHT_GREY + BLACK_KNIGHT + SET_BG_COLOR_WHITE + BLACK_ROOK + SET_BG_COLOR_LIGHT_GREY + " 1 " + RESET_BG_COLOR + "\n\t" +
 //                SET_BG_COLOR_LIGHT_GREY + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR + "\n\t" + RESET_TEXT_BOLD_FAINT + RESET_TEXT_COLOR;
 
-
-//        System.out.println(whiteBoard);
-//        System.out.println();
 //        System.out.println(blackBoard);
 
         this.board.printBoard(colors, pieces);
@@ -198,7 +172,54 @@ public class GameplayUI extends REPL implements GameHandler {
 
     @Override
     public void updateGame(ChessGame game) {
-        this.game = game;
+
+        for (int i = 1; i < 9; i++) {
+            for (int j = 1; j < 9; j++) {
+
+                String piece = EMPTY;
+                if (playerColor == null || playerColor == ChessGame.TeamColor.WHITE) {
+
+                    switch (game.getBoard().boardArray[9 - i][j].getPieceType()) {
+                        case ChessPiece.PieceType.PAWN:
+                            break;
+                        case ChessPiece.PieceType.KNIGHT:
+                            break;
+                        case ChessPiece.PieceType.ROOK:
+                            break;
+                        case ChessPiece.PieceType.BISHOP:
+                            break;
+                        case ChessPiece.PieceType.QUEEN:
+                            break;
+                        case ChessPiece.PieceType.KING:
+                            break;
+                        default:
+                            piece = EMPTY;
+                    }
+                } else if (playerColor == ChessGame.TeamColor.BLACK) {
+                    switch (game.getBoard().boardArray[i][j].getPieceType()) {
+                        case ChessPiece.PieceType.PAWN:
+                            break;
+                        case ChessPiece.PieceType.KNIGHT:
+                            break;
+                        case ChessPiece.PieceType.ROOK:
+                            break;
+                        case ChessPiece.PieceType.BISHOP:
+                            break;
+                        case ChessPiece.PieceType.QUEEN:
+                            break;
+                        case ChessPiece.PieceType.KING:
+                            break;
+                        default:
+                            piece = EMPTY;
+                    }
+                }
+
+                this.pieces[i-1][j-1] = piece;
+
+            }
+        }
+
+        this.board.printBoard(colors, pieces);
     }
 
     @Override

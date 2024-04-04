@@ -22,6 +22,7 @@ public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<St
 
     public WebSocketFacade(GameHandler gameHandler) {
         this.gameHandler = gameHandler;
+        connect();
     }
 
     public void connect() {
@@ -29,6 +30,7 @@ public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<St
             URI uri = new URI("ws://" + ServerFacade.DEFAULT_URL + "/websocket");
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, uri);
+            System.out.println(this.session);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,15 +53,12 @@ public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<St
         if (msg.getMessageType() == ServerMessage.ServerMessageType.ERROR){
             Error commandObj = (Error) msg;
             gameHandler.printMessage(commandObj.getErrorMessage());
-//            NOT DONE
         } else if (msg.getMessageType() == ServerMessage.ServerMessageType.NOTIFICATION) {
             Notification commandObj = (Notification) msg;
             gameHandler.printMessage(commandObj.getMessage());
-//            NOT DONE
         } else if (msg.getMessageType() == ServerMessage.ServerMessageType.LOAD_GAME) {
             LoadGame commandObj = (LoadGame) msg;
             gameHandler.updateGame(commandObj.getGame());
-//            NOT DONE
         }
 
     }
@@ -72,6 +71,7 @@ public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<St
     @OnClose
     public void onClose() {
         System.out.println("Connection closed");
+        disconnect();
     }
 
     @OnError
