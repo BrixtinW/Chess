@@ -2,6 +2,7 @@ package server;
 
 import handler.*;
 import spark.*;
+import webSocket.WebSocketHandler;
 
 public class Server {
 
@@ -10,7 +11,7 @@ public class Server {
 
         Spark.staticFiles.location("web");
 
-//        Spark.webSocket("/connect", webSocket.webSocketHandler);
+        Spark.webSocket("/connect", WebSocketHandler.class);
 
         Spark.delete("/db", ClearHandler::clearApplication); // DONE!
         Spark.post("/game", CreateGameHandler::createGame); // DONE!

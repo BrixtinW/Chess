@@ -1,7 +1,6 @@
 package webSocket;
 
-//import org.glassfish.grizzly.http.server.Session;
-import javax.websocket.Session;
+import org.eclipse.jetty.websocket.api.Session;
 
 import java.util.Map;
 import java.util.HashMap;

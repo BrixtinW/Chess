@@ -4,18 +4,13 @@ import chess.ChessGame;
 import chess.ChessMove;
 import com.google.gson.Gson;
 import dataAccess.Exceptions.DataAccessException;
-import dataAccess.MemoryDataAccess.MemoryAuthDao;
-import dataAccess.MemoryDataAccess.MemoryGameDao;
-import dataAccess.MemoryDataAccess.MemoryUserDao;
 import dataAccess.SQLDataAccess.SQLAuthDao;
 import dataAccess.SQLDataAccess.SQLGameDao;
 import model.AuthData;
 import model.GameData;
+import org.eclipse.jetty.websocket.api.Session;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
-import webSocketMessages.userCommands.JoinPlayer;
-
-import javax.websocket.Session;
 import java.util.Map;
 
 public class GameService {
@@ -77,7 +72,7 @@ public class GameService {
         if (session != null) {
             String jsonMessage = gson.toJson(message);
             try {
-                session.getBasicRemote().sendText(jsonMessage);
+                session.getRemote().sendString(jsonMessage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -91,7 +86,7 @@ public class GameService {
             if (!entry.getKey().equals(exceptThisAuthToken)) {
                 String jsonMessage = gson.toJson(message);
                 try {
-                    entry.getValue().getBasicRemote().sendText(jsonMessage);
+                    entry.getValue().getRemote().sendString(jsonMessage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -1,21 +1,16 @@
 package ui.WebSocket;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import org.glassfish.tyrus.core.cluster.RemoteSession;
-import org.glassfish.tyrus.core.wsadl.model.Endpoint;
 import ui.ServerFacade;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
-import webSocketMessages.userCommands.MakeMove;
 
 import javax.websocket.*;
-import javax.websocket.server.ServerEndpoint;
 import java.net.URI;
 
-public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<String> {
+public class WebSocketFacade extends Endpoint {
 
     private final GameHandler gameHandler;
     private Session session;
@@ -27,7 +22,9 @@ public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<St
 
     public void connect() {
         try {
-            URI uri = new URI("ws://" + ServerFacade.DEFAULT_URL + "/websocket");
+            String url = ServerFacade.SERVER_URL.replace("http", "ws");
+            URI uri = new URI(url + "/connect");
+            System.out.println(uri.toString());
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, uri);
             System.out.println(this.session);
@@ -48,6 +45,7 @@ public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<St
     public void onMessage(String message) {
         System.out.println("Message received from server: " + message);
         ServerMessage msg = new Gson().fromJson(message, ServerMessage.class);
+        System.out.println(msg);
         System.out.println(msg.getMessageType());
 
         if (msg.getMessageType() == ServerMessage.ServerMessageType.ERROR){
@@ -64,7 +62,7 @@ public class WebSocketFacade extends Endpoint implements MessageHandler.Whole<St
     }
 
     @OnOpen
-    public void onOpen(Session session) {
+    public void onOpen(Session session, EndpointConfig config) {
         System.out.println("Connected to WebSocket server");
     }
 
