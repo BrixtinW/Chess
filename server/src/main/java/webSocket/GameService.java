@@ -28,16 +28,13 @@ public class GameService {
             AuthData authData = authDao.getAuth(authToken);
 
             LoadGame loadGame = new LoadGame(gameData.game());
-//            String loadGameString = gson.toJson(loadGame);
             sendMessage(webSocketSessions, gameID, authToken, loadGame);
 
             Notification notification = new Notification(authData.username() + "joined game as" + teamColor.name());
-//            String notificationString = gson.toJson(notification);
             broadcastMessage(webSocketSessions, gameID, authToken, notification);
 
         } catch (DataAccessException e) {
             Error error = new Error("Error: Invalid Game ID or Game Does Not Exist");
-//            String errorString = gson.toJson(error);
             sendMessage(webSocketSessions, gameID, authToken, error);
         }
     }

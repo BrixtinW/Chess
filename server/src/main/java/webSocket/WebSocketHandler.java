@@ -26,8 +26,6 @@ public class WebSocketHandler {
 
         System.out.println("Message received from client: " + message);
         UserGameCommand msg = new Gson().fromJson(message, UserGameCommand.class);
-        System.out.println(msg);
-        System.out.println(msg.getCommandType());
 
         if(webSocketSessions.getSessionsForGame(msg.getGameID()) == null) {
             webSocketSessions.addSessionToGame(msg.getGameID(), msg.getAuthString(), session);

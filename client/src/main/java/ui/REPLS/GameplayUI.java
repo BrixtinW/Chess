@@ -71,7 +71,7 @@ public class GameplayUI extends REPL implements GameHandler {
 
 
 
-        if (!this.playerColor.equals(ChessGame.TeamColor.BLACK)) {
+        if (this.playerColor == null || !this.playerColor.equals(ChessGame.TeamColor.BLACK)) {
 
             this.board = (boardColors, boardPieces) -> {
 
@@ -88,6 +88,7 @@ public class GameplayUI extends REPL implements GameHandler {
                         SET_BG_COLOR_LIGHT_GREY + "    H  G  F  E  D  C  B  A    " + RESET_BG_COLOR + "\n\t" + RESET_TEXT_BOLD_FAINT + RESET_TEXT_COLOR;
 
                 System.out.println(string);
+                System.out.print(SET_TEXT_COLOR_LIGHT_GREY + "\n>> ");
 
             };
         } else {
@@ -106,26 +107,11 @@ public class GameplayUI extends REPL implements GameHandler {
                         SET_BG_COLOR_LIGHT_GREY + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR + "\n\t" + RESET_TEXT_BOLD_FAINT + RESET_TEXT_COLOR;
 
                 System.out.println(string);
+                System.out.print(SET_TEXT_COLOR_LIGHT_GREY + "\n>> ");
 
             };
         }
 
-
-//        String blackBoard = SET_TEXT_BOLD + SET_TEXT_COLOR_WHITE + SET_BG_COLOR_BLACK + "  Black Board:\n\t" + SET_TEXT_COLOR_BLACK +
-//                SET_BG_COLOR_LIGHT_GREY + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR + "\n\t" +
-//                SET_BG_COLOR_LIGHT_GREY + " 8 " + SET_BG_COLOR_WHITE + WHITE_ROOK + SET_BG_COLOR_LIGHT_GREY + WHITE_KNIGHT + SET_BG_COLOR_WHITE + WHITE_BISHOP + SET_BG_COLOR_LIGHT_GREY + WHITE_QUEEN + SET_BG_COLOR_WHITE + WHITE_KING + SET_BG_COLOR_LIGHT_GREY + WHITE_BISHOP + SET_BG_COLOR_WHITE + WHITE_KNIGHT + SET_BG_COLOR_LIGHT_GREY + WHITE_ROOK + SET_BG_COLOR_LIGHT_GREY + " 8 " + RESET_BG_COLOR + "\n\t" +
-//                SET_BG_COLOR_LIGHT_GREY + " 7 " + SET_BG_COLOR_LIGHT_GREY + WHITE_PAWN + SET_BG_COLOR_WHITE + WHITE_PAWN + SET_BG_COLOR_LIGHT_GREY + WHITE_PAWN + SET_BG_COLOR_WHITE + WHITE_PAWN + SET_BG_COLOR_LIGHT_GREY + WHITE_PAWN + SET_BG_COLOR_WHITE + WHITE_PAWN + SET_BG_COLOR_LIGHT_GREY + WHITE_PAWN + SET_BG_COLOR_WHITE + WHITE_PAWN + SET_BG_COLOR_LIGHT_GREY + " 7 " + RESET_BG_COLOR + "\n\t" +
-//                SET_BG_COLOR_LIGHT_GREY + " 6 " + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_LIGHT_GREY + " 6 " + RESET_BG_COLOR + "\n\t" +
-//                SET_BG_COLOR_LIGHT_GREY + " 5 " + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + " 5 " + RESET_BG_COLOR + "\n\t" +
-//                SET_BG_COLOR_LIGHT_GREY + " 4 " + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_LIGHT_GREY + " 4 " + RESET_BG_COLOR + "\n\t" +
-//                SET_BG_COLOR_LIGHT_GREY + " 3 " + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + EMPTY + SET_BG_COLOR_WHITE + EMPTY + SET_BG_COLOR_LIGHT_GREY + " 3 " + RESET_BG_COLOR + "\n\t" +
-//                SET_BG_COLOR_LIGHT_GREY + " 2 " + SET_BG_COLOR_WHITE + BLACK_PAWN + SET_BG_COLOR_LIGHT_GREY + BLACK_PAWN + SET_BG_COLOR_WHITE + BLACK_PAWN + SET_BG_COLOR_LIGHT_GREY + BLACK_PAWN + SET_BG_COLOR_WHITE + BLACK_PAWN + SET_BG_COLOR_LIGHT_GREY + BLACK_PAWN + SET_BG_COLOR_WHITE + BLACK_PAWN + SET_BG_COLOR_LIGHT_GREY + BLACK_PAWN + SET_BG_COLOR_LIGHT_GREY + " 2 " + RESET_BG_COLOR + "\n\t" +
-//                SET_BG_COLOR_LIGHT_GREY + " 1 " + SET_BG_COLOR_LIGHT_GREY + BLACK_ROOK + SET_BG_COLOR_WHITE + BLACK_KNIGHT + SET_BG_COLOR_LIGHT_GREY + BLACK_BISHOP + SET_BG_COLOR_WHITE + BLACK_QUEEN + SET_BG_COLOR_LIGHT_GREY + BLACK_KING + SET_BG_COLOR_WHITE + BLACK_BISHOP + SET_BG_COLOR_LIGHT_GREY + BLACK_KNIGHT + SET_BG_COLOR_WHITE + BLACK_ROOK + SET_BG_COLOR_LIGHT_GREY + " 1 " + RESET_BG_COLOR + "\n\t" +
-//                SET_BG_COLOR_LIGHT_GREY + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR + "\n\t" + RESET_TEXT_BOLD_FAINT + RESET_TEXT_COLOR;
-
-//        System.out.println(blackBoard);
-
-        this.board.printBoard(colors, pieces);
     }
 
     @Override
@@ -136,6 +122,7 @@ public class GameplayUI extends REPL implements GameHandler {
                 System.out.println( SET_TEXT_COLOR_RED + "\thelp" + SET_TEXT_COLOR_LIGHT_GREY + " - List all valid commands" + SET_TEXT_COLOR_RED + "\n\tr" + SET_TEXT_COLOR_LIGHT_GREY + " - Redraws the chess board" + SET_TEXT_COLOR_RED + "\n\tleave" + SET_TEXT_COLOR_LIGHT_GREY + " - Temporarily leaves the game session" + SET_TEXT_COLOR_RED + "\n\tm <STARTING_COLUMN> <STARTING_ROW> - <TARGET_COLUMN> <TARGET_ROW>" + SET_TEXT_COLOR_LIGHT_GREY + " - Moves a piece from the starting location to the target location." +  SET_TEXT_COLOR_RED +"\n\th <SELECTED_PIECE'S_COLUMN> <SELECTED_PIECE'S_ROW>" + SET_TEXT_COLOR_LIGHT_GREY + " - Highlights all available moves for the selected piece"+  SET_TEXT_COLOR_RED +"\n\tresign" + SET_TEXT_COLOR_LIGHT_GREY + " - Forfeits the game");
                 break;
             case "quit":
+//                YOU SHOULD DELETE THIS EVENTUALLY!!!!!!!!!!!!!!!!!!!!!! THERE IS NO QUIT COMMAND IN THE HELP
                 return true;
             case "r":
                 this.board.printBoard(colors, pieces);
@@ -177,62 +164,70 @@ public class GameplayUI extends REPL implements GameHandler {
             for (int j = 1; j < 9; j++) {
 
                 String piece = EMPTY;
-                if (playerColor == null || playerColor == ChessGame.TeamColor.WHITE) {
+                int modifier = i;
 
-                    if (game.getBoard().boardArray[9 - i][j] == null){
-                        piece = EMPTY;
-                    } else {
-                        switch (game.getBoard().boardArray[9 - i][j].getPieceType()) {
-                            case ChessPiece.PieceType.PAWN:
-                                piece = WHITE_PAWN;
-                                break;
-                            case ChessPiece.PieceType.KNIGHT:
-                                piece = WHITE_KNIGHT;
-                                break;
-                            case ChessPiece.PieceType.ROOK:
-                                piece = WHITE_ROOK;
-                                break;
-                            case ChessPiece.PieceType.BISHOP:
-                                piece = WHITE_BISHOP;
-                                break;
-                            case ChessPiece.PieceType.QUEEN:
-                                piece = WHITE_QUEEN;
-                                break;
-                            case ChessPiece.PieceType.KING:
-                                piece = WHITE_PAWN;
-                                break;
-                            default:
-                                piece = EMPTY;
-                        }
-                    }
-                } else if (playerColor == ChessGame.TeamColor.BLACK) {
-                    if (game.getBoard().boardArray[9 - i][j] == null){
-                        piece = EMPTY;
-                    } else {
-                        switch (game.getBoard().boardArray[i][j].getPieceType()) {
-                            case ChessPiece.PieceType.PAWN:
-                                piece = BLACK_PAWN;
-                                break;
-                            case ChessPiece.PieceType.KNIGHT:
-                                piece = BLACK_KNIGHT;
-                                break;
-                            case ChessPiece.PieceType.ROOK:
-                                piece = BLACK_ROOK;
-                                break;
-                            case ChessPiece.PieceType.BISHOP:
-                                piece = BLACK_BISHOP;
-                                break;
-                            case ChessPiece.PieceType.QUEEN:
-                                piece = BLACK_QUEEN;
-                                break;
-                            case ChessPiece.PieceType.KING:
-                                piece = BLACK_KING;
-                                break;
-                            default:
-                                piece = EMPTY;
-                        }
-                    }
+                if (playerColor == null || playerColor == ChessGame.TeamColor.WHITE) {
+                    modifier = 9 - i;
                 }
+
+                    if (game.getBoard().boardArray[modifier][j] != null) {
+
+                        boolean pieceIsWhite = false;
+
+                        if (game.getBoard().boardArray[modifier][j].getTeamColor() == ChessGame.TeamColor.WHITE) {
+                            pieceIsWhite = true;
+                        }
+
+                        switch (game.getBoard().boardArray[modifier][j].getPieceType()) {
+                            case ChessPiece.PieceType.PAWN:
+                                if (pieceIsWhite) {
+                                    piece = WHITE_PAWN;
+                                } else {
+                                    piece = BLACK_PAWN;
+                                }
+                                break;
+                            case ChessPiece.PieceType.KNIGHT:
+                                if (pieceIsWhite) {
+                                    piece = WHITE_KNIGHT;
+                                } else {
+                                    piece = BLACK_KNIGHT;
+                                }
+                                break;
+                            case ChessPiece.PieceType.ROOK:
+                                if (pieceIsWhite) {
+                                    piece = WHITE_ROOK;
+                                } else {
+                                    piece = BLACK_ROOK;
+                                }
+                                break;
+                            case ChessPiece.PieceType.BISHOP:
+                                if (pieceIsWhite) {
+                                    piece = WHITE_BISHOP;
+                                } else {
+                                    piece = BLACK_BISHOP;
+                                }
+                                break;
+                            case ChessPiece.PieceType.QUEEN:
+                                if (pieceIsWhite) {
+                                    piece = WHITE_QUEEN;
+                                } else {
+                                    piece = BLACK_QUEEN;
+                                }
+                                break;
+                            case ChessPiece.PieceType.KING:
+                                if (pieceIsWhite) {
+                                    piece = WHITE_KING;
+                                } else {
+                                    piece = BLACK_KING;
+                                }
+                                break;
+                            default:
+                                piece = EMPTY;
+
+                        }
+
+                    }
+
 
                 this.pieces[i-1][j-1] = piece;
 

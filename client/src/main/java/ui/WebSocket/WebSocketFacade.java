@@ -27,8 +27,6 @@ public class WebSocketFacade extends Endpoint {
             public void onMessage(String message) {
                 System.out.println("Message received from server: " + message);
                 ServerMessage msg = new Gson().fromJson(message, ServerMessage.class);
-                System.out.println(msg);
-                System.out.println(msg.getMessageType());
 
                 if (msg.getMessageType() == ServerMessage.ServerMessageType.ERROR){
                     Error commandObj = new Gson().fromJson(message, Error.class);
@@ -51,10 +49,8 @@ public class WebSocketFacade extends Endpoint {
         try {
             String url = ServerFacade.SERVER_URL.replace("http", "ws");
             URI uri = new URI(url + "/connect");
-            System.out.println(uri.toString());
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, uri);
-            System.out.println(this.session);
         } catch (Exception e) {
             e.printStackTrace();
         }
