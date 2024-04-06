@@ -179,38 +179,58 @@ public class GameplayUI extends REPL implements GameHandler {
                 String piece = EMPTY;
                 if (playerColor == null || playerColor == ChessGame.TeamColor.WHITE) {
 
-                    switch (game.getBoard().boardArray[9 - i][j].getPieceType()) {
-                        case ChessPiece.PieceType.PAWN:
-                            break;
-                        case ChessPiece.PieceType.KNIGHT:
-                            break;
-                        case ChessPiece.PieceType.ROOK:
-                            break;
-                        case ChessPiece.PieceType.BISHOP:
-                            break;
-                        case ChessPiece.PieceType.QUEEN:
-                            break;
-                        case ChessPiece.PieceType.KING:
-                            break;
-                        default:
-                            piece = EMPTY;
+                    if (game.getBoard().boardArray[9 - i][j] == null){
+                        piece = EMPTY;
+                    } else {
+                        switch (game.getBoard().boardArray[9 - i][j].getPieceType()) {
+                            case ChessPiece.PieceType.PAWN:
+                                piece = WHITE_PAWN;
+                                break;
+                            case ChessPiece.PieceType.KNIGHT:
+                                piece = WHITE_KNIGHT;
+                                break;
+                            case ChessPiece.PieceType.ROOK:
+                                piece = WHITE_ROOK;
+                                break;
+                            case ChessPiece.PieceType.BISHOP:
+                                piece = WHITE_BISHOP;
+                                break;
+                            case ChessPiece.PieceType.QUEEN:
+                                piece = WHITE_QUEEN;
+                                break;
+                            case ChessPiece.PieceType.KING:
+                                piece = WHITE_PAWN;
+                                break;
+                            default:
+                                piece = EMPTY;
+                        }
                     }
                 } else if (playerColor == ChessGame.TeamColor.BLACK) {
-                    switch (game.getBoard().boardArray[i][j].getPieceType()) {
-                        case ChessPiece.PieceType.PAWN:
-                            break;
-                        case ChessPiece.PieceType.KNIGHT:
-                            break;
-                        case ChessPiece.PieceType.ROOK:
-                            break;
-                        case ChessPiece.PieceType.BISHOP:
-                            break;
-                        case ChessPiece.PieceType.QUEEN:
-                            break;
-                        case ChessPiece.PieceType.KING:
-                            break;
-                        default:
-                            piece = EMPTY;
+                    if (game.getBoard().boardArray[9 - i][j] == null){
+                        piece = EMPTY;
+                    } else {
+                        switch (game.getBoard().boardArray[i][j].getPieceType()) {
+                            case ChessPiece.PieceType.PAWN:
+                                piece = BLACK_PAWN;
+                                break;
+                            case ChessPiece.PieceType.KNIGHT:
+                                piece = BLACK_KNIGHT;
+                                break;
+                            case ChessPiece.PieceType.ROOK:
+                                piece = BLACK_ROOK;
+                                break;
+                            case ChessPiece.PieceType.BISHOP:
+                                piece = BLACK_BISHOP;
+                                break;
+                            case ChessPiece.PieceType.QUEEN:
+                                piece = BLACK_QUEEN;
+                                break;
+                            case ChessPiece.PieceType.KING:
+                                piece = BLACK_KING;
+                                break;
+                            default:
+                                piece = EMPTY;
+                        }
                     }
                 }
 
@@ -219,6 +239,7 @@ public class GameplayUI extends REPL implements GameHandler {
             }
         }
 
+        System.out.println(ERASE_SCREEN);
         this.board.printBoard(colors, pieces);
     }
 
