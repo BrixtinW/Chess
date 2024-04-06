@@ -17,7 +17,7 @@ public class WebSocketSessions {
         gameSessions.put(authToken, session);
     }
 
-    public void removeSessionFromGame(Integer gameID, String authToken){
+    public void removeSessionFromGame(Integer gameID, String authToken) {
         // Get the map corresponding to the gameID
         Map<String, Session> gameSessions = sessionMap.get(gameID);
 

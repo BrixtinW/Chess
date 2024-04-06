@@ -14,7 +14,9 @@ import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class GameService {
 
@@ -58,11 +60,85 @@ public class GameService {
         }
     }
 
-    public static void makeMove(String authToken, Integer gameID, ChessMove move, WebSocketSessions webSocketSessions){}
+    public static void makeMove(String authToken, Integer gameID, ChessMove move, WebSocketSessions webSocketSessions){
+//        try {
+//            SQLGameDao gameDao = new SQLGameDao();
+//            SQLAuthDao authDao = new SQLAuthDao();
+//            GameData gameData = gameDao.getGame(gameID);
+//            AuthData authData = authDao.getAuth(authToken);
+//
+//            LoadGame loadGame = new LoadGame(gameData.game());
+//            sendMessage(webSocketSessions, gameID, authToken, loadGame);
+//
+//            Notification notification = new Notification(authData.username() + "joined game as an observer");
+//            broadcastMessage(webSocketSessions, gameID, authToken, notification);
+//
+//        } catch (DataAccessException e) {
+//            Error error = new Error("Error: Invalid Game ID or Game Does Not Exist");
+//            sendMessage(webSocketSessions, gameID, authToken, error);
+//        }
+    }
 
-    public static void leaveGame(String authToken, Integer gameID, WebSocketSessions webSocketSessions){}
+    public static void leaveGame(String authToken, Integer gameID, WebSocketSessions webSocketSessions){
+        try {
+            SQLGameDao gameDao = new SQLGameDao();
+            SQLAuthDao authDao = new SQLAuthDao();
+            GameData gameData = gameDao.getGame(gameID);
+            AuthData authData = authDao.getAuth(authToken);
 
-    public static void resignGame(String authToken, Integer gameID, WebSocketSessions webSocketSessions){}
+            String whiteUsername = gameData.whiteUsername();
+            String blackUsername = gameData.blackUsername();
+            if (Objects.equals(authData.username(), gameData.blackUsername())){
+                blackUsername = null;
+            }
+            if (Objects.equals(authData.username(), gameData.whiteUsername())) {
+                whiteUsername = null;
+            }
+
+            gameDao.updateGame(new GameData(gameData.gameID(), whiteUsername, blackUsername, gameData.gameName(), gameData.game()));
+
+
+            Notification notification = new Notification(authData.username() + "has left the game.");
+            broadcastMessage(webSocketSessions, gameID, authToken, notification);
+
+            webSocketSessions.removeSessionFromGame(gameID, authToken);
+
+        } catch (DataAccessException e) {
+            Error error = new Error("Error: Invalid Game ID or Game Does Not Exist");
+            sendMessage(webSocketSessions, gameID, authToken, error);
+        }
+    }
+
+    public static void resignGame(String authToken, Integer gameID, WebSocketSessions webSocketSessions){
+        try {
+            SQLGameDao gameDao = new SQLGameDao();
+            SQLAuthDao authDao = new SQLAuthDao();
+            GameData gameData = gameDao.getGame(gameID);
+            AuthData authData = authDao.getAuth(authToken);
+
+
+            if (!Objects.equals(authData.username(), gameData.blackUsername()) && !Objects.equals(authData.username(), gameData.whiteUsername())){
+                Error error = new Error("Error: Observers cannot resign. type leave to leave.");
+                sendMessage(webSocketSessions, gameID, authToken, error);
+            }
+
+            gameDao.updateGame(new GameData(gameData.gameID(), gameData.whiteUsername(), gameData.blackUsername(), "(completed)" + gameData.gameName(), null));
+
+            Notification notification = new Notification(authData.username() + "resigned from the game");
+            sendMessage(webSocketSessions, gameID, authToken, notification);
+            broadcastMessage(webSocketSessions, gameID, authToken, notification);
+
+            Map<String, Session> sessions = webSocketSessions.getSessionsForGame(gameID);
+            for (String authorization : sessions.keySet()){
+                webSocketSessions.removeSessionFromGame(gameID, authorization);
+            }
+
+
+        } catch (DataAccessException e) {
+            Error error = new Error("Error: Invalid Game ID or Game Does Not Exist");
+            sendMessage(webSocketSessions, gameID, authToken, error);
+        }
+    }
 
     private static void sendMessage(WebSocketSessions webSocketSessions, Integer gameID, String authToken, ServerMessage message) {
         Session session = webSocketSessions.getSessionsForGame(gameID).get(authToken);

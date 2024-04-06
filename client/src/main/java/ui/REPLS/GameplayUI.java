@@ -131,7 +131,8 @@ public class GameplayUI extends REPL implements GameHandler {
                 Leave leave = new Leave(this.authToken, this.gameID);
                 String leaveString = this.gson.toJson(leave);
                 this.wsf.sendMessage(leaveString);
-                break;
+                this.wsf.disconnect();
+                return true;
             case "mm":
 //                MakeMove makeMove = new MakeMove(this.authToken, this.gameID, new ChessMove());
 //                String makeMoveString = this.gson.toJson(makeMove);
@@ -141,7 +142,8 @@ public class GameplayUI extends REPL implements GameHandler {
                 Resign resign = new Resign(this.authToken, this.gameID);
                 String resignString = this.gson.toJson(resign);
                 this.wsf.sendMessage(resignString);
-                break;
+                this.wsf.disconnect();
+                return true;
             case "h":
                 highlightBoard();
                 break;
