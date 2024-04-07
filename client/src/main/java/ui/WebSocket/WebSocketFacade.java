@@ -13,6 +13,7 @@ import webSocketMessages.userCommands.JoinPlayer;
 
 import javax.websocket.*;
 import java.net.URI;
+import java.util.Objects;
 
 public class WebSocketFacade extends Endpoint {
 
@@ -31,6 +32,11 @@ public class WebSocketFacade extends Endpoint {
                 if (msg.getMessageType() == ServerMessage.ServerMessageType.ERROR){
                     Error commandObj = new Gson().fromJson(message, Error.class);
                     gameHandler.printMessage(commandObj.getErrorMessage());
+
+//                    if (Objects.equals(commandObj.getErrorMessage(), "Error: Game has already ended")) {
+//                        gameHandler.gameEnded = true;
+//                    }
+
                 } else if (msg.getMessageType() == ServerMessage.ServerMessageType.NOTIFICATION) {
                     Notification commandObj = new Gson().fromJson(message, Notification.class);
                     gameHandler.printMessage(commandObj.getMessage());

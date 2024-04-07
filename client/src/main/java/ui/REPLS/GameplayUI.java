@@ -3,6 +3,7 @@ package ui.REPLS;
 import chess.ChessGame;
 import chess.ChessMove;
 import chess.ChessPiece;
+import chess.ChessPosition;
 import com.google.gson.Gson;
 import ui.EscapeSequences.*;
 import ui.WebSocket.GameHandler;
@@ -119,7 +120,7 @@ public class GameplayUI extends REPL implements GameHandler {
 
         switch (parsedInput[0]) {
             case "help":
-                System.out.println( SET_TEXT_COLOR_RED + "\thelp" + SET_TEXT_COLOR_LIGHT_GREY + " - List all valid commands" + SET_TEXT_COLOR_RED + "\n\tr" + SET_TEXT_COLOR_LIGHT_GREY + " - Redraws the chess board" + SET_TEXT_COLOR_RED + "\n\tleave" + SET_TEXT_COLOR_LIGHT_GREY + " - Temporarily leaves the game session" + SET_TEXT_COLOR_RED + "\n\tm <STARTING_COLUMN> <STARTING_ROW> - <TARGET_COLUMN> <TARGET_ROW>" + SET_TEXT_COLOR_LIGHT_GREY + " - Moves a piece from the starting location to the target location." +  SET_TEXT_COLOR_RED +"\n\th <SELECTED_PIECE'S_COLUMN> <SELECTED_PIECE'S_ROW>" + SET_TEXT_COLOR_LIGHT_GREY + " - Highlights all available moves for the selected piece"+  SET_TEXT_COLOR_RED +"\n\tresign" + SET_TEXT_COLOR_LIGHT_GREY + " - Forfeits the game");
+                System.out.println( SET_TEXT_COLOR_RED + "\thelp" + SET_TEXT_COLOR_LIGHT_GREY + " - List all valid commands" + SET_TEXT_COLOR_RED + "\n\tr" + SET_TEXT_COLOR_LIGHT_GREY + " - Redraws the chess board" + SET_TEXT_COLOR_RED + "\n\tleave" + SET_TEXT_COLOR_LIGHT_GREY + " - Temporarily leaves the game session" + SET_TEXT_COLOR_RED + "\n\tm <STARTING_COLUMN><STARTING_ROW>  <TARGET_COLUMN><TARGET_ROW>" + SET_TEXT_COLOR_LIGHT_GREY + " - Moves a piece from the starting location to the target location." +  SET_TEXT_COLOR_RED +"\n\th <SELECTED_PIECE'S_COLUMN> <SELECTED_PIECE'S_ROW>" + SET_TEXT_COLOR_LIGHT_GREY + " - Highlights all available moves for the selected piece"+  SET_TEXT_COLOR_RED +"\n\tresign" + SET_TEXT_COLOR_LIGHT_GREY + " - Forfeits the game");
                 break;
             case "quit":
 //                YOU SHOULD DELETE THIS EVENTUALLY!!!!!!!!!!!!!!!!!!!!!! THERE IS NO QUIT COMMAND IN THE HELP
@@ -133,10 +134,20 @@ public class GameplayUI extends REPL implements GameHandler {
                 this.wsf.sendMessage(leaveString);
                 this.wsf.disconnect();
                 return true;
-            case "mm":
-//                MakeMove makeMove = new MakeMove(this.authToken, this.gameID, new ChessMove());
-//                String makeMoveString = this.gson.toJson(makeMove);
-//                this.wsf.sendMessage(makeMoveString);
+            case "m":
+                if (playerColor != ChessGame.TeamColor.WHITE && playerColor != ChessGame.TeamColor.BLACK){
+                    System.out.println("Observers cannot move pieces on the board.");
+                    break;
+                }
+
+                ChessPosition startPosition = getPosition(parsedInput[1]);
+                ChessPosition endPosition = getPosition(parsedInput[2]);
+
+//                YOU STILL HAVE TO MAKE SURE YOU ASK FOR WHICH PIECE THEY WOULD LIKE TO PROMOTE TO!!!
+
+                MakeMove makeMove = new MakeMove(this.authToken, this.gameID, new ChessMove(startPosition, endPosition, null));
+                String makeMoveString = this.gson.toJson(makeMove);
+                this.wsf.sendMessage(makeMoveString);
                 break;
             case "resign":
                 Resign resign = new Resign(this.authToken, this.gameID);
@@ -157,6 +168,67 @@ public class GameplayUI extends REPL implements GameHandler {
 //        alter the colors array.
 //        print the board
 //        change the array back to normal.
+    }
+
+    private ChessPosition getPosition(String coordinates) {
+        int row = extractNumber(coordinates);;
+        int col = 0;
+
+
+        switch (coordinates.toLowerCase().charAt(0)){
+            case 'a':
+                col = 8;
+                break;
+            case 'b':
+                col = 7;
+                break;
+            case 'c':
+                col = 6;
+                break;
+            case 'd':
+                col = 5;
+                break;
+            case 'e':
+                col = 4;
+                break;
+            case 'f':
+                col = 3;
+                break;
+            case 'g':
+                col = 2;
+                break;
+            case 'h':
+                col = 1;
+                break;
+            default:
+        }
+
+        row = 9 - row;
+
+        System.out.println(row);
+        System.out.println(col);
+
+
+
+
+        return new ChessPosition(row, col);
+    }
+
+    public static int extractNumber(String input) {
+        // Regular expression to match the number
+        String regex = "\\d+";
+
+        // Using Pattern and Matcher to find the number
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(regex);
+        java.util.regex.Matcher matcher = pattern.matcher(input);
+
+        // If a number is found, parse it and return
+        if (matcher.find()) {
+            return Integer.parseInt(matcher.group());
+        }
+
+        // If no number found, return a default value (you can handle this differently based on your requirements)
+        return -1; // or throw an exception, or return a default value, etc.
     }
 
     @Override
