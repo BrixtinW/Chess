@@ -172,13 +172,24 @@ public class GameplayUI extends REPL implements GameHandler {
     private void highlightBoard(ChessPosition startPosition){
 
         Collection<ChessMove> potentialMoves = game.validMoves(startPosition);
-        System.out.println(potentialMoves);
 
 //        alter the colors array.
 
-        for (ChessMove move : potentialMoves){
+        for (ChessMove move : potentialMoves) {
+
+            int rowModifier = 8 - move.getEndPosition().getRow();
+            int colModifier = move.getEndPosition().getColumn() - 1;
+            if (playerColor == ChessGame.TeamColor.BLACK){
+                colModifier = 8 - move.getEndPosition().getColumn();
+            }
 
 
+            String color = colors[rowModifier][colModifier];
+        if (color.equals(SET_BG_COLOR_WHITE)){
+            colors[rowModifier][colModifier] = SET_BG_COLOR_GREEN;
+        } else if (color.equals(SET_BG_COLOR_LIGHT_GREY)){
+                colors[rowModifier][colModifier] = SET_BG_COLOR_DARK_GREEN;
+            }
 
         }
 
@@ -197,14 +208,13 @@ public class GameplayUI extends REPL implements GameHandler {
     }
 
     private ChessPosition getPosition(String coordinates) {
-//        THIS WORKS FOR WHITE ONLY
         int row = extractNumber(coordinates);;
         int col = 0;
 
 
         switch (coordinates.toLowerCase().charAt(0)){
             case 'a':
-                    col = 8;
+                col = 8;
                 break;
             case 'b':
                 col = 7;
