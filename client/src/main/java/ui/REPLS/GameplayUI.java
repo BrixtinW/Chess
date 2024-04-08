@@ -10,6 +10,8 @@ import ui.WebSocket.GameHandler;
 import ui.WebSocket.WebSocketFacade;
 import webSocketMessages.userCommands.*;
 
+import java.util.Collection;
+
 import static ui.EscapeSequences.*;
 
 public class GameplayUI extends REPL implements GameHandler {
@@ -17,6 +19,8 @@ public class GameplayUI extends REPL implements GameHandler {
     WebSocketFacade wsf = new WebSocketFacade(this);
     String authToken;
     Integer gameID;
+
+    ChessGame game;
     ChessGame.TeamColor playerColor;
     Gson gson = new Gson();
     BoardGenerator board;
@@ -156,7 +160,8 @@ public class GameplayUI extends REPL implements GameHandler {
                 this.wsf.disconnect();
                 return true;
             case "h":
-                highlightBoard();
+                ChessPosition highlightPosition = getPosition(parsedInput[1]);
+                highlightBoard(highlightPosition);
                 break;
             default:
                 System.out.println("Ya trash cuz.\ntype help for God's sake");
@@ -164,20 +169,42 @@ public class GameplayUI extends REPL implements GameHandler {
         return false;
     }
 
-    private void highlightBoard(){
+    private void highlightBoard(ChessPosition startPosition){
+
+        Collection<ChessMove> potentialMoves = game.validMoves(startPosition);
+        System.out.println(potentialMoves);
+
 //        alter the colors array.
-//        print the board
-//        change the array back to normal.
+
+        for (ChessMove move : potentialMoves){
+
+
+
+        }
+
+        this.board.printBoard(colors, pieces);
+
+        this.colors = new String[][]{
+                {SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY},
+                {SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE},
+                {SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY},
+                {SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE},
+                {SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY},
+                {SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE},
+                {SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY},
+                {SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE, SET_BG_COLOR_LIGHT_GREY, SET_BG_COLOR_WHITE}
+        };
     }
 
     private ChessPosition getPosition(String coordinates) {
+//        THIS WORKS FOR WHITE ONLY
         int row = extractNumber(coordinates);;
         int col = 0;
 
 
         switch (coordinates.toLowerCase().charAt(0)){
             case 'a':
-                col = 8;
+                    col = 8;
                 break;
             case 'b':
                 col = 7;
@@ -204,6 +231,9 @@ public class GameplayUI extends REPL implements GameHandler {
         }
 
         row = 9 - row;
+        if (playerColor == ChessGame.TeamColor.BLACK){
+            col = 9-col;
+        }
 
         System.out.println(row);
         System.out.println(col);
@@ -233,6 +263,8 @@ public class GameplayUI extends REPL implements GameHandler {
 
     @Override
     public void updateGame(ChessGame game) {
+
+        this.game = game;
 
         for (int i = 1; i < 9; i++) {
             for (int j = 1; j < 9; j++) {

@@ -1,24 +1,28 @@
 package ui.WebSocket;
 
 import com.google.gson.Gson;
-//import org.eclipse.jetty.websocket.api.Session;
-//import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import ui.ServerFacade;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.JoinPlayer;
-//import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 
 import javax.websocket.*;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.util.Objects;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class WebSocketFacade extends Endpoint {
 
     private final GameHandler gameHandler;
     private Session session;
+
+    private ScheduledExecutorService scheduler;
 
     public WebSocketFacade(GameHandler gameHandler) {
         this.gameHandler = gameHandler;
@@ -51,12 +55,27 @@ public class WebSocketFacade extends Endpoint {
 
     }
 
+
+//    public void startPingScheduler() {
+//        scheduler = Executors.newSingleThreadScheduledExecutor();
+//        scheduler.scheduleAtFixedRate(this::sendPing, 0, 5, TimeUnit.SECONDS); // Send ping every 5 seconds
+//    }
+//
+//    public void sendPing() {
+//        try {
+//            session.getBasicRemote().sendPing(ByteBuffer.wrap("Ping".getBytes())); // Sending a ping message to the server
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     public void connect() {
         try {
             String url = ServerFacade.SERVER_URL.replace("http", "ws");
             URI uri = new URI(url + "/connect");
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, uri);
+//            startPingScheduler();
         } catch (Exception e) {
             e.printStackTrace();
         }

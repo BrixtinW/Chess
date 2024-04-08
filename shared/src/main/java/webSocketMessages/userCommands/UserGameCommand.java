@@ -10,6 +10,8 @@ import java.util.Objects;
  */
 public class UserGameCommand {
 
+    public UserGameCommand(String authToken){this(null, authToken, -1);}
+
     public UserGameCommand(CommandType command, String authToken, Integer gameID) {
         this.commandType = command;
         this.authToken = authToken;

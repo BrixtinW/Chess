@@ -23,6 +23,13 @@ public class WebSocketHandler {
 
     @OnWebSocketMessage
     public void onMessage(Session session, String message) {
+//        if ("ping".equals(message)) {
+//            try {
+//                session.getRemote().sendString("pong"); // Responding with a pong message
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         System.out.println("Message received from client: " + message);
         UserGameCommand msg = new Gson().fromJson(message, UserGameCommand.class);
@@ -41,6 +48,7 @@ public class WebSocketHandler {
             GameService.joinObserver(commandObj.getAuthString(), commandObj.getGameID(), webSocketSessions);
 
         } else if (msg.getCommandType() == UserGameCommand.CommandType.JOIN_PLAYER) {
+            System.out.println(message);
             JoinPlayer commandObj = new Gson().fromJson(message, JoinPlayer.class);
             GameService.joinPlayer(commandObj.getAuthString(), commandObj.getGameID(), commandObj.getPlayerColor(), webSocketSessions);
 
