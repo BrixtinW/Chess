@@ -15,6 +15,7 @@ import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -30,8 +31,18 @@ public class GameService {
             GameData gameData = gameDao.getGame(gameID);
             AuthData authData = authDao.getAuth(authToken);
 
+            if (gameData == null || authData == null){
+                Error error = new Error("Error: Invalid game ID or authToken");
+                sendMessage(webSocketSessions, gameID, authToken, error);
+                return;
+            }
             if (gameData.game() == null){
                 Error error = new Error("Error: Game has already ended");
+                sendMessage(webSocketSessions, gameID, authToken, error);
+                return;
+            }
+            if ((teamColor == ChessGame.TeamColor.WHITE && !Objects.equals(gameData.whiteUsername(), authData.username())) || (teamColor == ChessGame.TeamColor.BLACK && !Objects.equals(gameData.blackUsername(), authData.username()))){
+                Error error = new Error("Error: Spot already taken");
                 sendMessage(webSocketSessions, gameID, authToken, error);
                 return;
             }
@@ -55,6 +66,11 @@ public class GameService {
             GameData gameData = gameDao.getGame(gameID);
             AuthData authData = authDao.getAuth(authToken);
 
+            if (gameData == null || authData == null){
+                Error error = new Error("Error: Invalid game ID or authToken");
+                sendMessage(webSocketSessions, gameID, authToken, error);
+                return;
+            }
             if (gameData.game() == null){
                 Error error = new Error("Error: Game has already ended");
                 sendMessage(webSocketSessions, gameID, authToken, error);
@@ -80,26 +96,30 @@ public class GameService {
             GameData gameData = gameDao.getGame(gameID);
             AuthData authData = authDao.getAuth(authToken);
 
-//            if (!gameData.game().validMoves(move.getStartPosition()).contains(move)){
-//                Error error = new Error("Error: Invalid Move");
-//                sendMessage(webSocketSessions, gameID, authToken, error);
-//            }
+            if (gameData.game() == null){
+                Error error = new Error("Error: Game has already ended");
+                sendMessage(webSocketSessions, gameID, authToken, error);
+                return;
+            }
+            if ((!Objects.equals(authData.username(), gameData.whiteUsername()) && gameData.game().getCurrentTurnColor() == ChessGame.TeamColor.WHITE) || (!Objects.equals(authData.username(), gameData.blackUsername()) && gameData.game().getCurrentTurnColor() == ChessGame.TeamColor.BLACK)){
+                Error error = new Error("Error: It is not your turn to move.");
+                sendMessage(webSocketSessions, gameID, authToken, error);
+                return;
+            }
+
+            if (gameData.game().isInCheckmate(ChessGame.TeamColor.WHITE) || gameData.game().isInCheckmate(ChessGame.TeamColor.BLACK)){
+                Error error = new Error("Error: Game is in checkmate and no other moves are allowed.");
+                sendMessage(webSocketSessions, gameID, authToken, error);
+                return;
+            }
 
             gameData.game().makeMove(move);
 
-            System.out.println(gameData.game());
-
             gameDao.updateGame(new GameData(gameID, gameData.whiteUsername(), gameData.blackUsername(), gameData.gameName(), gameData.game()));
-
-
-
-
-
-
-
 
             LoadGame loadGame = new LoadGame(gameData.game());
             sendMessage(webSocketSessions, gameID, authToken, loadGame);
+            broadcastMessage(webSocketSessions, gameID, authToken, loadGame);
 
             Notification notification = new Notification(authData.username() + "moved a piece!");
             broadcastMessage(webSocketSessions, gameID, authToken, notification);
@@ -108,7 +128,7 @@ public class GameService {
             Error error = new Error("Error: Invalid Game ID or Game Does Not Exist");
             sendMessage(webSocketSessions, gameID, authToken, error);
         } catch (InvalidMoveException e){
-            Error error = new Error("Error: Invalid Move");
+            Error error = new Error("Error: Invalid Move. Make sure it is your turn, and your letter columns and number rows are formatted correctly.");
             sendMessage(webSocketSessions, gameID, authToken, error);
         }
     }
@@ -150,10 +170,15 @@ public class GameService {
             GameData gameData = gameDao.getGame(gameID);
             AuthData authData = authDao.getAuth(authToken);
 
-
+            if (gameData.game() == null){
+                Error error = new Error("Error: Game has already ended");
+                sendMessage(webSocketSessions, gameID, authToken, error);
+                return;
+            }
             if (!Objects.equals(authData.username(), gameData.blackUsername()) && !Objects.equals(authData.username(), gameData.whiteUsername())){
                 Error error = new Error("Error: Observers cannot resign. type leave to leave.");
                 sendMessage(webSocketSessions, gameID, authToken, error);
+                return;
             }
 
             gameDao.updateGame(new GameData(gameData.gameID(), gameData.whiteUsername(), gameData.blackUsername(), "GAME ENDED (" + gameData.gameName() + ")", null));

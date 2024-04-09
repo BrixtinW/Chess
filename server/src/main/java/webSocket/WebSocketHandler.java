@@ -6,37 +6,27 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import webSocketMessages.userCommands.*;
 
+import javax.websocket.OnClose;
+
 
 @WebSocket
 public class WebSocketHandler {
 
     private final WebSocketSessions webSocketSessions = new WebSocketSessions();
-//    private Gson gson;
 
     public WebSocketHandler() {}
 
-//    @OnOpen
-//    public void onOpen(Session session, Integer gameID, String authToken) {
-//        System.out.println("Connected to WebSocket server");
-//        webSocketSessions.addSessionToGame(gameID, authToken, session);
-//    }
 
     @OnWebSocketMessage
     public void onMessage(Session session, String message) {
-//        if ("ping".equals(message)) {
-//            try {
-//                session.getRemote().sendString("pong"); // Responding with a pong message
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
 
-        System.out.println("Message received from client: " + message);
+//        System.out.println("Message received from client: " + message);
         UserGameCommand msg = new Gson().fromJson(message, UserGameCommand.class);
 
-        if(webSocketSessions.getSessionsForGame(msg.getGameID()) == null || webSocketSessions.getSessionsForGame(msg.getGameID()).isEmpty()) {
+//        if(webSocketSessions.getSessionsForGame(msg.getGameID()) == null || webSocketSessions.getSessionsForGame(msg.getGameID()).isEmpty()) {
+
             webSocketSessions.addSessionToGame(msg.getGameID(), msg.getAuthString(), session);
-        }
+//        }
 
 
         if (msg.getCommandType() == UserGameCommand.CommandType.MAKE_MOVE){
@@ -48,7 +38,6 @@ public class WebSocketHandler {
             GameService.joinObserver(commandObj.getAuthString(), commandObj.getGameID(), webSocketSessions);
 
         } else if (msg.getCommandType() == UserGameCommand.CommandType.JOIN_PLAYER) {
-            System.out.println(message);
             JoinPlayer commandObj = new Gson().fromJson(message, JoinPlayer.class);
             GameService.joinPlayer(commandObj.getAuthString(), commandObj.getGameID(), commandObj.getPlayerColor(), webSocketSessions);
 
@@ -64,6 +53,7 @@ public class WebSocketHandler {
 
     }
 
+    @OnClose
     public void onClose(Integer gameID, String authToken) {
         System.out.println("Connection closed");
         webSocketSessions.removeSessionFromGame(gameID, authToken);
@@ -72,33 +62,6 @@ public class WebSocketHandler {
     public void onError(Session session, Throwable throwable) {
         System.err.println("Error on WebSocket: " + throwable.getMessage());
     }
-
-//    private void sendMessage(Integer gameID, String authToken, String message) {
-//        Session session = webSocketSessions.getSessionsForGame(gameID).get(authToken);
-//        if (session != null) {
-//            String jsonMessage = gson.toJson(message);
-//            try {
-//                session.getBasicRemote().sendText(jsonMessage);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            System.out.println("Session not found for gameID: " + gameID + " and authToken: " + authToken);
-//        }
-//    }
-//
-//    private void broadcastMessage(Integer gameID, String exceptThisAuthToken, String message) {
-//        for (Map.Entry<String, Session> entry : webSocketSessions.getSessionsForGame(gameID).entrySet()) {
-//            if (!entry.getKey().equals(exceptThisAuthToken)) {
-//                String jsonMessage = gson.toJson(message);
-//                try {
-//                    entry.getValue().getBasicRemote().sendText(jsonMessage);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
 
 
 }

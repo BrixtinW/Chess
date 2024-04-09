@@ -93,7 +93,6 @@ public class GameplayUI extends REPL implements GameHandler {
                         SET_BG_COLOR_LIGHT_GREY + "    H  G  F  E  D  C  B  A    " + RESET_BG_COLOR + "\n\t" + RESET_TEXT_BOLD_FAINT + RESET_TEXT_COLOR;
 
                 System.out.println(string);
-                System.out.print(SET_TEXT_COLOR_LIGHT_GREY + "\n>> ");
 
             };
         } else {
@@ -112,7 +111,6 @@ public class GameplayUI extends REPL implements GameHandler {
                         SET_BG_COLOR_LIGHT_GREY + "    A  B  C  D  E  F  G  H    " + RESET_BG_COLOR + "\n\t" + RESET_TEXT_BOLD_FAINT + RESET_TEXT_COLOR;
 
                 System.out.println(string);
-                System.out.print(SET_TEXT_COLOR_LIGHT_GREY + "\n>> ");
 
             };
         }
@@ -147,6 +145,11 @@ public class GameplayUI extends REPL implements GameHandler {
                 ChessPosition startPosition = getPosition(parsedInput[1]);
                 ChessPosition endPosition = getPosition(parsedInput[2]);
 
+                if (startPosition.getColumn() > 8 || startPosition.getColumn() < 1 || startPosition.getRow() > 8 || startPosition.getRow() < 1 || endPosition.getColumn() > 8 || endPosition.getColumn() < 1 || endPosition.getRow() > 8 || endPosition.getRow() < 1 ) {
+                    System.out.println("Invalid move. make sure it is formatted correctly with spaces between.");
+                    break;
+                }
+
 //                YOU STILL HAVE TO MAKE SURE YOU ASK FOR WHICH PIECE THEY WOULD LIKE TO PROMOTE TO!!!
 
                 MakeMove makeMove = new MakeMove(this.authToken, this.gameID, new ChessMove(startPosition, endPosition, null));
@@ -161,27 +164,54 @@ public class GameplayUI extends REPL implements GameHandler {
                 return true;
             case "h":
                 ChessPosition highlightPosition = getPosition(parsedInput[1]);
+
+                if (highlightPosition.getColumn() > 8 || highlightPosition.getColumn() < 1 || highlightPosition.getRow() > 8 || highlightPosition.getRow() < 1 ) {
+                    System.out.println("Invalid selection. make sure it is formatted correctly with the right location on the board.");
+                    break;
+                }
+
                 highlightBoard(highlightPosition);
                 break;
             default:
-                System.out.println("Ya trash cuz.\ntype help for God's sake");
+                System.out.println("Invalid command. Type help for more information.");
         }
         return false;
     }
 
     private void highlightBoard(ChessPosition startPosition){
 
+        if (playerColor != null && playerColor == ChessGame.TeamColor.WHITE && game.getBoard().boardArray[startPosition.getRow()][startPosition.getColumn()] == null){
+            System.out.println("no piece at specified location.");
+            return;
+        }
+
         Collection<ChessMove> potentialMoves = game.validMoves(startPosition);
+
+        if (potentialMoves.isEmpty()){
+            System.out.println("no valid moves");
+            return;
+        }
 
 //        alter the colors array.
 
         for (ChessMove move : potentialMoves) {
 
-            int rowModifier = 8 - move.getEndPosition().getRow();
+            int rowModifier = move.getEndPosition().getRow() - 1;
             int colModifier = move.getEndPosition().getColumn() - 1;
-            if (playerColor == ChessGame.TeamColor.BLACK){
+            if (playerColor != ChessGame.TeamColor.BLACK){
+                rowModifier = 8 - move.getEndPosition().getRow();
+            } else {
                 colModifier = 8 - move.getEndPosition().getColumn();
             }
+            System.out.println(playerColor);
+            System.out.println("original row");
+            System.out.println(move.getEndPosition().getRow());
+            System.out.println("original col");
+            System.out.println(move.getEndPosition().getColumn());
+            System.out.println("new row");
+            System.out.println(rowModifier);
+            System.out.println("new col");
+            System.out.println(colModifier);
 
 
             String color = colors[rowModifier][colModifier];
@@ -208,6 +238,7 @@ public class GameplayUI extends REPL implements GameHandler {
     }
 
     private ChessPosition getPosition(String coordinates) {
+//        how to go from displayed board to game board
         int row = extractNumber(coordinates);;
         int col = 0;
 
@@ -238,18 +269,13 @@ public class GameplayUI extends REPL implements GameHandler {
                 col = 1;
                 break;
             default:
+
         }
 
         row = 9 - row;
         if (playerColor == ChessGame.TeamColor.BLACK){
             col = 9-col;
         }
-
-        System.out.println(row);
-        System.out.println(col);
-
-
-
 
         return new ChessPosition(row, col);
     }
@@ -281,20 +307,24 @@ public class GameplayUI extends REPL implements GameHandler {
 
                 String piece = EMPTY;
                 int modifier = i;
+                int colModifier = j;
 
                 if (playerColor == null || playerColor == ChessGame.TeamColor.WHITE) {
                     modifier = 9 - i;
                 }
+//                else {
+//                    colModifier = 9-j;
+//                }
 
-                    if (game.getBoard().boardArray[modifier][j] != null) {
+                    if (game.getBoard().boardArray[modifier][colModifier] != null) {
 
                         boolean pieceIsWhite = false;
 
-                        if (game.getBoard().boardArray[modifier][j].getTeamColor() == ChessGame.TeamColor.WHITE) {
+                        if (game.getBoard().boardArray[modifier][colModifier].getTeamColor() == ChessGame.TeamColor.WHITE) {
                             pieceIsWhite = true;
                         }
 
-                        switch (game.getBoard().boardArray[modifier][j].getPieceType()) {
+                        switch (game.getBoard().boardArray[modifier][colModifier].getPieceType()) {
                             case ChessPiece.PieceType.PAWN:
                                 if (pieceIsWhite) {
                                     piece = WHITE_PAWN;

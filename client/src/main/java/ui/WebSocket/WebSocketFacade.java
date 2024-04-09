@@ -30,7 +30,7 @@ public class WebSocketFacade extends Endpoint {
         connect();
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
             public void onMessage(String message) {
-                System.out.println("Message received from server: " + message);
+//                System.out.println("Message received from server: " + message);
                 ServerMessage msg = new Gson().fromJson(message, ServerMessage.class);
 
                 if (msg.getMessageType() == ServerMessage.ServerMessageType.ERROR){
@@ -55,27 +55,12 @@ public class WebSocketFacade extends Endpoint {
 
     }
 
-
-//    public void startPingScheduler() {
-//        scheduler = Executors.newSingleThreadScheduledExecutor();
-//        scheduler.scheduleAtFixedRate(this::sendPing, 0, 5, TimeUnit.SECONDS); // Send ping every 5 seconds
-//    }
-//
-//    public void sendPing() {
-//        try {
-//            session.getBasicRemote().sendPing(ByteBuffer.wrap("Ping".getBytes())); // Sending a ping message to the server
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     public void connect() {
         try {
             String url = ServerFacade.SERVER_URL.replace("http", "ws");
             URI uri = new URI(url + "/connect");
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, uri);
-//            startPingScheduler();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,26 +73,6 @@ public class WebSocketFacade extends Endpoint {
             e.printStackTrace();
         }
     }
-
-//    @OnWebSocketMessage
-//    public void onMessage(String message) {
-//        System.out.println("Message received from server: " + message);
-//        ServerMessage msg = new Gson().fromJson(message, ServerMessage.class);
-//        System.out.println(msg);
-//        System.out.println(msg.getMessageType());
-//
-//        if (msg.getMessageType() == ServerMessage.ServerMessageType.ERROR){
-//            Error commandObj = (Error) msg;
-//            gameHandler.printMessage(commandObj.getErrorMessage());
-//        } else if (msg.getMessageType() == ServerMessage.ServerMessageType.NOTIFICATION) {
-//            Notification commandObj = (Notification) msg;
-//            gameHandler.printMessage(commandObj.getMessage());
-//        } else if (msg.getMessageType() == ServerMessage.ServerMessageType.LOAD_GAME) {
-//            LoadGame commandObj = (LoadGame) msg;
-//            gameHandler.updateGame(commandObj.getGame());
-//        }
-//
-//    }
 
 
     @OnClose
