@@ -64,7 +64,6 @@ public class GameplayUI extends REPL implements GameHandler {
             JoinPlayer joinPlayer = new JoinPlayer(this.authToken, this.gameID, this.playerColor);
             String jsonString = this.gson.toJson(joinPlayer);
             this.wsf.sendMessage(jsonString);
-
         } else {
             this.playerColor = null;
 
@@ -124,9 +123,6 @@ public class GameplayUI extends REPL implements GameHandler {
             case "help":
                 System.out.println( SET_TEXT_COLOR_RED + "\thelp" + SET_TEXT_COLOR_LIGHT_GREY + " - List all valid commands" + SET_TEXT_COLOR_RED + "\n\tr" + SET_TEXT_COLOR_LIGHT_GREY + " - Redraws the chess board" + SET_TEXT_COLOR_RED + "\n\tleave" + SET_TEXT_COLOR_LIGHT_GREY + " - Temporarily leaves the game session" + SET_TEXT_COLOR_RED + "\n\tm <STARTING_COLUMN><STARTING_ROW>  <TARGET_COLUMN><TARGET_ROW>" + SET_TEXT_COLOR_LIGHT_GREY + " - Moves a piece from the starting location to the target location." +  SET_TEXT_COLOR_RED +"\n\th <SELECTED_PIECE'S_COLUMN> <SELECTED_PIECE'S_ROW>" + SET_TEXT_COLOR_LIGHT_GREY + " - Highlights all available moves for the selected piece"+  SET_TEXT_COLOR_RED +"\n\tresign" + SET_TEXT_COLOR_LIGHT_GREY + " - Forfeits the game");
                 break;
-            case "quit":
-//                YOU SHOULD DELETE THIS EVENTUALLY!!!!!!!!!!!!!!!!!!!!!! THERE IS NO QUIT COMMAND IN THE HELP
-                return true;
             case "r":
                 this.board.printBoard(colors, pieces);
                 break;
@@ -138,7 +134,7 @@ public class GameplayUI extends REPL implements GameHandler {
                 return true;
             case "m":
                 if (playerColor != ChessGame.TeamColor.WHITE && playerColor != ChessGame.TeamColor.BLACK){
-                    System.out.println("Observers cannot move pieces on the board.");
+                    System.out.println(SET_TEXT_COLOR_LIGHT_GREY + "Observers cannot move pieces on the board.");
                     break;
                 }
 
@@ -146,7 +142,7 @@ public class GameplayUI extends REPL implements GameHandler {
                 ChessPosition endPosition = getPosition(parsedInput[2]);
 
                 if (startPosition.getColumn() > 8 || startPosition.getColumn() < 1 || startPosition.getRow() > 8 || startPosition.getRow() < 1 || endPosition.getColumn() > 8 || endPosition.getColumn() < 1 || endPosition.getRow() > 8 || endPosition.getRow() < 1 ) {
-                    System.out.println("Invalid move. make sure it is formatted correctly with spaces between.");
+                    System.out.println(SET_TEXT_COLOR_LIGHT_GREY + "Invalid move. make sure it is formatted correctly with spaces between.");
                     break;
                 }
 
@@ -166,14 +162,14 @@ public class GameplayUI extends REPL implements GameHandler {
                 ChessPosition highlightPosition = getPosition(parsedInput[1]);
 
                 if (highlightPosition.getColumn() > 8 || highlightPosition.getColumn() < 1 || highlightPosition.getRow() > 8 || highlightPosition.getRow() < 1 ) {
-                    System.out.println("Invalid selection. make sure it is formatted correctly with the right location on the board.");
+                    System.out.println(SET_TEXT_COLOR_LIGHT_GREY + "Invalid selection. make sure it is formatted correctly with the right location on the board.");
                     break;
                 }
 
                 highlightBoard(highlightPosition);
                 break;
             default:
-                System.out.println("Invalid command. Type help for more information.");
+                System.out.println(SET_TEXT_COLOR_LIGHT_GREY + "Invalid command. Type help for more information.");
         }
         return false;
     }
@@ -181,14 +177,14 @@ public class GameplayUI extends REPL implements GameHandler {
     private void highlightBoard(ChessPosition startPosition){
 
         if (playerColor != null && playerColor == ChessGame.TeamColor.WHITE && game.getBoard().boardArray[startPosition.getRow()][startPosition.getColumn()] == null){
-            System.out.println("no piece at specified location.");
+            System.out.println(SET_TEXT_COLOR_LIGHT_GREY + "no piece at specified location.");
             return;
         }
 
         Collection<ChessMove> potentialMoves = game.validMoves(startPosition);
 
         if (potentialMoves.isEmpty()){
-            System.out.println("no valid moves");
+            System.out.println(SET_TEXT_COLOR_LIGHT_GREY + "no valid moves");
             return;
         }
 
@@ -203,15 +199,6 @@ public class GameplayUI extends REPL implements GameHandler {
             } else {
                 colModifier = 8 - move.getEndPosition().getColumn();
             }
-            System.out.println(playerColor);
-            System.out.println("original row");
-            System.out.println(move.getEndPosition().getRow());
-            System.out.println("original col");
-            System.out.println(move.getEndPosition().getColumn());
-            System.out.println("new row");
-            System.out.println(rowModifier);
-            System.out.println("new col");
-            System.out.println(colModifier);
 
 
             String color = colors[rowModifier][colModifier];
@@ -273,9 +260,9 @@ public class GameplayUI extends REPL implements GameHandler {
         }
 
         row = 9 - row;
-        if (playerColor == ChessGame.TeamColor.BLACK){
-            col = 9-col;
-        }
+//        if (playerColor == ChessGame.TeamColor.BLACK){
+//            col = 9-col;
+//        }
 
         return new ChessPosition(row, col);
     }
@@ -302,6 +289,7 @@ public class GameplayUI extends REPL implements GameHandler {
 
         this.game = game;
 
+
         for (int i = 1; i < 9; i++) {
             for (int j = 1; j < 9; j++) {
 
@@ -312,9 +300,9 @@ public class GameplayUI extends REPL implements GameHandler {
                 if (playerColor == null || playerColor == ChessGame.TeamColor.WHITE) {
                     modifier = 9 - i;
                 }
-//                else {
-//                    colModifier = 9-j;
-//                }
+                else {
+                    colModifier = 9-j;
+                }
 
                     if (game.getBoard().boardArray[modifier][colModifier] != null) {
 
@@ -388,7 +376,7 @@ public class GameplayUI extends REPL implements GameHandler {
     public void printMessage(String message) {
         System.out.println(ERASE_SCREEN);
         this.board.printBoard(colors, pieces);
-        System.out.println(message);
+        System.out.println(SET_TEXT_COLOR_LIGHT_GREY + message);
     }
 
     @FunctionalInterface

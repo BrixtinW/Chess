@@ -50,7 +50,7 @@ public class PostloginUI extends REPL {
                     repl = new GameplayUI(authToken, parsedInput[1], null);
                 }
                 repl.start();
-                System.out.println("Quit Game Successfully!");
+                System.out.println(SET_BG_COLOR_DARK_GREY + SET_TEXT_COLOR_LIGHT_GREY + "Quit Game Successfully!");
                 break;
             default:
                 System.out.println("Invalid Command\nType help to see all valid commands");
