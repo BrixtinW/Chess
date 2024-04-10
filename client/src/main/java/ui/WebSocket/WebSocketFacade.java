@@ -6,16 +6,9 @@ import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
-import webSocketMessages.userCommands.JoinPlayer;
-
 import javax.websocket.*;
-import java.io.IOException;
 import java.net.URI;
-import java.nio.ByteBuffer;
-import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class WebSocketFacade extends Endpoint {
 

@@ -6,8 +6,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import webSocketMessages.userCommands.*;
 
-import javax.websocket.OnClose;
-
 
 @WebSocket
 public class WebSocketHandler {
@@ -53,11 +51,10 @@ public class WebSocketHandler {
 
     }
 
-    @OnClose
-    public void onClose(Integer gameID, String authToken) {
-        System.out.println("Connection closed");
-        webSocketSessions.removeSessionFromGame(gameID, authToken);
-    }
+//    public void onClose(Integer gameID, String authToken) {
+//        System.out.println("Connection closed");
+//        webSocketSessions.removeSessionFromGame(gameID, authToken);
+//    }
 
     public void onError(Session session, Throwable throwable) {
         System.err.println("Error on WebSocket: " + throwable.getMessage());
