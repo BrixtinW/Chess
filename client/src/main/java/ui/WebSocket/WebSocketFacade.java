@@ -21,6 +21,7 @@ public class WebSocketFacade extends Endpoint {
 
         connect();
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
+            @OnMessage
             public void onMessage(String message) {
 //                System.out.println("Message received from server: " + message);
                 ServerMessage msg = new Gson().fromJson(message, ServerMessage.class);
