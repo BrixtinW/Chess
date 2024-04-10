@@ -27,18 +27,17 @@ public class GameService {
     public static void joinPlayer(String authToken, Integer gameID, ChessGame.TeamColor teamColor, WebSocketSessions webSocketSessions){
         try {
             SQLGameDao gameDao = new SQLGameDao();
-            SQLAuthDao authDao = new SQLAuthDao();
             GameData gameData = gameDao.getGame(gameID);
+            SQLAuthDao authDao = new SQLAuthDao();
             AuthData authData = authDao.getAuth(authToken);
 
-
-            if ((teamColor == ChessGame.TeamColor.WHITE && !Objects.equals(gameData.whiteUsername(), authData.username())) || (teamColor == ChessGame.TeamColor.BLACK && !Objects.equals(gameData.blackUsername(), authData.username()))){
-                Error error = new Error("Error: Spot already taken");
+            if (gameData == null || authData == null){
+                Error error = new Error("Error: Invalid game ID or authToken");
                 sendMessage(webSocketSessions, gameID, authToken, error);
                 return;
             }
-            if (gameData == null || authData == null){
-                Error error = new Error("Error: Invalid game ID or authToken");
+            if ((teamColor == ChessGame.TeamColor.WHITE && !Objects.equals(gameData.whiteUsername(), authData.username())) || (teamColor == ChessGame.TeamColor.BLACK && !Objects.equals(gameData.blackUsername(), authData.username()))){
+                Error error = new Error("Error: Spot already taken");
                 sendMessage(webSocketSessions, gameID, authToken, error);
                 return;
             }

@@ -1,6 +1,7 @@
 package ui.WebSocket;
 
 import com.google.gson.Gson;
+import org.glassfish.tyrus.core.wsadl.model.Endpoint;
 import ui.ServerFacade;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Error;
@@ -8,7 +9,7 @@ import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
 import javax.websocket.*;
 import java.net.URI;
-import java.util.concurrent.ScheduledExecutorService;
+
 
 public class WebSocketFacade extends Endpoint {
 
@@ -20,7 +21,6 @@ public class WebSocketFacade extends Endpoint {
 
         connect();
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
-            @OnMessage
             public void onMessage(String message) {
 //                System.out.println("Message received from server: " + message);
                 ServerMessage msg = new Gson().fromJson(message, ServerMessage.class);
@@ -62,13 +62,6 @@ public class WebSocketFacade extends Endpoint {
         }
     }
 
-
-    @OnError
-    public void onError(Session session, Throwable throwable) {
-        System.err.println("Error on WebSocket: " + throwable.getMessage());
-
-    }
-
     public void sendMessage(String message) {
         try {
             this.session.getBasicRemote().sendText(message);
@@ -77,9 +70,4 @@ public class WebSocketFacade extends Endpoint {
         }
     }
 
-
-    @Override
-    public void onOpen(javax.websocket.Session session, EndpointConfig config) {
-
-    }
 }
