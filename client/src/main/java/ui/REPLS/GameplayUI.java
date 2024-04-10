@@ -11,6 +11,7 @@ import ui.WebSocket.WebSocketFacade;
 import webSocketMessages.userCommands.*;
 
 import java.util.Collection;
+import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
 
@@ -116,14 +117,9 @@ public class GameplayUI extends REPL implements GameHandler {
 
     }
 
+
     @Override
     protected Boolean evaluate(String[] parsedInput) {
-
-//        Check to see if game is in checkmate
-
-        if (playerColor != null && game.isInCheckmate(playerColor)){
-
-        }
 
         switch (parsedInput[0]) {
             case "help":

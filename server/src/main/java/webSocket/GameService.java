@@ -14,9 +14,6 @@ import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
-
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -50,7 +47,7 @@ public class GameService {
             LoadGame loadGame = new LoadGame(gameData.game());
             sendMessage(webSocketSessions, gameID, authToken, loadGame);
 
-            Notification notification = new Notification(authData.username() + "joined game as" + teamColor.name());
+            Notification notification = new Notification(authData.username() + " joined game as " + teamColor.name());
             broadcastMessage(webSocketSessions, gameID, authToken, notification);
 
         } catch (DataAccessException e) {
@@ -80,7 +77,7 @@ public class GameService {
             LoadGame loadGame = new LoadGame(gameData.game());
             sendMessage(webSocketSessions, gameID, authToken, loadGame);
 
-            Notification notification = new Notification(authData.username() + "joined game as an observer");
+            Notification notification = new Notification(authData.username() + " joined game as an observer");
             broadcastMessage(webSocketSessions, gameID, authToken, notification);
 
         } catch (DataAccessException e) {
@@ -113,7 +110,13 @@ public class GameService {
                 return;
             }
 
-            gameData.game().makeMove(move);
+            if(gameData.game().validMoves(move.getStartPosition()).contains(move)) {
+                gameData.game().makeMove(move);
+            } else {
+                Error error = new Error("Error: Invalid move. Make sure you are not in check and your syntax is correct by typing help.");
+                sendMessage(webSocketSessions, gameID, authToken, error);
+                return;
+            }
 
             gameDao.updateGame(new GameData(gameID, gameData.whiteUsername(), gameData.blackUsername(), gameData.gameName(), gameData.game()));
 
@@ -121,8 +124,33 @@ public class GameService {
             sendMessage(webSocketSessions, gameID, authToken, loadGame);
             broadcastMessage(webSocketSessions, gameID, authToken, loadGame);
 
-            Notification notification = new Notification(authData.username() + "moved a piece!");
+            Notification notification = new Notification(authData.username() + " moved a piece!");
             broadcastMessage(webSocketSessions, gameID, authToken, notification);
+
+
+            if (gameData.game().isInCheck(ChessGame.TeamColor.WHITE) ){
+                Notification gameEvent;
+                if (gameData.game().isInCheckmate(ChessGame.TeamColor.WHITE) ){
+                    gameEvent = new Notification("White is currently in checkmate.\nGAME OVER");
+                } else {
+                    gameEvent = new Notification("White is currently in check!");
+                }
+
+                sendMessage(webSocketSessions, gameID, authToken, gameEvent);
+                broadcastMessage(webSocketSessions, gameID, authToken, gameEvent);
+
+            } else if (gameData.game().isInCheck(ChessGame.TeamColor.BLACK)){
+                Notification gameEvent;
+                if (gameData.game().isInCheckmate(ChessGame.TeamColor.BLACK)){
+                    gameEvent = new Notification("Black is currently in checkmate.\nGAME OVER");
+                } else {
+                    gameEvent = new Notification("Black is currently in check!");
+                }
+
+                sendMessage(webSocketSessions, gameID, authToken, gameEvent);
+                broadcastMessage(webSocketSessions, gameID, authToken, gameEvent);
+            }
+
 
         } catch (DataAccessException e) {
             Error error = new Error("Error: Invalid Game ID or Game Does Not Exist");
@@ -152,7 +180,7 @@ public class GameService {
             gameDao.updateGame(new GameData(gameData.gameID(), whiteUsername, blackUsername, gameData.gameName(), gameData.game()));
 
 
-            Notification notification = new Notification(authData.username() + "has left the game.");
+            Notification notification = new Notification(authData.username() + " has left the game.");
             broadcastMessage(webSocketSessions, gameID, authToken, notification);
 
             webSocketSessions.removeSessionFromGame(gameID, authToken);
@@ -183,7 +211,7 @@ public class GameService {
 
             gameDao.updateGame(new GameData(gameData.gameID(), gameData.whiteUsername(), gameData.blackUsername(), "GAME ENDED (" + gameData.gameName() + ")", null));
 
-            Notification notification = new Notification(authData.username() + "resigned from the game");
+            Notification notification = new Notification(authData.username() + " resigned from the game");
             sendMessage(webSocketSessions, gameID, authToken, notification);
             broadcastMessage(webSocketSessions, gameID, authToken, notification);
 

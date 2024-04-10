@@ -1,7 +1,7 @@
 package ui.WebSocket;
 
 import com.google.gson.Gson;
-import org.glassfish.tyrus.core.wsadl.model.Endpoint;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import ui.ServerFacade;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Error;
@@ -10,16 +10,18 @@ import webSocketMessages.serverMessages.ServerMessage;
 import javax.websocket.*;
 import java.net.URI;
 
-
+@WebSocket
 public class WebSocketFacade extends Endpoint {
 
     private final GameHandler gameHandler;
     private Session session;
 
+
     public WebSocketFacade(GameHandler gameHandler) {
         this.gameHandler = gameHandler;
 
         connect();
+
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
             @Override
             public void onMessage(String message) {
@@ -71,4 +73,8 @@ public class WebSocketFacade extends Endpoint {
         }
     }
 
+    @Override
+    public void onOpen(Session session, EndpointConfig config) {
+
+    }
 }
