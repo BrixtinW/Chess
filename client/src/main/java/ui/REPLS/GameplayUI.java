@@ -266,9 +266,6 @@ public class GameplayUI extends REPL implements GameHandler {
         }
 
         row = 9 - row;
-//        if (playerColor == ChessGame.TeamColor.BLACK){
-//            col = 9-col;
-//        }
 
         return new ChessPosition(row, col);
     }

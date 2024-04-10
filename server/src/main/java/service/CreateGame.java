@@ -23,19 +23,4 @@ public class CreateGame extends ServiceProgenitor {
             return gameDao.createGame(game);
     }
 
-//    public static class GenerateGameID {
-//        private static int current = 1000;
-//        private static final int end = 9999;
-//
-//        public static boolean hasNext() {
-//            return current <= end;
-//        }
-//
-//        public static int next() {
-//            if (!hasNext()) {
-//                throw new IllegalStateException("No more valid Game IDs.");
-//            }
-//            return current++;
-//        }
-//    }
 }

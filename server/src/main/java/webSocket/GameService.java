@@ -31,6 +31,12 @@ public class GameService {
             GameData gameData = gameDao.getGame(gameID);
             AuthData authData = authDao.getAuth(authToken);
 
+
+            if ((teamColor == ChessGame.TeamColor.WHITE && !Objects.equals(gameData.whiteUsername(), authData.username())) || (teamColor == ChessGame.TeamColor.BLACK && !Objects.equals(gameData.blackUsername(), authData.username()))){
+                Error error = new Error("Error: Spot already taken");
+                sendMessage(webSocketSessions, gameID, authToken, error);
+                return;
+            }
             if (gameData == null || authData == null){
                 Error error = new Error("Error: Invalid game ID or authToken");
                 sendMessage(webSocketSessions, gameID, authToken, error);
@@ -38,11 +44,6 @@ public class GameService {
             }
             if (gameData.game() == null){
                 Error error = new Error("Error: Game has already ended");
-                sendMessage(webSocketSessions, gameID, authToken, error);
-                return;
-            }
-            if ((teamColor == ChessGame.TeamColor.WHITE && !Objects.equals(gameData.whiteUsername(), authData.username())) || (teamColor == ChessGame.TeamColor.BLACK && !Objects.equals(gameData.blackUsername(), authData.username()))){
-                Error error = new Error("Error: Spot already taken");
                 sendMessage(webSocketSessions, gameID, authToken, error);
                 return;
             }

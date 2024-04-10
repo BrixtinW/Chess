@@ -1,7 +1,6 @@
 package ui;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -15,7 +14,7 @@ import com.google.gson.JsonElement;
 
 public class ServerFacade {
 
-    public static String SERVER_URL = "http://localhost:";
+    public static String serverUrl = "http://localhost:";
 
     public static String[] login(String[] parsedInput) {
 //        System.out.println(parsedInput[0] + " " + parsedInput[1] + " " +  parsedInput[2]);
@@ -135,7 +134,7 @@ public class ServerFacade {
 
         try {
 
-            URL url = new URL(SERVER_URL + api);
+            URL url = new URL(serverUrl + api);
 
             connection = (HttpURLConnection) url.openConnection();
 

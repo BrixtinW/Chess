@@ -16,7 +16,7 @@ public class ServerFacadeTests {
         var port = server.run(0);
         System.out.println("Started test HTTP server on " + port);
 
-        ServerFacade.SERVER_URL = ServerFacade.SERVER_URL + port;
+        ServerFacade.serverUrl = ServerFacade.serverUrl + port;
     }
 
     @AfterAll

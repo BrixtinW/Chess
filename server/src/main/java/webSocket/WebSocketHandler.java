@@ -51,14 +51,6 @@ public class WebSocketHandler {
 
     }
 
-//    public void onClose(Integer gameID, String authToken) {
-//        System.out.println("Connection closed");
-//        webSocketSessions.removeSessionFromGame(gameID, authToken);
-//    }
-
-    public void onError(Session session, Throwable throwable) {
-        System.err.println("Error on WebSocket: " + throwable.getMessage());
-    }
 
 
 }

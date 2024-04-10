@@ -20,11 +20,6 @@ public abstract class REPL {
 
             String[] parsedInput = userInput.split("\\s+");
 
-//            if(parsedInput.length == 0){
-//                System.out.println("Your attempt sucked honestly...");
-//                continue;
-//            }
-
             Boolean terminate = evaluate(parsedInput);
 
             if (terminate) { return; }

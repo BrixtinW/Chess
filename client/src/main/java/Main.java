@@ -7,7 +7,7 @@ public class Main {
           var port = server.run(0);
           ServerFacade.SERVER_URL = ServerFacade.SERVER_URL + port; */
 
-        ServerFacade.SERVER_URL = ServerFacade.SERVER_URL + "8080";
+        ServerFacade.serverUrl = ServerFacade.serverUrl + "8080";
 
         PreloginUI repl = new PreloginUI();
         repl.start();

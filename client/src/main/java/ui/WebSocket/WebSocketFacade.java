@@ -15,13 +15,12 @@ public class WebSocketFacade extends Endpoint {
     private final GameHandler gameHandler;
     private Session session;
 
-    private ScheduledExecutorService scheduler;
-
     public WebSocketFacade(GameHandler gameHandler) {
         this.gameHandler = gameHandler;
 
         connect();
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
+            @OnMessage
             public void onMessage(String message) {
 //                System.out.println("Message received from server: " + message);
                 ServerMessage msg = new Gson().fromJson(message, ServerMessage.class);
@@ -46,7 +45,7 @@ public class WebSocketFacade extends Endpoint {
 
     public void connect() {
         try {
-            String url = ServerFacade.SERVER_URL.replace("http", "ws");
+            String url = ServerFacade.serverUrl.replace("http", "ws");
             URI uri = new URI(url + "/connect");
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, uri);
@@ -64,15 +63,10 @@ public class WebSocketFacade extends Endpoint {
     }
 
 
-    @OnClose
-    public void onClose() {
-        System.out.println("Connection closed");
-        disconnect();
-    }
-
     @OnError
     public void onError(Session session, Throwable throwable) {
         System.err.println("Error on WebSocket: " + throwable.getMessage());
+
     }
 
     public void sendMessage(String message) {
